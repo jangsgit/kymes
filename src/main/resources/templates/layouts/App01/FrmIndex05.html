@@ -102,7 +102,7 @@
                     <div class="col-md-3">
                         <div class="input_wrap" style="max-width: 230px;"> 
                             <label for="companyType" class="form-label ls text-uppercase text-600 fw-semi-bold mb-0">대분류<span class="text-danger">*</span></label>
-                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" onchange="handleItemCategoryChange()" disabled  required >
+                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" onchange="handleItemCategoryChange()"   >
                             <option value="">선택</option>
                             <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                             </select>    

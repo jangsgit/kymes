@@ -197,20 +197,22 @@ public class App01Controller {
         List<TBPopupVO> _indexFormList = new ArrayList<>();
         List<TBPopupVO> _indexColorList = new ArrayList<>();
         List<TBPopupVO> _indexJthickList = new ArrayList<>();
-
+        List<PopupDto> _popupListDto = new ArrayList<>();
+        List<PopupDto> _popupListDto1 = new ArrayList<>();
+        List<PopupDto> _popupListDto2 = new ArrayList<>();
         HttpSession session = request.getSession();
         UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
         model.addAttribute("userformDto",userformDto);
-
+        popupDto.setJ1_key("%");
         try {
             index03Dto.setJpum("%");
             index03Dto.setJ_misayong("%");
             index03Dto.setW_b_gubn("J");
             index03Dto.setJ_dae("02");
             index03List = service03.GetJpumList(index03Dto);
-            popupListDto = service03.getj1_keyList(popupDto);
-            popupListDto1 = service03.getj2_keyList(popupDto);
-            popupListDto2 = service03.getGumtype_keyList(popupDto);
+            _popupListDto = service03.getj1_keyList(popupDto);
+            _popupListDto1 = service03.getj2_keyList(popupDto);
+            _popupListDto2 = service03.getGumtype_keyList(popupDto);
 
 
             _indexJpumList = service03.GetJpumComboList(_indexpopDto);
@@ -221,9 +223,9 @@ public class App01Controller {
             _indexJthickList = service03.GetJthickComboList(_indexpopDto);
 
 
-            model.addAttribute("j1_keyList",popupListDto);
-            model.addAttribute("j2_keyList",popupListDto1);
-            model.addAttribute("j3_keyList",popupListDto2);
+            model.addAttribute("j1_keyList",_popupListDto);
+            model.addAttribute("j2_keyList",_popupListDto1);
+            model.addAttribute("j3_keyList",_popupListDto2);
             model.addAttribute("index03List",index03List);
             model.addAttribute("jpumList",_indexJpumList);
             model.addAttribute("door1List",_indexDoor1List);

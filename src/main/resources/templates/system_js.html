@@ -1,0 +1,40 @@
+<th:block th:fragment="system_js">
+
+<script th:inline="javascript">
+var userinfo = {
+    username: '관리자',
+    login_id: 'admin',
+    group_code: '',
+    read_flag: '1',
+    write_flag: '1',
+    ip_address: "",
+    crtfcKey: ""
+};
+
+var gui = {
+    gui_code: '',
+    template_key: '',
+    mqtt_host: '',
+    mqtt_port: '',
+    hmi_topic: '',
+    action: '',
+    pk: ''
+};
+
+userinfo.can_read = function () {
+    let result = false;
+    if (userinfo.read_flag) {
+        result = true;
+    }
+    return result;
+};
+
+userinfo.can_write = function () {
+    let result = false;
+    if (userinfo.write_flag) {
+        result = true;
+    }
+    return result;
+};
+</script>
+</th:block>

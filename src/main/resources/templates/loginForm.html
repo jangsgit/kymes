@@ -1,103 +1,487 @@
 <!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <link rel="icon" type="image/png" href="/images/logo/actas_log_a.png">
 
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="layouts/XRegister/head :: headFragment" />
-
-<body style="background: url(/images/bg1.png) center center; background-size: cover;">
-
-<div class="content main">
-
-  <div class="box_con_wrap">
-    <div class="head_tit">
-      <h1>경덕산업 MES System</h1>
-    </div>
-    <div class="box_con" style="background: url(/images/login_bg.png) no-repeat;">
-      <div class="logo">
-        <a th:href="@{/auth/admin}">
-          <img src="/images/logo.png" alt="">
-        </a>
-      </div>
-      <div class="login">
-        <div class="tit">Login</div>
-        <form action="/login" method="POST"> 
-          <div class="input_wrap icon i_id">
-            <input type="text" id="loginid" name="loginid">
-            <input type="hidden" id="ipaddr" name="ipaddr">
-          </div>
-          <div class="input_wrap icon i_pw">
-            <input type="password" id="logpass" name="logpass">
-          </div>
-          <div class="account">
-            <div class="save_id">
-              <input type="checkbox" id="card-checkbox" checked="checked">
-              <label for="save_id" class="check_style1">ID 저장</label>
-            </div> 
-          </div>
-          <div class="login_btn">
-            <div class="btn_wrap">
-              <button type="button" id="login_btn" name="login_btn">Login</button>
-            </div>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- Slide css -->
+    <link rel="stylesheet" href="/css/import.css"/>
+<!--    <link rel="stylesheet" href="/css/login_mes.css" />-->
+    <link rel="stylesheet" href="/resource/ax5ui/ax5ui.all.css" />
 
 
-          </div>
-          <div> 
-          </div>
-          <div class="mb-3">
-            <div th:if="${loginErrorMsg}" class="alert alert-warning border-2 d-flex align-items-center"
-                 role="alert">
-              <div class="bg-warning me-3 icon-item"><span
-                      class="fas fa-exclamation-circle text-white fs-3"></span></div>
-              <p class="mb-0 flex-1" th:text="${loginErrorMsg}">Incorrent data</p>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-
-      window.onload = function() {  
-        getIpClient();
-      }
-
-      async function getIpClient() {
-        try {
-          const response = await axios.get('https://api.ipify.org?format=json');
-          document.getElementById('ipaddr').value = response.data.ip;
-
-
-          var lsUserid = window.localStorage.getItem("userid") 
-          var lsUserpw = window.localStorage.getItem("userpw")  
-          document.getElementById('loginid').value = lsUserid
-          document.getElementById('logpass').value = lsUserpw
-
-          // console.log(response.data.ip);
-          // console.log("----");
-        } catch (error) {
-          console.error(error);
+    <title>KYOUNG DUK MES</title>
+    <style>
+        /* 공통 Modal 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
         }
-      }
 
-        
+        /* 공통 Modal 컨텐츠 스타일 */
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            margin: 10% auto;
+            padding: 20px;
+            max-width: 500px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            top: 15%;
+        }
+
+        /* Form 스타일 */
+        #idFindForm,
+        #pwFindForm {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 라벨과 인풋박스를 한 줄에 배치 */
+        #idFindForm .form-group,
+        #pwFindForm .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        #idFindForm .form-group label,
+        #pwFindForm .form-group label {
+            width: 100px; /* 라벨의 너비를 고정 */
+            margin-right: 10px;
+        }
+
+        #idFindForm .form-group input,
+        #pwFindForm .form-group input {
+            flex: 1; /* 입력 박스가 가능한 한 넓게 */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #idFindForm button,
+        #pwFindForm button {
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px; /* 버튼을 위의 입력 필드와 떨어지게 */
+        }
+
+        #idFindForm button:hover,
+        #pwFindForm button:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        #ErrMsg.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+        #loader2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            opacity: 0.8;
+            width: 100%;
+            height: 100%;
+            display: none; /* 처음에는 숨김 상태 */
+            z-index: 9000;
+        }
+
+        #loader2 .loader {
+            position: fixed;
+            top: calc(50% - 48px);
+            left: calc(50% - 48px);
+            width: 96px;
+            height: 96px;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #loader2 .loader > span {
+            position: fixed;
+            top: calc(50% - 27px);
+            left: calc(50% - 27px);
+            width: 48px;
+            height: 48px;
+            border: 3px solid #FFF;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+
+        #loader2 .loader > span::after {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #5ddfde;
+            width: 16px;
+            height: 16px;
+            transform: translate(-50%, 50%);
+            border-radius: 50%;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ax5-ui-dialog{
+            min-width: 400px;
+            min-height: 204px;
+        }
+
+        .ax5-ui-dialog .ax-dialog-body{
+            min-width: 400px;
+            min-height: 204px;
+            padding: 50px 0 40px 0;
+        }
+
+        .ax5-ui-dialog .ax-dialog-body .ax-dialog-msg{
+            padding-bottom: 20px;
+        }
+
+        .ax5-ui-dialog .ax-dialog-header{
+            display: none;
+        }
+
+        .zoom-img {
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-img:hover {
+            transform: scale(1.1); /* 1.1배 확대 */
+            cursor: pointer;
+        }
+
+        .dashboard-login-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f5f5f5;
+            padding: 20px;   /* 좌우 여백 확보 */
+        }
+
+        .login-wrap {
+            display: flex;
+            flex-wrap: wrap;          /* 화면 좁아지면 줄바꿈 */
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .login-wrap .left,
+        .login-wrap .right {
+            flex: 1 1 50%;            /* 기본은 반반 */
+            min-width: 300px;         /* 줄어들어도 최소 300px */
+        }
+
+        .login-wrap .left img {
+            width: 100%;
+            height: 100%;           /* 이미지 비율 유지 */
+            object-fit: cover;
+        }
+
+        .login-wrap .login-form {
+            width: 100%;
+        }
+
+        .right {
+            display: flex;
+            justify-content: center;  /* 가로 가운데 */
+            align-items: center;      /* 세로 가운데 */
+            flex: 1;                  /* 남는 공간 차지 */
+            padding: 20px;            /* 살짝 여백만 */
+        }
+
+        @media (max-width: 768px) {
+            .login-wrap .left {
+                display: none;
+            }
+
+            .login-wrap .right {
+                flex: 1 1 100%;      /* 오른쪽이 전체 차지 */
+                padding: 40px 20px;  /* 모바일 여백 */
+            }
+        }
+
+    </style>
 
 
-      var btn_obj = document.getElementById('login_btn');
+</head>
+<body>
+<div id="loader2">
+    <div class="loader">
+        <span></span>
+    </div>
+</div>
+<div class="page-wrapper page-login"><!-- ★페이지 Class명 -->
+    <div class="dashboard-login-wrap">
+        <div class="login-wrap">
+            <div class="left">
+                <img src="/img/login_bg_mes.png" alt="로그인 이미지" style="height: 660px">
+            </div>
+            <div class="right">
+                <form method="post" class="form" role="form" action="/login" >
+                    <div class="login-logo">
+                        <h1>Kyoung Duk MES</h1>
+                    </div>
+                    <div class="login-form">
+                        <dl>
+                            <dt><label for="loginId">아이디</label></dt>
+                            <dd>
+                                <input type="text" id="loginid" name="loginid" required autofocus title="아이디 입력" placeholder="아이디를 입력해주세요">
+                            </dd>
+                            <!-- 에러메시지 출력 -->
+                            <dd class="hint-red" id="hint-red" style="display: none">
+                                <img src="/images/icon/ico-info-red.svg" alt="힌트메세지">
+                                계정이 맞지 않습니다.
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="loginPwd">비밀번호</label></dt>
+                            <dd>
+                                <input type="password" id="logpass" name="logpass" placeholder="비밀번호를 입력해주세요" required title="패스워드 입력" autocomplete="off">
+                            </dd>
+                        </dl>
+                        <div class="check-save">
+                            <input type="checkbox" id="login_chk">
+                            <label for="login_chk">아이디 저장</label>
+
+                            <input style="margin-left: 15px;" type="checkbox" id="autoLogin" name="autoLogin">
+                            <label for="autoLogin">자동 로그인</label>
+                        </div>
+                        <button type="button" class="btn-login" id="login_btn">로그인</button>
+                        <!--                        <button type="button" class="btn-login" id="testBtn">test</button>-->
+
+<!--                        <ul class="btn-login-etc">-->
+<!--                            <li>-->
+<!--                                <a class="btn btn-popup-open" data-popup="popup1" title="사용자신청" onclick="RegisterUser()">사용자신청</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#" class="btn btn-popup-open" data-popup="popup2" title="아이디 찾기" onclick="openModal()">아이디 찾기</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#" class="btn" title="비밀번호 찾기" onclick="openPwModal()">비밀번호 찾기</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">업데이트 : 2025-11-27</div>
+                </form>
+            </div>
+        </div>
+        <p class="copyright">COPYRIGHT © DaeSanSystem ALL RIGHTS RESERVED.</p>
+    </div>
+
+
+</div> <!-- //page-wrapper end-->
+
+<script type="text/javascript" src="/resource/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/resource/ax5ui/ax5ui.all.min.js"></script>
+<script type="text/javascript" src="/resource/moment.min.js"></script>
+<script type="text/javascript" src="/js/js.cookie.js"></script>
+<script type="text/javascript" src="/js/common.js?v=1050"></script>
+<script type="text/javascript" src="/resource/JavaScript-Templates/tmpl.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/ax5commUtil.js?v=1050"></script>
+
+
+
+
+<script type="text/javascript">
+
+    function openPopup(url) {
+        // 새 창 열기
+        window.open(url, '_blank',
+            'width=1000,height=1000,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+    }
+
+
+
+    // 로딩바를 숨기는 함수
+    function hideLoader() {
+        document.getElementById('loader2').style.display = 'none';
+    }
+
+
+    function openPwModal() {
+        document.getElementById('pwFindModal').style.display = 'block';
+    }
+
+    function closePwModal() {
+        document.getElementById('pwFindModal').style.display = 'none';
+    }
+
+
+    //##############################################  아이디 찾기 모달
+    function openModal() {
+        document.getElementById('idFindModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('idFindModal').style.display = 'none';
+    }
+
+    //document.querySelector('.close').onclick = closeModal;
+    //##############################################  아이디 찾기 모달 끝
+
+
+    const requiredFields = [
+        // { id: 'agency', name: '소속사' },
+        // { id: 'agencyDepartment', name: '소속부서' },
+        { id: 'name', name: '성명' },
+        { id: 'id', name: 'ID' },
+        { id: 'password', name: '비밀번호' },
+        { id: 'passwordchk', name: '비밀번호확인' },
+        /*{ id: 'authType', name: '권한그룹' },*/
+        // { id: 'firstSelect', name: '관할지역' },
+        // { id: 'secondSelect', name: '발전산단' },
+        // { id: 'thirdSelect', name: '발전소' }
+    ];
+
+
+    const clearFieldList = ['name', 'id', 'password', 'passwordchk',
+        'firstSelect', 'secondSelect', 'thirdSelect', 'tel', 'level', 'email',
+        'reason', 'AuthenticationCodeRegister']
+
+    // 유효성 검사
+    function validateFields() {
+        for (let field of requiredFields) {
+            if (!validateFieldById(field.id, field.name)) {
+                return false;
+            }
+        }
+
+        for (let field of nameBasedFields) {
+            if (!validateFieldsByName(field.name, field.displayName)) {
+                return false;
+            }
+        }
+
+        return true;  // 모든 유효성 검사를 통과했을 경우
+    }
+
+    // ID로 유효성 검사 함수
+    function validateFieldById(id, fieldName) {
+        const value = document.getElementById(id)?.value.trim();
+
+        if (!value) {
+            Alert.alert('', `${fieldName}이(가) 입력되지 않았습니다.`);
+            return false;
+        }
+
+        return true;
+    }
+
+    // name 속성으로 유효성 검사 함수
+    function validateFieldsByName(name, fieldName) {
+        const elements = document.getElementsByName(name);
+
+        if (elements.length === 0) {
+            console.error(`이름이 ${name}인 요소를 찾을 수 없습니다.`);
+            return false;
+        }
+
+        for (let element of elements) {
+            const value = element.value.trim();
+            if (!value) {
+                Alert.alert('', `${fieldName}이(가) 입력되지 않았습니다.`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    function RegisterUser(){
+        let popup = document.getElementById('popup1');
+        let wrapper = document.getElementById('wrapper1');
+
+        popup.style.display = 'block';
+        wrapper.style.display = 'block';
+    }
+
+    function RegisterUserClose(){
+        let popup = document.getElementById('popup1');
+        let wrapper = document.getElementById('wrapper1');
+
+        popup.style.display = 'none';
+        wrapper.style.display = 'none';
+    }
+
+
+    var userinfo = {
+        username: '',
+        login_id: '',
+        group_code: '',
+        read_flag: '{',
+        write_flag: '',
+        ip_address: '',
+        crtfcKey: ''
+    };
+
+    var gui = {
+        gui_code: '',
+        template_key: '',
+        action: '',
+    };
+
+    var btn_obj = document.getElementById('login_btn');
       btn_obj.addEventListener("click",function(){
-        
           //TB_FPLAN_WORK TB_FPLAN_W010  SAVE
           var ls_loginid   = document.getElementById('loginid').value;
           var ls_logpass   = document.getElementById('logpass').value;
-          var ls_ipaddr    = document.getElementById('ipaddr').value;
-          
+          var ls_ipaddr    = "";
+
+          // 아이디 저장 체크박스 상태에 따라 쿠키 처리
+          if ($('#login_chk').is(':checked')) {
+              Cookies.set('loginId', ls_loginid, { path: '/', expires: 7 });
+          } else {
+              Cookies.remove('loginId', { path: '/' });
+          }
+
           window.localStorage.setItem("userid" ,  ls_loginid)
-          window.localStorage.setItem("userpw" ,  ls_logpass) 
+          window.localStorage.setItem("userpw" ,  ls_logpass)
           // var ls_select  = document.getElementById('select').value;
           var ls_actcustcdz = "KDMES" ; //document.getElementById('actcustcdz').value;
-          var ls_select = "AA";          
+          var ls_select = "AA";
           $.ajax({
               url: '/authcrud/login',
               type:"POST",
@@ -105,11 +489,10 @@
                   "loginid"    : ls_loginid ,
                   "logpass"  : ls_logpass,
                   "ipaddr"  : ls_ipaddr,
-                  "flag"    : ls_select 
+                  "flag"    : ls_select
               },
               async:false,
               success:function(userFormDto){
-
                 var ListDto = userFormDto;
                 var ls_userid = userFormDto["userid"]
                 var ls_username = userFormDto["username"]
@@ -122,7 +505,7 @@
                 var ls_wrongnum = userFormDto["wrongnum"]
 
 
-                
+
                 if(userFormDto == "" || userFormDto == null){
                   alert("사용자 구분을 확인하세요.");
                   return false;
@@ -134,29 +517,25 @@
                   insertLogin();
 
                 window.location.href = '/auth/emmsdashboard';
-                  // if(data == "success"){
-                  //     alert("등록 되었습니다.");
-                  //     var ls_text = "<div style='color:red'><span class='badge badge-soft-danger'>가입되었습니다.</span></div>";
-                  // }else{
-                  //     alert("등록오류");
-                  //     var ls_text = "<div style='color:red'><span class='badge badge-soft-info'>가입실패</span></div>";
-                  // }
-                  // statusdis_div.innerHTML  = ls_text;
                 }
 
               },error:function(e){
                   wrongPasswd();
               }
+
+
+
+
           }).done(function(fragment){
 
           })
 
      })
 
-     function insertLogin(){ 
+     function insertLogin(){
       var ls_loginid   = document.getElementById('loginid').value;
       var ls_logpass   = document.getElementById('logpass').value;
-      var ls_ipaddr    = document.getElementById('ipaddr').value; 
+      var ls_ipaddr    = "";
 
       $.ajax({
         url: '/authcrud/loginlog',
@@ -173,7 +552,7 @@
       });
      }
 
-     function wrongPasswd(){ 
+     function wrongPasswd(){
         var ls_loginid   = document.getElementById('loginid').value;
         var ls_logpass   = document.getElementById('logpass').value;
 
@@ -205,14 +584,176 @@
      }
 
 
+</script>
+
+<script type="text/javascript">
+    var isChangeLang = 'N';
+
+
+    function showLoader() {
+        document.getElementById('loader2').style.display = 'block';
+    }
+
+    function emailValidate(emailVal){
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        return emailPattern.test(emailVal);
+    }
+
+
+
+    $(document).ready(function () {
+<!--        let _csrf = document.getElementsByName('_csrf');-->
+<!--        let _CsrfValue = _csrf[0].value;-->
+<!--        let csrfToken = $("[name=_csrf]").val();-->
+
+
+        let activeTimerInterval; // 전역 변수로 interval ID를 저장
+
+
+
+
+        function startTimer(duration, ele) {
+            // 기존 타이머가 있으면 제거
+            if (activeTimerInterval) {
+                clearInterval(activeTimerInterval);
+            }
+
+            let timer = duration, minutes, seconds;
+            let timerElement = document.getElementById(ele);
+
+            timerElement.textContent = '';
+
+            activeTimerInterval = setInterval(function () {
+                minutes = Math.floor(timer / 60);
+                seconds = Math.floor(timer % 60);
+
+                // 분과 초가 10보다 작으면 앞에 0을 붙임
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                // 타이머 요소에 현재 시간 표시
+                timerElement.textContent = '코드유효시간: ' + minutes + ":" + seconds ;
+
+                // 타이머를 1초 줄임
+                timer--;
+
+                // 타이머가 0보다 작으면 종료
+                if (timer < 0) {
+                    clearInterval(activeTimerInterval);
+                    timerElement.textContent = "시간 초과"; // 타이머가 끝나면 메시지 표시
+                }
+            }, 1000);
+        }
+
+
+        let emailAuthCode = false;
+        let emailAuthCode_pw = false;
+
+
+        let btnAuthentication = $('#Authentication');
+        btnAuthentication.click(function (e){
+            let emailDom = document.getElementById('email');
+            let email = emailDom.value;
+            let AuthenticationCode = document.getElementById('AuthenticationCodeRegister').value;
+            let data = { email, AuthenticationCode, type: 'new' }
+
+
+            let fnSuccess = function (res){
+                if(res.success){
+                    emailAuthCode = true;
+                    Alert.alert('', res.message);
+                    emailDom.readOnly = true;
+                    document.getElementById('timer2').style.display = 'none';
+
+                }else{
+                    emailAuthCode = false;
+                    Alert.alert('', res.message);
+                }
+            }
+            AjaxUtil.postAsyncData("/authentication", data, fnSuccess);
+        })
+
+
+
+
+        function clearForm(param){
+            let clearValue = document.getElementById(param);
+            if(clearValue){
+                clearValue.value = '';
+            }
+
+            $('#email').prop('readonly', false);
+
+
+            if (activeTimerInterval) {
+                clearInterval(activeTimerInterval);
+            }
+        }
+
+        if (top.location != window.location) {
+            alert('로그아웃 되었습니다. 로그인 화면으로 이동합니다.')
+            top.location.reload();
+        }
+
+        if (localStorage.getItem('theme-top') === null && localStorage.getItem('theme-left') === null) {
+            dynamicLinkCss('/css/theme-top-a', '/css/theme-left-a');
+        } else {
+            dynamicLinkCss(localStorage.getItem('theme-top'), localStorage.getItem('theme-left'));
+        }
+
+        // Password show/hide
+        $('.pass_box i').on('click', function () {
+            $('.pass_box input').toggleClass('active');
+            if ($('.pass_box input').hasClass('active')) {
+                $(this).attr('class', "icon ion-md-eye").css({ "color": "#5567ff" }).prev('input').attr('type', "text");
+            } else {
+                $(this).attr('class', "icon ion-md-eye-off").css({ "color": "#989db1" }).prev('.pass_box input').attr('type', 'password');
+            }
+        });
+
+
+        //// 로그인ID 저장 Cookie 관련 처리 (loginid / logpass 기준으로 수정)
+        const $loginIdInput  = $('#loginid');   // 아이디 인풋
+        const $loginPwdInput = $('#logpass');   // 비밀번호 인풋
+        const $saveIdChk     = $('#login_chk'); // "아이디 저장" 체크박스
+
+        // 1) 페이지 로딩 시 쿠키에 저장된 아이디 불러오기
+        const savedId = Cookies.get('loginId');
+        if (savedId) {
+            $loginIdInput.val(savedId);
+            $saveIdChk.prop('checked', true);
+            $loginPwdInput.focus();
+        }
+
+        // 2) 체크박스 변경 시 쿠키 저장/삭제
+        $saveIdChk.on('change', function () {
+            if (this.checked) {
+                Cookies.set('loginId', $loginIdInput.val(), { path: '/', expires: 7 });
+            } else {
+                Cookies.remove('loginId', { path: '/' });
+            }
+        });
+
+        // 3) 아이디 입력이 바뀔 때마다, 체크박스가 켜져 있으면 쿠키 업데이트
+        $loginIdInput.on('keyup change', function () {
+            if ($saveIdChk.is(':checked')) {
+                Cookies.set('loginId', $loginIdInput.val(), { path: '/', expires: 7 });
+            }
+        });
+
+        // 4) 입력값 초기화 함수
+        function clearFields() {
+            $loginIdInput.val('');
+            $loginPwdInput.val('');
+            $loginIdInput.focus();
+        }
+
+
+    });
+
 
 </script>
-</main>
-<!-- ===============================================-->
-<!--    End of Main Content-->
-<!-- ===============================================-->
 
-<footer th:replace="layouts/XRegister/footer :: footerFragment"></footer>
 </body>
-
 </html>

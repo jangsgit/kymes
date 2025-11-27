@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.actas</groupId>
-	<artifactId>aprj003</artifactId>
+	<artifactId>aprjkymes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>aprj003</name>
 	<description>actas erp project03</description>

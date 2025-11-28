@@ -1039,7 +1039,7 @@ let AjaxUtil = {
             catch (ex) {
             }
             //Notify.error(message);
-            Alert.alert('Error', message);
+            //Alert.alert('Error', message);
             
         }
         
@@ -1623,9 +1623,9 @@ let AjaxUtil = {
                 downloadmask.close();
                 //Notify.success('다운로드 성공');
             }).catch(() => {
-                let message = '에러가 발생했습니다.관리자에게 문의 주세요.';
-                //Notify.error(message);
-                Alert.alert('Error', message);
+                // let message = '에러가 발생했습니다.관리자에게 문의 주세요.';
+                // //Notify.error(message);
+                // Alert.alert('Error', message);
                 downloadmask.close();
             });
 

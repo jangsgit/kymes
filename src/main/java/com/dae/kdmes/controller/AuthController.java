@@ -56,6 +56,15 @@ public class AuthController {
     }
 
 
+    // 관리자 화면
+    @GetMapping(value="/dashboard")
+    public String DashboardForm(Model model){
+
+        UserFormDto custReturnDto = authService.GetCustInfo(userformDto);
+        model.addAttribute("custReturnDto", custReturnDto);
+        return "dashboard";
+    }
+
     @GetMapping(value="/emmsdashboard")
     public String memberEmmsBoardForm( Model model
             , RedirectAttributes redirectAttributes

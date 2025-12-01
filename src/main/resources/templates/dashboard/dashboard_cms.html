@@ -2,8 +2,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout_page}">
-<th:block layout:fragment="content">
+      layout:decorate="~{layout_page}"> 
 
 <head>
     <style>
@@ -49,45 +48,6 @@
             overflow: hidden; /* 혹시 몰라서 */
         }
     </style>
-
-    <link rel="stylesheet" href="/resource/windowContainer/css/jquery.scrollbar.min.css">
-    <link rel="stylesheet" href="/resource/windowContainer/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resource/windowContainer/css/nth-icons.css">
-    <link rel="stylesheet" href="/resource/windowContainer/css/nth-tabs.css">
-    <link rel="stylesheet" href="/resource/ax5ui/ax5ui.all.css">
-    <link rel="stylesheet" href="/css/animate.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/theme-top-mes.css">
-    <!--    <link rel="stylesheet" href="/css/theme-left-mes.css">-->
-    <link rel="stylesheet" type="text/css" href="/css/import.css">
-    <script src="/js/vendor/jquery-3.6.0.js"></script>
-    <script src="/js/vendor/jquery-ui.min.js"></script>
-    <script src="/js/ui.js"></script> <!-- Common js -->
-
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="/resource/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
-
-    <script type="text/javascript">
-        $('html').attr('lang', sessionStorage.getItem('lang_code'));
-    </script>
-    <script type="text/javascript" src="/resource/windowContainer/js/jquery.scrollbar.min.js"></script>
-    <script type="text/javascript" src="/resource/windowContainer/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/resource/ax5ui/ax5ui.all.min.js?v=1000"></script>
-
-    <!-- 메뉴탭 이동 script -->
-    <script type="text/javascript" src="/resource/windowContainer/js/html5sortable.js"></script>
-    <script type="text/javascript" src="/js/nth-tabs.js?v=1030"></script>
-
-    <th:block th:replace="system_js :: system_js"></th:block>
-
-    <script src="/js/common.js?v=1060"></script>
-    <script type="text/javascript" src="/js/yumenu.js?v=1070"></script>
-    <script type="text/javascript" src="/js/yuscript.js?v=1060"></script>
-    <script type="text/javascript" src="/js/ax5commUtil.js?v=1070"></script>
 
 </head>
 <th:block layout:fragment="content">
@@ -167,6 +127,7 @@
 <th:block layout:fragment="scripts">
     <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block>
     <script type="text/javascript">
         class DashboardPage {
             constructor() {
@@ -333,8 +294,8 @@
         }
 
         let page = null;
-
-        $(document).ready(function (e) {
+ 
+        document.addEventListener('DOMContentLoaded', function () {
             page = new DashboardPage();
         });
     </script>

@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>SHINWOO MES</title>
+    <title>KyoungDuk MES</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
 <!--    <link rel="icon" type="image/png" href="/img/favicon.png">-->
+<!-- ===== 공통 CSS (전역) ===== -->
+    <!-- 레거시 KDmes 스타일 + 신규 KYMES 스타일을 함께 사용한다면 모두 여기서 로드 -->
     <link rel="stylesheet" href="/resource/ax5ui/ax5ui.all.css?v=1000">
     <link rel="stylesheet" href="/resource/timepicker/jquery.timepicker.min.css">
     <link rel="stylesheet" href="/resource/windowContainer/css/bootstrap.4.min.css">
@@ -16,15 +20,81 @@
 <!--            document.write('<link rel="stylesheet" href="' + localStorage.getItem('theme-top') + '-content.css">');-->
 <!--        }-->
 <!--    </script>-->
+    <link rel="stylesheet" type="text/css" href="/css/import.css">
+
+
+    <!-- nth-tabs / windowContainer 관련 -->
+    <link rel="stylesheet" href="/resource/windowContainer/css/jquery.scrollbar.min.css">
+    <link rel="stylesheet" href="/resource/windowContainer/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resource/windowContainer/css/nth-icons.css">
+    <link rel="stylesheet" href="/resource/windowContainer/css/nth-tabs.css">
+
+    <!-- 기존 KDmes UI -->
+    <link rel="stylesheet" href="/resource/ax5ui/ax5ui.all.css">
     <link rel="stylesheet" href="/css/sf21_all_6.css?v=1000">
     <link rel="stylesheet" href="/css/sf21_all_5.css?v=1000">
-    <link rel="stylesheet" href="/css/sf21_frame.css?v=1043">
+    <link rel="stylesheet" href="/css/sf21_frame.css?v=1043">    
+    <link rel="stylesheet" href="/css/animate.css">
+
+     <!-- 신규 KYMES UI 테마 (대시보드, 메인 화면 등) -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/theme-top-mes.css">
+    <!--    <link rel="stylesheet" href="/css/theme-left-mes.css">-->
     <link rel="stylesheet" type="text/css" href="/css/import.css">
+
+
+    <!-- ===== 공통 JS (전역 – jQuery는 딱 1번만) ===== -->  
     <script src="/js/vendor/jquery-3.6.0.js"></script>
     <script src="/js/vendor/jquery-ui.min.js"></script>
     <script src="/js/ui.js"></script> <!-- Common js -->
     <script src="/js/utilscript.js"></script> <!-- 박광열 -->
 
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+        $('html').attr('lang', sessionStorage.getItem('lang_code'));
+    </script>
+    <script type="text/javascript" src="/resource/windowContainer/js/jquery.scrollbar.min.js"></script>
+    <script type="text/javascript" src="/resource/windowContainer/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resource/ax5ui/ax5ui.all.min.js?v=1000"></script>
+
+    <!-- 메뉴탭 이동 script -->
+    <script type="text/javascript" src="/resource/windowContainer/js/html5sortable.js"></script>
+    <script type="text/javascript" src="/js/nth-tabs.js?v=1030"></script>
+
+
+    <!-- <script src="/js/common.js?v=1060"></script>
+    <script type="text/javascript" src="/js/yumenu.js?v=1070"></script>
+    <script type="text/javascript" src="/js/yuscript.js?v=1060"></script>
+    <script type="text/javascript" src="/js/ax5commUtil.js?v=1070"></script> -->
+
+    <!-- 프로젝트 공통 JS -->
+    <script type="text/javascript" src="/js/common.js?v=1100"></script>
+    <script type="text/javascript" src="/js/yuscript.js?v=1060"></script>
+    <script type="text/javascript" src="/js/ax5commUtil.js?v=1060"></script>
+    <script type="text/javascript" src="/js/grid.js"></script>
+
+
+    <!-- 공용 플러그인 -->
+    <script src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
+    <script src="/resource/jquery-validation/1.17.0/additional-methods.min.js"></script>
+    <script src="/resource/filedownload/jquery.fileDownload.js"></script>
+    <script src="/resource/timepicker/jquery.timepicker.min.js"></script>
+    <script src="/resource/jquery.multi-select-ak.js"></script>
+    <script src="/resource/moment.min.js"></script>
+    <script src="/resource/windowContainer/js/jquery.scrollbar.min.js"></script>
+    <script src="/resource/windowContainer/js/bootstrap.min.js"></script>
+    <script src="/resource/select2/select2.min.js"></script>
+    <script src="/resource/JavaScript-Templates/tmpl.min.js"></script>
+    <script src="/resource/ax5ui/ax5ui.all.min.js?v=1000"></script>
+    <script src="/resource/se2/js/HuskyEZCreator.js"></script>
+    <script type="text/javascript" src="/resource/paho-mqtt/mqttws31.min.js"></script>
+
+     <!-- 시스템 공통 JS (스프링에서 조각으로 넣는 부분) -->
+    <th:block th:replace="system_js :: system_js"></th:block>
 
 
     <!-- wijmo.min.css 대신에 아래와 같이 사용자 정의 테마 사용가능 -->
@@ -165,30 +235,14 @@
     }
 
 </style>
-<body class="animated fadeIn">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <script src="/resource/jquery.min.js"></script>
-    <script src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
-    <script src="/resource/jquery-validation/1.17.0/additional-methods.min.js"></script>
-    <script src="/resource/filedownload/jquery.fileDownload.js"></script>
-    <script src="/resource/ax5ui/ax5ui.all.min.js"></script>
-    <script src="/resource/se2/js/HuskyEZCreator.js"></script>
-    <script src="/resource/timepicker/jquery.timepicker.min.js"></script>
-    <script src="/resource/jquery.multi-select-ak.js"></script>
-    <script src="/resource/moment.min.js"></script>
-    <script src="/resource/windowContainer/js/jquery.scrollbar.min.js"></script>
-    <script src="/resource/windowContainer/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/resource/paho-mqtt/mqttws31.min.js"></script>
-    <script type="text/javascript" src="/resource/select2/select2.min.js"></script>
-    <script src="/resource/JavaScript-Templates/tmpl.min.js"></script>
-    <th:block th:replace="system_js :: system_js" ></th:block>
-
-    <script type="text/javascript" src="/js/common.js?v=1100"></script>
-    <script type="text/javascript" src="/js/yuscript.js?v=1060"></script>
-    <script type="text/javascript" src="/js/ax5commUtil.js?v=1060"></script>
-    <script type="text/javascript" src="/js/grid.js"></script>
-
+<body >
+    <th:block th:if="${_csrf != null}">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
+    </th:block>
     <th:block layout:fragment="content"></th:block>
+
     <script type="text/javascript">
 
 
@@ -230,7 +284,7 @@
 
         });
 
-        // 셀 클릭 이벤트 처리
+        //  공통 그리드 셀 클릭(선택 행 표시)
         $(document).on('click', '.wj-flexgrid .wj-cell', function() {
 
             var $grid = $(this).closest('.wj-flexgrid');
@@ -253,6 +307,8 @@
             }
         });
     </script>    
+
+
     <th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

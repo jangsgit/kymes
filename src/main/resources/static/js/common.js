@@ -72,7 +72,7 @@ var JQuery = {
 
 var Ajax = {
     defaults: {
-        progressBarText: '엑타스 MES...'
+        progressBarText: '대산시스템 MES...'
     },
     setProgressBarText: function (text) {
         Ajax.defaults.progressBarText = text;
@@ -1030,7 +1030,7 @@ let AjaxUtil = {
             Alert.alert('Error', "권한이 없습니다.");
         }
         else if(req.status==404){
-            Alert.alert('Error', "페이지를 찾을수 없습니다.");
+            // Alert.alert('Error', "페이지를 찾을수 없습니다.");
         }
         else{
             try {

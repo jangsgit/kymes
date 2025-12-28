@@ -2251,8 +2251,12 @@ var dynamicLinkCssPage = function (src) {
 
 ////////////////////////////////////////////////////////////////////////////////
 $(document).ready(function () {
+    // --- (기존 _msg_resource 선언은 그대로) ---
 
-    // 다국어 처리 대상
+
+  
+
+//     // 다국어 처리 대상
     let _msg_resource = {
         'valid.msg.required': '필수 항목입니다.',
         'valid.msg.remote': '항목을 수정하세요',
@@ -2274,54 +2278,121 @@ $(document).ready(function () {
         'valid.msg.validrange': '{0}가 {1}보다 높습니다.',
     };
 
-    $.extend(
-        $.validator.messages,
-        {
-            required: ' ' + _msg_resource['valid.msg.required']
-            , remote: ' ' + _msg_resource['valid.msg.remote']
-            , email: ' ' + _msg_resource['valid.msg.email']
-            , url: ' ' + _msg_resource['valid.msg.url']
-            , date: ' ' + _msg_resource['valid.msg.date']
-            , dateISO: ' ' + _msg_resource['valid.msg.dateISO']
-            , number: ' ' + _msg_resource['valid.msg.number']
-            , digits: ' ' + _msg_resource['valid.msg.digits']
-            , creditcard: ' ' + _msg_resource['valid.msg.creditcard']
-            , equalTo: ' ' + _msg_resource['valid.msg.equalTo']
-            , extension: ' ' + _msg_resource['valid.msg.extension']
-            , maxlength: ' ' + $.validator.format(_msg_resource['valid.msg.maxlength'])
-            , minlength: ' ' + $.validator.format(_msg_resource['valid.msg.minlength'])
-            , rangelength: ' ' + $.validator.format(_msg_resource['valid.msg.rangelength'])
-            , range: ' ' + $.validator.format(_msg_resource['valid.msg.range'])
-            , max: ' ' + $.validator.format(_msg_resource['valid.msg.max'])
-            , min: ' ' + $.validator.format(_msg_resource['valid.msg.min'])
-            , validrange: ' ' + $.validator.format(_msg_resource['valid.msg.validrange'])
-        }
-    );
 
-    $.validator.setDefaults({
+    // ✅ jQuery Validate 플러그인이 로드된 경우에만 실행
+    if ($.validator && $.validator.messages) {
+
+        $.extend(
+            $.validator.messages,
+            {
+                required: ' ' + _msg_resource['valid.msg.required'],
+                remote: ' ' + _msg_resource['valid.msg.remote'],
+                email: ' ' + _msg_resource['valid.msg.email'],
+                url: ' ' + _msg_resource['valid.msg.url'],
+                date: ' ' + _msg_resource['valid.msg.date'],
+                dateISO: ' ' + _msg_resource['valid.msg.dateISO'],
+                number: ' ' + _msg_resource['valid.msg.number'],
+                digits: ' ' + _msg_resource['valid.msg.digits'],
+                creditcard: ' ' + _msg_resource['valid.msg.creditcard'],
+                equalTo: ' ' + _msg_resource['valid.msg.equalTo'],
+                extension: ' ' + _msg_resource['valid.msg.extension'],
+                maxlength: ' ' + $.validator.format(_msg_resource['valid.msg.maxlength']),
+                minlength: ' ' + $.validator.format(_msg_resource['valid.msg.minlength']),
+                rangelength: ' ' + $.validator.format(_msg_resource['valid.msg.rangelength']),
+                range: ' ' + $.validator.format(_msg_resource['valid.msg.range']),
+                max: ' ' + $.validator.format(_msg_resource['valid.msg.max']),
+                min: ' ' + $.validator.format(_msg_resource['valid.msg.min']),
+                validrange: ' ' + $.validator.format(_msg_resource['valid.msg.validrange'])
+            }
+        );
+    
+        $.validator.setDefaults({
         onkeyup: false,
         onclick: false,
         onfocusout: false,
         focusInvalid: false,
         showErrors: function (errorMap, errorList) {
-            if (this.numberOfInvalids()) {
-                Alert.alert('', '[' + errorList[0].message + ']' + eval('$.validator.messages.' + errorList[0].method), function () {
-                    errorList[0].element.focus();
-                });
+            if (!this.numberOfInvalids()) return;
+    
+            const err = errorList && errorList[0];
+            const method = err && err.method;
+    
+            // ✅ messages가 없거나 method가 없을 때도 안전
+            const msg =
+            ($.validator && $.validator.messages && method && $.validator.messages[method])
+                ? $.validator.messages[method]
+                : '';
+    
+            Alert.alert('', '[' + (err?.message || '') + ']' + msg, function (){
+                if (err && err.element) err.element.focus();
+              });
             }
+          });
+        
+        } else {
+          // validate가 없는 페이지에서도 common.js가 안전하게 동작하도록
+          console.warn('[common.js] jQuery Validate not loaded: skip $.validator setup');
         }
-    });
-
-    JQuery.extends();
-    Ajax.enableErrorHandler();
-    Ajax.enableProgressBar();
 
 
-    //다국어 설정
-    if (userinfo.login_id != '') {
-        i18n.initialize();
-    }
+//     $.extend(
+//         $.validator.messages,
+//         {
+//             required: ' ' + _msg_resource['valid.msg.required']
+//             , remote: ' ' + _msg_resource['valid.msg.remote']
+//             , email: ' ' + _msg_resource['valid.msg.email']
+//             , url: ' ' + _msg_resource['valid.msg.url']
+//             , date: ' ' + _msg_resource['valid.msg.date']
+//             , dateISO: ' ' + _msg_resource['valid.msg.dateISO']
+//             , number: ' ' + _msg_resource['valid.msg.number']
+//             , digits: ' ' + _msg_resource['valid.msg.digits']
+//             , creditcard: ' ' + _msg_resource['valid.msg.creditcard']
+//             , equalTo: ' ' + _msg_resource['valid.msg.equalTo']
+//             , extension: ' ' + _msg_resource['valid.msg.extension']
+//             , maxlength: ' ' + $.validator.format(_msg_resource['valid.msg.maxlength'])
+//             , minlength: ' ' + $.validator.format(_msg_resource['valid.msg.minlength'])
+//             , rangelength: ' ' + $.validator.format(_msg_resource['valid.msg.rangelength'])
+//             , range: ' ' + $.validator.format(_msg_resource['valid.msg.range'])
+//             , max: ' ' + $.validator.format(_msg_resource['valid.msg.max'])
+//             , min: ' ' + $.validator.format(_msg_resource['valid.msg.min'])
+//             , validrange: ' ' + $.validator.format(_msg_resource['valid.msg.validrange'])
+//         }
+//     );
+
+//     $.validator.setDefaults({
+//         onkeyup: false,
+//         onclick: false,
+//         onfocusout: false,
+//         focusInvalid: false,
+//         showErrors: function (errorMap, errorList) {
+//             if (this.numberOfInvalids()) {
+//                 const err = errorList[0];
+//                 const msg =
+//                   ($.validator.messages && $.validator.messages[err.method])
+//                     ? $.validator.messages[err.method]
+//                     : '';
+            
+//                 Alert.alert(
+//                   '',
+//                   '[' + err.message + ']' + msg,
+//                   function () {
+//                     err.element.focus();
+//                   }
+//                 );
+//               }
+//         }
+//     });
+
+//     JQuery.extends();
+//     Ajax.enableErrorHandler();
+//     Ajax.enableProgressBar();
+
+
+//     //다국어 설정
+//     if (userinfo.login_id != '') {
+//         i18n.initialize();
+//     }
 
 
 
-});
+ });

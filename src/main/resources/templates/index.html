@@ -700,21 +700,21 @@
             var btnHtml = '';
 
             // 북마크 메뉴 생성
-            for (var i = 0; i < _data.length; i++) {
-                let name = i18n.getMenuText(_data[i].name);
-                let code = _data[i].code;
-                let url = _data[i].url;
+            // for (var i = 0; i < _data.length; i++) {
+            //     let name = i18n.getMenuText(_data[i].name);
+            //     let code = _data[i].code;
+            //     let url = _data[i].url;
 
-                // 기존 ul/li 메뉴
-                litagbook += '<li><a href="#" data-objid="' + code + '" menuurl="' + url + '">' + name + '</a></li>';
+            //     // 기존 ul/li 메뉴
+            //     litagbook += '<li><a href="#" data-objid="' + code + '" menuurl="' + url + '">' + name + '</a></li>';
 
-                // header-menu 버튼 추가
-                btnHtml += `
-                    <button class="menu-btn" data-objid="${code}" menuurl="${url}" draggable="true">
-                        ${name}
-                    </button>
-                `;
-            }
+            //     // header-menu 버튼 추가
+            //     btnHtml += `
+            //         <button class="menu-btn" data-objid="${code}" menuurl="${url}" draggable="true">
+            //             ${name}
+            //         </button>
+            //     `;
+            // }
 
             $('#bookmark-menu').html(litagbook);
             $('.header-menu').html(btnHtml);
@@ -964,7 +964,7 @@
         $('#logout').on('click', function (e) {
             e.preventDefault();
             Alert.confirm('', '로그아웃하시겠습니까?', function () {
-                i18n.resetData();
+                // i18n.resetData();
                 location.href = '/logout';
             });
         });

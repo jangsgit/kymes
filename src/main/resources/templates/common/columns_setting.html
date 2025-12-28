@@ -147,53 +147,53 @@
             return db_cols.data;
         }
 
-        loadColumnData(gui_name, template_name, grid_name, grid) {
-            let _this = this;
-            let lang_code = i18n.getLanguageCode();
-            let db_cols = _this.getDbColumnsData(gui_name, template_name, grid_name, lang_code);
+        // loadColumnData(gui_name, template_name, grid_name, grid) {
+        //     let _this = this;
+        //     let lang_code = i18n.getLanguageCode();
+        //     let db_cols = _this.getDbColumnsData(gui_name, template_name, grid_name, lang_code);
 
-            let config_cols = grid.config.columns;
-            let returns = config_cols;
-            if (db_cols) {
-                // db_cols 에 config_cols 설정정보 merge
-                db_cols.forEach(function (db_item, index) {
-                    let column = config_cols.filter(value => value.key == db_item.key);
-                    if (column.length > 0) {
-                        column = column[0];
-                        $.each(column, function (key, value) {
-                            if (key != 'key' && key != 'label' && key != 'width' && key != 'hidden') {
-                                db_item[key] = value;
-                            }
-                        }); 
+        //     let config_cols = grid.config.columns;
+        //     let returns = config_cols;
+        //     if (db_cols) {
+        //         // db_cols 에 config_cols 설정정보 merge
+        //         db_cols.forEach(function (db_item, index) {
+        //             let column = config_cols.filter(value => value.key == db_item.key);
+        //             if (column.length > 0) {
+        //                 column = column[0];
+        //                 $.each(column, function (key, value) {
+        //                     if (key != 'key' && key != 'label' && key != 'width' && key != 'hidden') {
+        //                         db_item[key] = value;
+        //                     }
+        //                 }); 
 
-                        if(column.hasOwnProperty('header_style')){
-                            let template_header = column['header_style'];
-                            db_item['label'] = _this.applyTemplateFormat(template_header, column['label']);
-                        }
-                    };
-                    let hidden = db_item['hidden'];
-                    if (hidden == 'true')
-                        db_item['hidden'] = true;
-                    else 
-                        db_item['hidden'] = false;
-                });
+        //                 if(column.hasOwnProperty('header_style')){
+        //                     let template_header = column['header_style'];
+        //                     db_item['label'] = _this.applyTemplateFormat(template_header, column['label']);
+        //                 }
+        //             };
+        //             let hidden = db_item['hidden'];
+        //             if (hidden == 'true')
+        //                 db_item['hidden'] = true;
+        //             else 
+        //                 db_item['hidden'] = false;
+        //         });
 
-                // config_cols에는 있고 db_cols에 없는 것들은 db_cols에 추가
-                config_cols.forEach(function (item, index) {
-                    let column = db_cols.filter(value => value.key == item.key);
-                    if (column.length == 0) {
-                        db_cols.push(item);
-                    }
-                });
+        //         // config_cols에는 있고 db_cols에 없는 것들은 db_cols에 추가
+        //         config_cols.forEach(function (item, index) {
+        //             let column = db_cols.filter(value => value.key == item.key);
+        //             if (column.length == 0) {
+        //                 db_cols.push(item);
+        //             }
+        //         });
 
-                returns = db_cols;
-            }
+        //         returns = db_cols;
+        //     }
 
-            grid.config.columns = returns;
-            grid.setConfig(grid.config);
+        //     grid.config.columns = returns;
+        //     grid.setConfig(grid.config);
 
-            return returns;
-        }
+        //     return returns;
+        // }
  
         applyTemplateFormat(fmt, val){
             let result = fmt.replace('{}', val);
@@ -230,8 +230,8 @@
             let $content = $(content);
             _this.modal.open({ width: 800, height: 730, $content });
 
-            let lang_code = i18n.getLanguageCode();
-            AjaxUtil.fillSelectOptions($content.find('#cboLangCode'), 'system_code', 'choose', lang_code, 'lang_code');
+            // let lang_code = i18n.getLanguageCode();
+            // AjaxUtil.fillSelectOptions($content.find('#cboLangCode'), 'system_code', 'choose', lang_code, 'lang_code');
             
             let config_columns = {
                 target: $('[data-ax5grid="columns_grid"]'),

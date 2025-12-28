@@ -116,25 +116,25 @@
                     condition3 = this.option.condition3;
                     data_fill = this.option.data_fill;
                 }
-                if (data_fill)
-                    AjaxUtil.fillSelectOptions($('#' + _this.element_id), 'company', null_option, selected_value, condition1, condition2, condition3);
-                else {
-                    let text = null_option;
-                   if (null_option == 'choose') {
-                        text = i18n.getCommonText('선택');//'선택하세요(Choose)';
-                    }
-                    else if (null_option == 'all') {
-                        text = i18n.getCommonText('전체'); //'전체(All
-                    }
+                // if (data_fill)
+                //     AjaxUtil.fillSelectOptions($('#' + _this.element_id), 'company', null_option, selected_value, condition1, condition2, condition3);
+                // else {
+                //     let text = null_option;
+                //    if (null_option == 'choose') {
+                //         text = i18n.getCommonText('선택');//'선택하세요(Choose)';
+                //     }
+                //     else if (null_option == 'all') {
+                //         text = i18n.getCommonText('전체'); //'전체(All
+                //     }
  
-                    let combo_option = $('<option>',
-                    {
-                        value: '',
-                        text: text,
-                    });
-                    $('#' + _this.element_id).append(combo_option);
+                //     let combo_option = $('<option>',
+                //     {
+                //         value: '',
+                //         text: text,
+                //     });
+                //     $('#' + _this.element_id).append(combo_option);
 
-                }
+                // }
             }
             if (_this.type == 'popup') {
                 $('#' + _this.button_id).click(function (e) {

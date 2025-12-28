@@ -404,8 +404,8 @@
 </div>
 
 
-<script type="text/javascript" src="/resource/jquery.min.js"></script>
-<script type="text/javascript" src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script>
+<!-- <script type="text/javascript" src="/resource/jquery.min.js"></script> -->
+<!-- <script type="text/javascript" src="/resource/jquery-validation/1.17.0/jquery.validate.min.js"></script> -->
 
 <script type="text/javascript">
     $('html').attr('lang', sessionStorage.getItem('lang_code'));
@@ -437,11 +437,7 @@
             nthTabs.delAllTab();
             // window.location.reload();
         });
-
-        // let lang_cd = i18n.getLanguageCode();
-        //i18n.initializeCommonData(lang_cd);
-        // i18n.initializeMenuData(lang_cd);
-
+ 
         // 메뉴 매핑(FrontFolder_id)
 
         nthTabs = $('#main-tabs').nthTabs();
@@ -645,47 +641,75 @@
         // ==========================
         //  하드코딩 메뉴 클릭 이벤트
         // ==========================
-        // dep3(실제 메뉴) a 클릭 시 탭 열기
-        $(document).on('click', '.dep3 a[data-id]', function (e) {
+        // ✅ 캡처링으로 메뉴 클릭 강제 처리 (stopPropagation 무시)
+        document.addEventListener('click', function (e) { 
+            const a = e.target.closest('.menu_area a[data-id][data-url]');
+            if (!a) return;
+
             e.preventDefault();
 
-            // 선택 표시(선택 스타일 유지하려면 기존 클래스 사용)
-            $('.dep3 li').removeClass('on');
-            const $li = $(this).parent('li');
-            $li.addClass('on');
+            const id = a.getAttribute('data-id');
+            const url = a.getAttribute('data-url');
+            const title = a.getAttribute('title') || a.textContent.trim();
+ 
+            // nthTabs 사용 (전역/로컬 둘 다 대응)
+            const tabs = window.nthTabs || (typeof nthTabs !== 'undefined' ? nthTabs : null);
+            if (!tabs || typeof tabs.addTab !== 'function') return;
 
-            const id    = $(this).data('id');
-            const url   = $(this).data('url');
-            const title = $(this).attr('title') || $(this).text();
-
-            if (!id || !url) return;
-
-            // nthTabs를 통해 탭 열기 (이미 열려 있으면 토글)
-            if (nthTabs.isExistsTab('#' + id)) {
-                nthTabs.toggleTab('#' + id);
+            if (tabs.isExistsTab('#' + id)) {
+            tabs.toggleTab('#' + id);
             } else {
-                nthTabs.addTab({
-                    id: id,
-                    title: title,
-                    url: url,          // 여기서 /gui/... 대신 우리가 넣은 URL 그대로 사용
-                    active: true,
-                    allowClose: true
-                });
+            tabs.addTab({
+                id, title, url,
+                active: true,
+                allowClose: true
+            });
             }
+        }, true); // ✅ 핵심: capture = true
+        
+        // dep3(실제 메뉴) a 클릭 시 탭 열기
+        // $(document).on('click', '.dep3 a[data-id]', function (e) {
+        //     console.log("kkkkkk")
+        //     console.log('menu click', $(this).data('id'), $(this).data('url'));
+        //     e.preventDefault();
 
-            // 화면이 좁을 때 메뉴 자동 닫고 싶으면 아래 주석 해제해서 사용
-            /*
-            const winWidth = $(window).width();
-            if (winWidth <= 1366) {
-                $('.menu_area').addClass('hidden');
-                $('#navbarBarMenu2 .open_menu').removeClass('menu_open');
-                $('.con_area, .tab-content').css({
-                    'width': '100%',
-                    'left': '0'
-                });
-            }
-            */
-        });
+        //     // 선택 표시(선택 스타일 유지하려면 기존 클래스 사용)
+        //     $('.dep3 li').removeClass('on');
+        //     const $li = $(this).parent('li');
+        //     $li.addClass('on');
+
+        //     const id    = $(this).data('id');
+        //     const url   = $(this).data('url');
+        //     const title = $(this).attr('title') || $(this).text();
+
+        //     if (!id || !url) return;
+
+        //     // nthTabs를 통해 탭 열기 (이미 열려 있으면 토글)
+        //     if (nthTabs.isExistsTab('#' + id)) {
+        //         nthTabs.toggleTab('#' + id);
+        //     } else {
+        //         nthTabs.addTab({
+        //             id: id,
+        //             title: title,
+        //             url: url,          // 여기서 /gui/... 대신 우리가 넣은 URL 그대로 사용
+        //             active: true,
+        //             allowClose: true
+        //         });
+        //     }
+
+        //     // 화면이 좁을 때 메뉴 자동 닫고 싶으면 아래 주석 해제해서 사용
+        //     /*
+        //     const winWidth = $(window).width();
+        //     if (winWidth <= 1366) {
+        //         $('.menu_area').addClass('hidden');
+        //         $('#navbarBarMenu2 .open_menu').removeClass('menu_open');
+        //         $('.con_area, .tab-content').css({
+        //             'width': '100%',
+        //             'left': '0'
+        //         });
+        //     }
+        //     */
+        // });
 
 
         $(function () {
@@ -921,8 +945,7 @@
 
         $('#logout').on('click', function (e) {
             e.preventDefault();
-            Alert.confirm('', '로그아웃하시겠습니까?', function () {
-                i18n.resetData();
+            Alert.confirm('', '로그아웃하시겠습니까?', function () { 
                 location.href = '/logout';
             });
         });

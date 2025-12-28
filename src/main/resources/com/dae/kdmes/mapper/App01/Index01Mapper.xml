@@ -7,7 +7,8 @@
 
     <select id="getComCodeList"  parameterType="com.dae.kdmes.DTO.App01.Index01Dto" resultType="com.dae.kdmes.DTO.App01.Index01Dto">
         <![CDATA[
-            select com_cls, com_cnam, com_rem2, com_work from TB_CA510  where com_code = '00' and com_cls not in ('002') and isnull(com_cls,'') Like concat('%',#{com_cls},'%') order by com_cls
+            select com_cls, com_cnam, com_rem2, com_work from TB_CA510  where com_code = '00' and com_cls not in ('002')
+             and (  isnull(com_cls,'') Like concat('%',#{com_cls},'%')  or isnull(com_cnam,'') Like concat('%',#{com_cnam},'%') ) order by com_cls
         ]]>
     </select>
 
@@ -17,7 +18,7 @@
     </insert>
 
     <update id="UpdateComCode" parameterType="com.dae.kdmes.DTO.App01.Index01Dto">
-        UPDATE  TB_CA510 SET com_cnam = #{com_cnam}  where com_cls   = #{com_cls} and com_code  = '00''
+        UPDATE  TB_CA510 SET com_cnam = #{com_cnam}  where com_cls   = #{com_cls} and com_code  = '00'
     </update>
 
     <update id="DeleteComCode" parameterType="com.dae.kdmes.DTO.App01.Index01Dto">
@@ -27,6 +28,7 @@
     <select id="GetComcodeDetailList"  parameterType="com.dae.kdmes.DTO.App01.Index01Dto" resultType="com.dae.kdmes.DTO.App01.Index01Dto">
         <![CDATA[
             select * from TB_CA510  where com_code <> '00' and com_cls = #{com_cls}
+             and (isnull(com_cnam,'') Like concat('%',#{com_cnam},'%') or isnull(com_rem1,'') Like concat('%',#{com_cnam},'%') )
         ]]>
     </select>
 

@@ -285,7 +285,7 @@ public class App01CrudController {
             if(com_cls == null || com_cls.equals("")){
                 com_cls = "%";
             }
-            log.debug("searchtxt =====>" + searchtxt );
+            log.info("searchtxt =====>" + searchtxt );
 
             index01Dto.setCom_cls(com_cls);
             index01Dto.setCom_cnam(searchtxt);;

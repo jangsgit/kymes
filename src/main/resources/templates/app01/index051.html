@@ -64,13 +64,13 @@
     <div class="layout-contents">
         <!-- <div class="page-title-wrap">
             <div class="left">
-                <h2>KCC품목등록</h2>
+                <h2>원부자재등록</h2>
                 <a title="북마크" class="bookmark toggle">내 메뉴</a>
             </div>
             <ul class="page-navi">
                 <li><img src="/images/icon/ico-nav-home.svg" alt="홈아이콘"></li>
                 <li>기준정보</li>
-                <li>KCC품목</li>
+                <li>원부자재</li>
             </ul>
         </div> -->
 
@@ -78,43 +78,52 @@
             <ul class="tab-links">
                 <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
                 <li>
-                <a href="#tab1" title="KCC품목등록" id="listTabLink">KCC품목등록</a>
+                <a href="#tab1" title="원부자재등록" id="listTabLink">원부자재등록</a>
                 </li>
                 <li>
-                <a href="#tab2" title="KCC품목현황">KCC품목현황</a>
+                <a href="#tab2" title="원부자재현황">원부자재현황</a>
                 </li>
             </ul>
             <div class="tab-contents">
-                <!--      KCC품목등록 탭 시작       -->
+                <!--      원부자재등록 탭 시작       -->
                 <!-- Section -->
                 <section class="tab-item" id="tab1"> 
                     <div style="display: flex; gap: 5px">
-                        <section class="section" style="width: 35%;">
+                        <section class="section" style="width: 45%;">
                             <div class="section-top">
-                                <div class="search-wrap">
-                                <dl>
-                                    <dt>
-                                    <label>코드/품목명</label>
-                                    </dt>
-                                    <dd>
-                                    <div class="srch-box">
-                                        <input type="text" class="form-control2" id="searchtxt" name="searchtxt">
-                                        <input type="hidden" id="con_gubn" name="con_gubn" value="J">
-                                    </div>
-                                    </dd>
-                                </dl>
-                    
-                                <dl>
-                                    <dt><span class="eq"></span></dt>
-                                    <dd>
-                                    <li>
-                                        <a class="btn btn-delete" title="검색" id="retrieveBtn" >
-                                        <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
-                                        검색
-                                        </a>
-                                    </li>
-                                    </dd>
-                                </dl>
+                                <div class="search-wrap"> 
+                                    <dl>
+                                        <dt>
+                                        <label>구분</label>
+                                        </dt>
+                                        <dd>  
+                                            <select class="form-select" name="con_gubn" id="con_gubn"  >
+                                                <option value="W" checked>원자재</option>
+                                                <option value="B">부자재</option>
+                                            </select>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                        <label>품목 검색</label>
+                                        </dt>
+                                        <dd>  
+                                        <div class="srch-box">
+                                            <input type="text" class="form-control2" id="searchtxt" name="searchtxt">
+                                        </div>
+                                        </dd>
+                                    </dl>  
+                                    <dl>
+                                        <dt><span class="eq"></span></dt>
+                                        <dd>
+                                        <li>
+                                            <a class="btn btn-delete" title="검색" id="retrieveBtn" >
+                                            <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
+                                            검색
+                                            </a>
+                                        </li>
+                                        </dd>
+                                    </dl>
                                 </div>
                     
                             </div> <!--//section-top end -->
@@ -126,7 +135,7 @@
                         </div>
                         </section> 
 
-                        <section style="width: 65%;">
+                        <section style="width: 55%;">
                             <div class="section-top">
                             <div class="search-wrap">
                                 <ul>
@@ -161,13 +170,7 @@
                                             style="float:none; height: 36px; width:115px;"><i
                                             class="fas fa-trash"></i>삭제
                                     </button>
-                                </li>
-                    
-                                <li> 
-                                    <button type="button" class="btn-default" id="btnSoyo"  
-                                            style="float:none; height: 36px; width:115px;"> 소요량
-                                    </button>
-                                </li>
+                                </li> 
                                 </ul>
                             </div>
                             </div>
@@ -183,93 +186,67 @@
                                     <col class="wp30">
                                 </colgroup>
                                 <input type="hidden" id="id" name="id"/> 
-                                <input type="hidden" id="jkey"   class="form-control"  onclick="barcode_prt()" disabled  required /> 
-                                <input type="hidden" id="j_net" class="form-control"  />      
+                                <input type="hidden" id="jgumtype"   /> <!---  금형코드  -->
+                                <input type="hidden" id="jthick"   />   <!---  유리두께  -->
+                                <input type="hidden" id="j_cavity"   /> <!---  CAVITY  -->
+                                <input type="hidden" id="j_sr"   />     <!---  스프루  -->
+                                <input type="hidden" id="jboxsu1"   /> <!---  적입수량  -->
+                                <input type="hidden" id="jpumcode"   /> <!---  KCC품번  -->
+                                <input type="hidden" id="jsayang"   /> <!---  포장박스규격  -->
+                                <input type="hidden" id="j_ct"   /> <!---  C/T  -->
+                                <input type="hidden" id="acode"   /> <!---  거래처코드  -->   
                                 <input type="hidden" id="acorp1"   >      
                                 <input type="hidden" id="acorp2"   >      
-                                <input type="hidden" id="acorp3"   >  
+                                <input type="hidden" id="acorp3"   >    
+                                <input type="hidden" id="acorp"   >    
+                                <input type="hidden" id="jbigo"   >    
+                                <input type="hidden" id="j_yangsan"   >    
+                                <input type="hidden" id="j_misayong"   >  
+                                <input type="hidden" id="jchajong"   />
+                                <input type="hidden" id="j_net"   /> 
+                                <input type="hidden" id="jkey"     onclick="barcode_prt()" disabled  required />        
                                 <tbody>
                                     <tr>
                                         <th>
                                             <label for="com_cls02"><span class="eq">*</span>대분류</label>
                                         </th>
                                         <td >
-                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()"   >
+                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()"   disabled  >
                                                 <option value="">선택</option>
                                                 <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                                             </select>    
                                         </td>
                                         <th>
-                                            <label for="jchajong"><span class="eq">*</span>차종</label>
-                                        </th>
-                                        <td >
-                                            <input type="text" id="jchajong" name="jchajong"  style="width: 70%;" placeholder="차종" required>
-                                        </td> 
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="j_yangsan"  ><span class="eq">*</span>양산</label>
-                                        </th>
-                                        <td>
-                                            <input type="checkbox" id="j_yangsan" name="j_yangsan" value="0" style="display: block; margin: auto; height: 26px; width: 26px;"  > 
-                                        </td>
-                                        <th>
-                                            <label for="jolip"  >조립공정</label>
-                                        </th>
-                                        <td>
-                                            <input type="checkbox" id="jolip" name="jolip" value="0" style="display: block; margin: auto; height: 26px; width: 26px;"  >  
-                                        </td>
-                        
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="j_misayong"  >A/S</label>
-                                        </th>
-                                        <td>
-                                            <input type="checkbox" id="j_misayong" name="j_misayong" value="0" style="display: block; margin: auto; height: 26px; width: 26px;"  >  
-                                             
-                                        </td>
-                                        <th>
                                             <label for="w_b_gubn"  >품목분류</label>
                                         </th>
                                         <td>
-                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn" disabled>
-                                              <option value="J" checked>제품</option>
-                                              <option value="W">원자재</option>
-                                              <option value="B">부자재</option>
-                                              <option value="H">예비부품</option>
-                                              <option value="G">기타</option>
+                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn" > 
+                                              <option value="W" checked>원자재</option>
+                                              <option value="B">부자재</option> 
                                             </select>
                                         </td>
-                        
                                     </tr> 
                                     <tr>
+                                        <th>
+                                            <label for="jpum"  >제품명</label>
+                                        </th>
+                                        <td>
+                                            <div class="input_wrap" style="max-width: 225px;"  id="jpum_wrap"> 
+                                                <select th:field="*{jpumList}" name="jpum" id="jpum" style="width: 70%;">
+                                                    <option value="">선택</option>
+                                                    <option th:each="val : ${jpumList}" th:value="${val.pcode}" th:text="${val.pname}">
+                                                </select>                                              
+                                            </div>
+                                        </td>
                                         <th>
                                             <label for="jgugek"  >규격</label>
                                         </th>
                                         <td>
                                             <input type="text" id="jgugek" name="jgugek" style="width: 70%;" >
                                         </td>
-                                        <th>
-                                            <label for="jpum"  >제품명</label>
-                                        </th>
-                                        <td>
-                                            <div class="input_wrap" style="max-width: 225px;"  id="jpum_wrap"> 
-                                                <select th:field="*{jpumList}" name="jpum" id="jpum">
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${jpumList}" th:value="${val.pcode}" th:text="${val.pname}">
-                                                </select>                                              
-                                            </div>
-                                        </td>
                         
                                     </tr> 
                                     <tr>
-                                        <th>
-                                            <label for="jgumtype"  >금형코드</label>
-                                        </th>
-                                        <td  >
-                                            <input type="text" id="jgumtype" name="jgumtype"   style="width: 50%;">
-                                        </td> 
                                         <th>
                                             <label for="jgugek2"  >색상</label>
                                         </th>
@@ -281,128 +258,50 @@
                                                 </select>                                              
                                             </div>   
                                         </td> 
-                                    </tr> 
-                                    <tr>
-                                        <th>
-                                            <label for="jpumname"  >유형</label>
-                                        </th>
-                                        <td >
-                                            <div class="input_wrap"  id="jpumname_wrap">     
-                                                <select th:field="*{formList}" name="jpumname" id="jpumname"  style="width: 70%;">  
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${formList}" th:value="${val.pcode}" th:text="${val.pname}">
-                                                </select>    
-                                            </div>
-                                        </td>  
-                                        <th>
-                                            <label for="jdoor1"  >Door1</label>
-                                        </th>
-                                        <td >
-                                            <div class="input_wrap" style="max-width: 225px;"  id="jdoor1_wrap">   
-                                                <select th:field="*{door1List}" name="jdoor1" id="jdoor1" style="width: 70%;">
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${door1List}" th:value="${val.pcode}" th:text="${val.pname}">
-                                                </select>                                              
-                                            </div>   
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <th>
-                                            <label for="jdoor2"  >Door2</label>
-                                        </th>
-                                        <td >
-                                            <div class="input_wrap"  id="jdoor2_wrap">      
-                                                <select th:field="*{door2List}" name="jdoor2" id="jdoor2" style="width: 70%;">
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${door2List}" th:value="${val.pcode}" th:text="${val.pname}">
-                                                </select>    
-                                            </div>
-                                        </td>  
-                                        <th>
-                                            <label for="ajuso1"  >유리두께</label>
-                                        </th>
-                                        <td >
-                                            <div class="input_wrap"  id="jthick_wrap">      
-                                                <select th:field="*{jthickList}" name="jthick" id="jthick" style="width: 70%;">
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${jthickList}" th:value="${val.pcode}" th:text="${val.pname}">
-                                                </select>    
-                                            </div>
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <th>
-                                            <label for="j_cavity"  >CAVITY</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="j_cavity" name="j_cavity" style="width: 70%;"  >
-                                        </td>
-                                        <th>
-                                            <label for="j_sr"  >스프루</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="j_sr"   name="j_sr" style="width: 70%;"  /> 
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <th>
-                                            <label for="jboxsu1"  >적입수량</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="jboxsu1" name="jboxsu1" style="width: 70%;"  >
-                                        </td>
-                                        <th>
-                                            <label for="jpumcode"  >KCC품번</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="jpumcode"  name="jpumcode" style="width: 70%;"  /> 
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <th>
-                                            <label for="jsayang"  >포장박스규격</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="jsayang" name="jsayang" style="width: 70%;"  >
-                                        </td>
-                                        <th>
-                                            <label for="j_ct"  >C/T</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" id="j_ct"  name="j_ct" style="width: 70%;"  /> 
-                                        </td> 
-                                    </tr> 
-                                    <tr>
                                         <th>
                                             <label for="jdanwy"  >기본단위</label>
                                         </th>
                                         <td>
                                             <input type="text" id="jdanwy" name="jdanwy" style="width: 70%;"  >
                                         </td>
+                                    </tr>   
+                                    <tr> 
                                         <th>
                                             <label for="jbigo"  >비고</label>
                                         </th>
-                                        <td>
-                                            <input type="text" id="jbigo"  name="jbigo" style="width: 70%;"  /> 
+                                        <td colspan="3">
+                                            <div class="input_wrap"  id="jpumname_wrap">  
+                                                <select th:field="*{formList}" name="jpumname" id="jpumname" style="width: 70%;" >  
+                                                    <option value="">선택</option>
+                                                    <option th:each="val : ${formList}" th:value="${val.pcode}" th:text="${val.pname}">
+                                                </select>    
+                                            </div>
                                         </td> 
                                     </tr> 
                                     <tr>
                                         <th>
-                                            <label for="acode"  >거래처명</label>
+                                            <label for="jdoor1"  >제조사</label>
                                         </th>
-                                        <td colspan="2">
-                                            <input type="text" id="acode" name="acode" style="width: 70%;"  >  
-                                            &nbsp;
-                                            <a class="btn btn-delete" title="거래처검색" id="btnCifinfoSearch"
-                                                style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">
-                                                <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"
-                                                    style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
-                                            </a>
-                                        </td> 
                                         <td>
-                                            <input type="text" id="acorp"  name="acorp" style="width: 70%;" disabled /> 
+                                            <div class="input_wrap" style="max-width: 225px;"  id="jdoor1_wrap">   
+                                                <select th:field="*{door1List}" name="jdoor1" id="jdoor1" style="width: 70%;">
+                                                    <option value="">선택</option>
+                                                    <option th:each="val : ${door1List}" th:value="${val.pcode}" th:text="${val.pname}">
+                                                </select>    
+                                            </div>                                              
+                                        </td>
+                                        <th>
+                                            <label for="jdoor2"  >공급처</label>
+                                        </th>
+                                        <td> 
+                                            <div class="input_wrap"  id="jdoor2_wrap">  
+                                                <select th:field="*{door2List}" name="jdoor2" id="jdoor2" style="width: 70%;">
+                                                    <option value="">선택</option>
+                                                    <option th:each="val : ${door2List}" th:value="${val.pcode}" th:text="${val.pname}">
+                                                </select>    
+                                            </div>    
                                         </td> 
-                                    </tr> 
+                                    </tr>  
                                 </tbody>
                                 </table>
                             </form>
@@ -421,12 +320,23 @@
                                 <div class="search-wrap"> 
                                 <dl>
                                     <dt>
-                                    <label>품명/차종 검색</label>
+                                    <label>구분</label>
+                                    </dt>
+                                    <dd>  
+                                        <select class="form-select" name="con_gubn02" id="con_gubn02"  >
+                                            <option value="W" checked>원자재</option>
+                                            <option value="B">부자재</option>
+                                        </select>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                    <label>품명 검색</label>
                                     </dt>
                                     <dd>  
                                     <div class="srch-box">
                                         <input type="text" class="form-control2" id="conjpum" name="conjpum"
-                                        onkeyup="if(window.event.keyCode==13){searchListTot_rtn('M')}" placeholder="품명/차종 검색">
+                                        onkeyup="if(window.event.keyCode==13){searchListTot_rtn('M')}" placeholder="품명 검색">
                                     </div>
                                     </dd>
                                 </dl>
@@ -497,7 +407,7 @@
           };
           poppage.show(searchcallback);
         });     
-    </script>
+    </script>  
     <script th:inline="javascript"> 
         // 그리드 호출 window.onload 
         var view_p01tab01page;
@@ -531,7 +441,8 @@
         window.onload = function() {   
             
             // document.querySelector('input[name="w_b_gubn"][value="J"]').checked = true; 
-            document.getElementById("w_b_gubn").value = "J"; 
+            document.getElementById("w_b_gubn").value = "W";
+            document.getElementById('j_dae').value =  "01"; 
                 //tab01 grid list
             view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01(), {
                 //sortDescriptions: [new wijmo.collections.SortDescription("jkey", false)],
@@ -559,11 +470,11 @@
                         cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
                             text: '<b>${item.jkey}</b>',
                             click: (e, ctx) => {
-                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
+                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                             }
                         })
                     }, 
-                    { binding: 'jchajong', header: '차종', align: "center", width: 100 },  
+                    // { binding: 'jchajong', header: '차종', align: "center", width: 100 },  
                     {
                         binding: 'jpum',
                         width: 250,
@@ -572,30 +483,28 @@
                         cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
                             text: '<b>${item.jpum}</b>',
                             click: (e, ctx) => {
-                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
+                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                             }
                         })
                     },   
                     { binding: 'w_b_gubnnm', header: '품목분류', align: "center", width: 100 },  
                     // { binding: 'jgumtypenm', header: '금형', align: "center", width: 130 }, 
-                    { binding: 'jgumtype', header: '금형', align: "center", width: 130 }, 
                     { binding: 'jgugek', header: '규격', align: "center", width: 200 },   
                     { binding: 'jgugek2', header: '색상', align: "center", width: 100 },   
                     { binding: 'jdanwy', header: '단위', align: "center", width: 100 },  
-                    { binding: 'jpumcode', header: 'KCC품번', align: "center", width: 200 },
-                    { binding: 'jpumname', header: '유형', align: "center", width: 200 },
-                    { binding: 'jsayang', header: '사양구분', align: "center", width: 100 },
-                    { binding: 'j_net', header: '제품중량', align: "center", width: 100 },
-                    { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
-                    { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
-                    { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
-                    { binding: 'jbigo', header: '비고', align: "center", width: 100 },             
-                    { binding: 'jchgoga0', header: '단가', align: "right", width: 100 }, 
+                    // { binding: 'jpumcode', header: 'KCC품번', align: "center", width: 200 },
+                    { binding: 'jpumname', header: 'GRADE', align: "center", width: 200 },
+                    { binding: 'jdoor1', header: '제조사', align: "center", width: 100 },
+                    { binding: 'jdoor2', header: '공급처', align: "center", width: 100 },
+                    // { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
+                    // { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
+                    // { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
+                    // { binding: 'jbigo', header: '비고', align: "center", width: 100 },             
+                    // { binding: 'jchgoga0', header: '단가', align: "right", width: 100 }, 
                     { binding: 'j_dae', header: '대분류', align: "center", width: 0 },               
                     // { binding: 'j_jung', header: '중분류', align: "right", width: 0 }, 
-                    { binding: 'j_misayong', header: '미사용', align: "right", width: 0 },  
-                    { binding: 'j_yangsan', header: '양산', align: "right", width: 0 },  
-                    { binding: 'jolip', header: '조립공정', align: "right", width: 0 },  
+                    // { binding: 'j_misayong', header: '미사용', align: "right", width: 0 },  
+                    // { binding: 'j_yangsan', header: '양산', align: "right", width: 0 },  
                     // { binding: 'j_sang', header: '구격중복사용', align: "right", width: 0 },                                  
                     
                 ], 
@@ -618,7 +527,7 @@
     
             // tab01검색 데이터 수집
             function getData_tab01(){        
-                var wtab01Dto = [[${index03List}]];  
+                var wtab01Dto = [[${index03List}]];   
                 var wactnm_data = [];       
                 var cnt = 1;   
                 var ls_w_b_gubn = "";
@@ -669,8 +578,7 @@
                         jdoor1: wtab01Dto[i]["jdoor1"] ,  
                         jdoor2: wtab01Dto[i]["jdoor2"] ,   
                         jthick: wtab01Dto[i]["jthick"] ,   
-                        j_yangsan: wtab01Dto[i]["j_yangsan"] ,  
-                        jolip: wtab01Dto[i]["jolip"] , 
+                        j_yangsan: wtab01Dto[i]["j_yangsan"] , 
                         
                         
                     });
@@ -709,23 +617,13 @@
                         cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
                             text: '<b>${item.jkey}</b>',
                             click: (e, ctx) => {                                
-                                wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
+                                wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                             }
                         })
                     }, 
-                    {
-                        binding: 'jchajong',
-                        width: 100,
-                        header: '차종', 
-                        align:"center",
-                        cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                            text: '<b>${item.jchajong}</b>',
-                            click: (e, ctx) => {                                
-                                wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
-                            }
-                        })
-                    },  
+                    // { binding: 'jchajong', header: '차종', align: "center", width: 100 },
                     { binding: 'w_b_gubnnm', header: '품목분류', align: "center", width: 100 },  
+                      
                     {
                         binding: 'jpum',
                         width: 250,
@@ -734,31 +632,30 @@
                         cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
                             text: '<b>${item.jpum}</b>',
                             click: (e, ctx) => {                                
-                                wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
+                                wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                             }
                         })
-                    },   
-                    { binding: 'jgumtype', header: '금형코드', align: "center", width: 200 },
+                    }, 
+  
                     // { binding: 'jgumtypenm', header: '금형코드', align: "center", width: 200 },   
                     { binding: 'jgugek', header: '규격', align: "center", width: 200 },   
-                    { binding: 'jgugek2', header: '색상', align: "center", width: 100 },   
-                    { binding: 'jpumname', header: '유형', align: "center", width: 100 },  
-                    { binding: 'jdoor1', header: 'Door1', align: "center", width: 100 },   
-                    { binding: 'jdoor2', header: 'Door2', align: "center", width: 100 },              
-                    { binding: 'jthick', header: '유리두께', align: "center", width: 100 }, 
-                    { binding: 'jdanwy', header: '단위', align: "center", width: 100 },  
-                    { binding: 'jpumcode', header: 'KCC품번', align: "center", width: 200 }, 
-                    { binding: 'jsayang', header: '사양구분', align: "center", width: 100 },
-                    { binding: 'j_net', header: '제품중량', align: "center", width: 100 },
-                    { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
-                    { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
-                    { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
-                    { binding: 'jbigo', header: '비고', align: "center", width: 100 },             
-                    { binding: 'jchgoga0', header: '단가', align: "right", width: 100 }, 
+                    { binding: 'jgugek2', header: '색상', align: "center", width: 100 }, 
+                    { binding: 'jpumname', header: 'GRADE', align: "center", width: 200 },
+                    { binding: 'jdoor1', header: '제조사', align: "center", width: 150 },
+                    { binding: 'jdoor2', header: '공급처', align: "center", width: 150 },             
+                    // { binding: 'jthick', header: '유리두께', align: "center", width: 100 }, 
+                    // { binding: 'jdanwy', header: '단위', align: "center", width: 100 },  
+                    // { binding: 'jpumcode', header: 'KCC품번', align: "center", width: 200 }, 
+                    // { binding: 'jsayang', header: '사양구분', align: "center", width: 100 },
+                    // { binding: 'j_net', header: '제품중량', align: "center", width: 100 },
+                    // { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
+                    // { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
+                    // { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
+                    // { binding: 'jbigo', header: '비고', align: "center", width: 100 },             
+                    // { binding: 'jchgoga0', header: '단가', align: "right", width: 100 }, 
                     { binding: 'j_dae', header: '대분류', align: "center", width: 0 },   
-                    { binding: 'j_misayong', header: '미사용', align: "center", width: 0 },
-                    { binding: 'j_yangsan', header: '양산', align: "center", width: 0 },  
-                    { binding: 'jolip', header: '조립공정', align: "center", width: 0 },  
+                    // { binding: 'j_misayong', header: '미사용', align: "center", width: 0 },
+                    // { binding: 'j_yangsan', header: '양산', align: "center", width: 0 },  
                     // { binding: 'j_sang', header: '구격중복사용', align: "right", width: 0 },           
                     
                 ], 
@@ -841,7 +738,6 @@
                         jdoor2: wtab01Dto[i]["jdoor2"] ,   
                         jthick: wtab01Dto[i]["jthick"] ,  
                         j_yangsan: wtab01Dto[i]["j_yangsan"] , 
-                        jolip: wtab01Dto[i]["jolip"] , 
                         
                     });
                     cnt++;
@@ -898,7 +794,8 @@
 
 
             
-           document.getElementById('j_dae').value =  "02"; 
+            document.getElementById('j_dae').value =  "01"; 
+            handleItemCategoryChange()
 
 
         } //window 호출 끝
@@ -925,7 +822,7 @@
             const jpumnameWrap = document.getElementById('jpumname_wrap');
             const jdoor1Wrap = document.getElementById('jdoor1_wrap');
             const jdoor2Wrap = document.getElementById('jdoor2_wrap'); 
-            const jthick2Wrap = document.getElementById('jthick_wrap'); 
+            // const jthick2Wrap = document.getElementById('jthick_wrap'); 
             const jpumcode = document.getElementById('jpumcode'); 
             // 완전히 제거
             while (jpumWrap.firstChild) {
@@ -943,13 +840,13 @@
             while (jdoor2Wrap.firstChild) {
                 jdoor2Wrap.removeChild(jdoor2Wrap.firstChild);
             }
-            while (jthick2Wrap.firstChild) {
-                jthick2Wrap.removeChild(jthick2Wrap.firstChild);
-            }
+            // while (jthick2Wrap.firstChild) {
+            //     jthick2Wrap.removeChild(jthick2Wrap.firstChild);
+            // }
             
 
             if (category === '02') { 
-                // jpum 생성 --------------------------------------
+                // 02 = KCC      jpum 생성 --------------------------------------
                 select_01.name = "jpum";
                 select_01.id = "jpum";
                 select_01.className = "form-select form-select-sm";
@@ -1037,7 +934,7 @@
                     opt06.text = item.pname;  
                     select_06.appendChild(opt06);
                 }); 
-                jthick2Wrap.appendChild(select_06);
+                // jthick2Wrap.appendChild(select_06);
                 // form 생성 --------------------------------------
                 select_05.name = "jpumname";
                 select_05.id = "jpumname";
@@ -1082,7 +979,7 @@
                 input_03.name = 'jdoor1';
                 input_03.id = 'jdoor1';
                 input_03.className = 'form-control form-control-sm';
-                input_03.placeholder = 'door1을 직접 입력하세요';
+                input_03.placeholder = '제조사를 입력하세요';
                 input_03.autocomplete = 'off';
                 input_03.style.width = '200px';
                 jdoor1Wrap.appendChild(input_03);
@@ -1091,7 +988,7 @@
                 input_04.name = 'jdoor2';
                 input_04.id = 'jdoor2';
                 input_04.className = 'form-control form-control-sm';
-                input_04.placeholder = 'door2을 직접 입력하세요';
+                input_04.placeholder = '공급처를 입력하세요';
                 input_04.autocomplete = 'off';
                 input_04.style.width = '200px';
                 jdoor2Wrap.appendChild(input_04);
@@ -1103,7 +1000,7 @@
                 input_06.placeholder = 'jthick을 직접 입력하세요';
                 input_06.autocomplete = 'off';
                 input_06.style.width = '200px';
-                jthick2Wrap.appendChild(input_06);
+                // jthick2Wrap.appendChild(input_06);
 
                 
                 // form 생성
@@ -1111,7 +1008,7 @@
                 input_05.name = 'jpumname';
                 input_05.id = 'jpumname';
                 input_05.className = 'form-control form-control-sm';
-                input_05.placeholder = '유형을 직접 입력하세요';
+                input_05.placeholder = 'GRADE 입력하세요';
                 input_05.autocomplete = 'off';
                 input_05.style.width = '200px';
                 jpumnameWrap.appendChild(input_05); 
@@ -1153,7 +1050,7 @@
         //초기화 function
         function clear_rtn(elem){
             document.getElementById('jkey').value =  ""; 
-            document.getElementById('j_dae').value =  "02";   
+            document.getElementById('j_dae').value =  "01";   
             // document.getElementById('j_jung').value =  ""; 
             document.getElementById('jgugek').value =  "";
             document.getElementById('jpum').value =  "";  
@@ -1169,10 +1066,9 @@
             document.getElementById('jdanwy').value = "";  
             document.getElementById('jbigo').value = "";   
             // document.querySelector('input[name="w_b_gubn"][value="J"]').checked = true; 
-            document.getElementById("w_b_gubn").value = "J";
+            document.getElementById("w_b_gubn").value = "W";
             document.getElementById('j_misayong').checked = false; 
             document.getElementById('j_yangsan').checked = false; 
-            document.getElementById('jolip').checked = false; 
             document.getElementById('acode').value = ""; 
             document.getElementById('acorp').innerHTML = "";  
             document.getElementById('acorp').value = "";  
@@ -1185,6 +1081,7 @@
             // document.getElementById('j_sang').value = ""; 
             document.getElementById('jboxsu1').value = 0; 
             document.getElementById('jpumcode').disabled = false; // KCC 품번
+            handleItemCategoryChange()
         }
         // <!-- 저장 스크립트 시작 -->
         function save_btn(){   
@@ -1240,7 +1137,6 @@
             var ls_jchgoga0 =  0; 
             var ls_j_misayong =  document.getElementById('j_misayong').value;
             var ls_j_yangsan =  document.getElementById('j_yangsan').value;
-            var ls_jolip =  document.getElementById('jolip').value;
             // var ls_j_sang =  document.getElementById('j_sang').value;
             var ls_jboxsu1 =  document.getElementById('jboxsu1').value;
                  
@@ -1259,19 +1155,12 @@
                 ls_j_misayong = "1"
             }
             const j_yangsan = document.getElementById('j_yangsan'); 
-            const jolip = document.getElementById('jolip'); 
             const is_checked02 = j_yangsan.checked;
-            const is_checked03 = jolip.checked;
              
             if (!is_checked02){
                 ls_j_yangsan = "0"
             }else{
                 ls_j_yangsan = "1"
-            }
-            if (!is_checked03){
-                ls_jolip = "0"
-            }else{
-                ls_jolip = "1"
             }
             var ls_j_sang = "0"
             // const j_sang = document.getElementById('j_sang'); 
@@ -1315,10 +1204,10 @@
                 //     alert("차종을 입력하세요") 
                 //         return ;                 
                 // }     
-                if(!ls_jgumtype){
-                    alert("금형을 입력하세요") 
-                        return ;                 
-                }             
+                // if(!ls_jgumtype){
+                //     alert("금형을 입력하세요") 
+                //         return ;                 
+                // }             
                 var inputdata = {  
                     "jkey"          : ls_jkey,
                     "j_dae"         : ls_j_dae , 
@@ -1347,7 +1236,6 @@
                     "jdoor2"        : ls_door2,
                     "jthick"        : ls_jthick,
                     "j_yangsan"    : ls_j_yangsan,
-                    "jolip"    : ls_jolip,
                 } 
                 //직전 데이타가 메모리에 남아 폼데이타 키를 삭제후 다시 데이타를 전송해야함. 
                 formData.delete("key");   
@@ -1403,7 +1291,7 @@
         // document.getElementById("wciflistBtn").addEventListener("click",function(){   
         //     searchListcif_rtn("M");  
         // })  
-        //popup 거래처현황 검색  
+        // //popup 거래처현황 검색  
         // document.getElementById("conacorp").addEventListener("keyup", (e)=>{ 
         //     if(e.keyCode === 13){   
         //         searchListcif_rtn("M"); 
@@ -1464,7 +1352,23 @@
             var wtab01Dto  = data;   
             var wtab01_data = [];
             var cnt = 1;
+            var ls_w_b_gubn = "";
+            var ls_w_b_gubnnm = "";
             for (var i = 0; i < wtab01Dto.length; i++) {
+                
+                ls_w_b_gubn =  wtab01Dto[i]["w_b_gubn"] 
+                if (ls_w_b_gubn == 'J') {
+                    ls_w_b_gubnnm = "제품"
+                }else if(ls_w_b_gubn == 'W'){
+                    ls_w_b_gubnnm = "원자재"
+                }else if(ls_w_b_gubn == 'B'){
+                    ls_w_b_gubnnm = "부자재"                        
+                }else if(ls_w_b_gubn == 'H'){
+                    ls_w_b_gubnnm = "예비부품"                        
+                }else if(ls_w_b_gubn == 'G'){
+                    ls_w_b_gubnnm = "기타"                        
+                } 
+
                 wtab01_data.push({
                     id: i, 
                     index: cnt, 
@@ -1482,9 +1386,10 @@
                     j_sr: wtab01Dto[i]["j_sr"], 
                     j_ct: wtab01Dto[i]["j_ct"], 
                     j_cavity: wtab01Dto[i]["j_cavity"], 
-                    jdanwy: wtab01Dto[i]["jdanwy"],
+                    jdanwy: wtab01Dto[i]["jdanwy"], 
                     jbigo: wtab01Dto[i]["jbigo"],
                     w_b_gubn: wtab01Dto[i]["w_b_gubn"],
+                    w_b_gubnnm: ls_w_b_gubnnm,
                     jchgoga0: wtab01Dto[i]["jchgoga0"], 
                     j_misayong: wtab01Dto[i]["j_misayong"], 
                     j_sang: wtab01Dto[i]["j_sang"],    
@@ -1497,7 +1402,6 @@
                     jdoor2: wtab01Dto[i]["jdoor2"], 
                     jthick: wtab01Dto[i]["jthick"], 
                     j_yangsan: wtab01Dto[i]["j_yangsan"], 
-                    jolip: wtab01Dto[i]["jolip"], 
                     
                 });
                 cnt++;
@@ -1514,19 +1418,19 @@
             cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
                 text: '<b>${item.jkey}</b>',
                 click: (e, ctx) => {
-                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, jolip);                 
+                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);                 
                     
                 }
             });
             wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jchajong';
-            cols.header = '차종'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols);  
-
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jchajong';
+            // cols.header = '차종'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols);  
+ 
             cols = new wijmo.grid.Column(); 
             cols.binding = 'jpum';
             cols.header = '제품명';
@@ -1535,17 +1439,18 @@
             cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
                 text: '<b>${item.jpum}</b>',
                 click: (e, ctx) => {
-                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip );                 
+                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);                 
                     
                 }
             });       
             wtab01Grid.columns.push(cols);  
-            
+             
+
             cols = new wijmo.grid.Column(); 
-            cols.binding = 'jgumtype';
-            cols.header = '금형코드'; 
-            cols.align = "center"; 
-            cols.width = 130;
+            cols.binding = 'w_b_gubnnm';
+            cols.header = '품목분류';
+            cols.align = "center";
+            cols.width = 100;                  
             wtab01Grid.columns.push(cols);  
 
             // cols = new wijmo.grid.Column(); 
@@ -1577,61 +1482,61 @@
             cols.width = 100;
             wtab01Grid.columns.push(cols);  
             
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jpumcode';
-            cols.header = 'KCC품번'; 
-            cols.align = "center"; 
-            cols.width = 200;
-            wtab01Grid.columns.push(cols); 
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jpumcode';
+            // cols.header = 'KCC품번'; 
+            // cols.align = "center"; 
+            // cols.width = 200;
+            // wtab01Grid.columns.push(cols); 
             
             cols = new wijmo.grid.Column(); 
             cols.binding = 'jpumname';
-            cols.header = '유형'; 
+            cols.header = 'GRADE'; 
             cols.align = "center"; 
             cols.width = 200;
             wtab01Grid.columns.push(cols); 
             
             cols = new wijmo.grid.Column(); 
-            cols.binding = 'jsayang';
-            cols.header = '사양구분'; 
+            cols.binding = 'jdoor1';
+            cols.header = '제조사'; 
             cols.align = "center"; 
             cols.width = 100;
             wtab01Grid.columns.push(cols);  
 
             cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_net';
-            cols.header = '제품중량'; 
+            cols.binding = 'jdoor2';
+            cols.header = '공급처'; 
             cols.align = "center"; 
             cols.width = 100;
             wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_sr';
-            cols.header = '스프루'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'j_sr';
+            // cols.header = '스프루'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_ct';
-            cols.header = 'C/T'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'j_ct';
+            // cols.header = 'C/T'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_cavity';
-            cols.header = 'CAVITY'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'j_cavity';
+            // cols.header = 'CAVITY'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jbigo';
-            cols.header = '비고'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jbigo';
+            // cols.header = '비고'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols);  
 
             cols = new wijmo.grid.Column(); 
             cols.binding = 'w_b_gubn';
@@ -1641,12 +1546,12 @@
             wtab01Grid.columns.push(cols);  
 
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jchgoga0';
-            cols.header = '단가'; 
-            cols.align = "right"; 
-            cols.width = 100;
-            wtab01Grid.columns.push(cols); 
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jchgoga0';
+            // cols.header = '단가'; 
+            // cols.align = "right"; 
+            // cols.width = 100;
+            // wtab01Grid.columns.push(cols); 
 
             cols = new wijmo.grid.Column(); 
             cols.binding = 'j_dae';
@@ -1662,32 +1567,25 @@
             // cols.width = 0;
             // wtab01Grid.columns.push(cols); 
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_misayong';
-            cols.header = '미사용여부'; 
-            cols.align = "center"; 
-            cols.width = 0;
-            wtab01Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'j_misayong';
+            // cols.header = '미사용여부'; 
+            // cols.align = "center"; 
+            // cols.width = 0;
+            // wtab01Grid.columns.push(cols);  
 
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'j_yangsan';
-            cols.header = '양산'; 
-            cols.align = "center"; 
-            cols.width = 0;
-            wtab01Grid.columns.push(cols);  
-
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jolip';
-            cols.header = '조립공정'; 
-            cols.align = "center"; 
-            cols.width = 0;
-            wtab01Grid.columns.push(cols); 
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'j_yangsan';
+            // cols.header = '양산'; 
+            // cols.align = "center"; 
+            // cols.width = 0;
+            // wtab01Grid.columns.push(cols);  
         }        
  
             //   "A", jkey, j_dae, jthick, jgugek, jgugek2,jpum, jpumcode, jsayang, j_net, jchajong, 
             //   j_sr,j_ct, j_cavity, jdanwy, jbigo, w_b_gubn , jpumname, j_misayong, j_sang, jboxsu1, 
-            //   cltcd, acorp, jgumtype, jdoor1, jdoor2, j_yangsan, jolip
-        function wjcodeChk_a(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27){            
+            //   cltcd, acorp, jgumtype, jdoor1, jdoor2, j_yangsan
+        function wjcodeChk_a(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26){            
 
 
             const jpumWrap = document.getElementById('jpum_wrap');    
@@ -1695,7 +1593,7 @@
             const jpumnameWrap = document.getElementById('jpumname_wrap');
             const jdoor1Wrap = document.getElementById('jdoor1_wrap');
             const jdoor2Wrap = document.getElementById('jdoor2_wrap');
-            const jthickWrap = document.getElementById('jthick_wrap');
+            // const jthickWrap = document.getElementById('jthick_wrap');
             
             const select_01 = document.createElement('select');  //jpum
             const input_01 = document.createElement('input');    //jpum
@@ -1716,7 +1614,7 @@
             jpumnameWrap.innerHTML = '';
             jdoor1Wrap.innerHTML = '';
             jdoor2Wrap.innerHTML = '';
-            jthickWrap.innerHTML = '';
+            // jthickWrap.innerHTML = '';
             
             // 완전히 제거
             while (jpumWrap.firstChild) {
@@ -1734,9 +1632,9 @@
             while (jdoor2Wrap.firstChild) {
                 jdoor2Wrap.removeChild(jdoor2Wrap.firstChild);
             }
-            while (jthickWrap.firstChild) {
-                jthickWrap.removeChild(jthickWrap.firstChild);
-            }
+            // while (jthickWrap.firstChild) {
+            //     jthickWrap.removeChild(jthickWrap.firstChild);
+            // }
             
 
             if (arg2 === '02') { 
@@ -1827,7 +1725,7 @@
                     opt06.text = item.pname;  
                     select_06.appendChild(opt06);
                 }); 
-                jthickWrap.appendChild(select_06);
+                // jthickWrap.appendChild(select_06);
                 // form 생성 --------------------------------------
                 select_05.name = "jpumname";
                 select_05.id = "jpumname";
@@ -1870,7 +1768,7 @@
                 input_03.name = 'jdoor1';
                 input_03.id = 'jdoor1';
                 input_03.className = 'form-control form-control-sm';
-                input_03.placeholder = 'door1을 직접 입력하세요';
+                input_03.placeholder = '제조사를 입력하세요';
                 input_03.autocomplete = 'off';
                 input_03.style.width = '200px';
                 jdoor1Wrap.appendChild(input_03);
@@ -1879,7 +1777,7 @@
                 input_04.name = 'jdoor2';
                 input_04.id = 'jdoor2';
                 input_04.className = 'form-control form-control-sm';
-                input_04.placeholder = 'door2을 직접 입력하세요';
+                input_04.placeholder = '공급처를 입력하세요';
                 input_04.autocomplete = 'off';
                 input_04.style.width = '200px';
                 jdoor2Wrap.appendChild(input_04);
@@ -1891,13 +1789,13 @@
                 input_06.placeholder = '유리두께를 직접 입력하세요';
                 input_06.autocomplete = 'off';
                 input_06.style.width = '200px';
-                jthickWrap.appendChild(input_06);
+                // jthickWrap.appendChild(input_06);
                 // form 생성
                 input_05.type = 'text';
                 input_05.name = 'jpumname';
                 input_05.id = 'jpumname';
                 input_05.className = 'form-control form-control-sm';
-                input_05.placeholder = '유형을 직접 입력하세요';
+                input_05.placeholder = 'GRADE를 입력하세요';
                 input_05.autocomplete = 'off';
                 input_05.style.width = '200px';
                 jpumnameWrap.appendChild(input_05);
@@ -1940,12 +1838,6 @@
             }else{
                 j_yangsan.checked = false; 
             }   
-            const j_jolip = document.getElementById('jolip'); 
-            if(arg27 == "1"){
-                j_jolip.checked = true; 
-            }else{
-                j_jolip.checked = false; 
-            }   
 
             // var x = document.getElementsByName('w_b_gubn'); 
             // for(var i=0; i<3; i++) {
@@ -1965,11 +1857,12 @@
             
             if(arg == "M"){
                 searchCode = document.getElementById('conjpum').value; 
+                ls_congubn = document.getElementById("con_gubn02").value 
             }
             if(arg == "A"){
+                ls_congubn = document.getElementById("con_gubn").value ; 
                 searchCode = document.getElementById('pcode').value; 
-            }   
-            ls_congubn = document.getElementById("con_gubn").value ;    
+            }       
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }  
@@ -1997,7 +1890,24 @@
                 var wtab02Dto  = data;    
                 var wtab02_data = [];
                 var cnt = 1;
+                var ls_w_b_gubn = "";
+                var ls_w_b_gubnnm = "";
+                
                 for (var i = 0; i < wtab02Dto.length; i++) {
+                    
+                    ls_w_b_gubn =  wtab02Dto[i]["w_b_gubn"] 
+                    if (ls_w_b_gubn == 'J') {
+                        ls_w_b_gubnnm = "제품"
+                    }else if(ls_w_b_gubn == 'W'){
+                        ls_w_b_gubnnm = "원자재"
+                    }else if(ls_w_b_gubn == 'B'){
+                        ls_w_b_gubnnm = "부자재"                        
+                    }else if(ls_w_b_gubn == 'H'){
+                        ls_w_b_gubnnm = "예비부품"                        
+                    }else if(ls_w_b_gubn == 'G'){
+                        ls_w_b_gubnnm = "기타"                        
+                    } 
+
                     wtab02_data.push({
                         id: i, 
                         index: cnt, 
@@ -2019,6 +1929,7 @@
                         jdanwy: wtab02Dto[i]["jdanwy"],
                         jbigo: wtab02Dto[i]["jbigo"],
                         w_b_gubn: wtab02Dto[i]["w_b_gubn"],
+                        w_b_gubnnm: ls_w_b_gubnnm,
                         jchgoga0: wtab02Dto[i]["jchgoga0"], 
                         j_misayong: wtab02Dto[i]["j_misayong"], 
                         j_sang: wtab02Dto[i]["j_sang"],    
@@ -2030,14 +1941,13 @@
                         jdoor1: wtab02Dto[i]["jdoor1"],     
                         jdoor2: wtab02Dto[i]["jdoor2"],     
                         jthick: wtab02Dto[i]["jthick"],       
-                        j_yangsan: wtab02Dto[i]["j_yangsan"],      
-                        jolip: wtab02Dto[i]["jolip"],  
+                        j_yangsan: wtab02Dto[i]["j_yangsan"],   
                         
                     });
                     cnt++;
                 }   
 
-                //  console.log(wtab02_data); 
+                // console.log(wtab02_data); 
     
                 wtab02Grid.columns.clear();  
                 wtab02Grid.autoGenerateColumns = false; 
@@ -2051,31 +1961,44 @@
                 cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
                     text: '<b>${item.jkey}</b>',
                     click: (e, ctx) => {                        
-                        wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan, ctx.item.jolip);
+                        wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                     }
                 });       
-                wtab02Grid.columns.push(cols); 
+                wtab02Grid.columns.push(cols);    
 
                 cols = new wijmo.grid.Column(); 
-                cols.binding = 'jchajong';
-                cols.header = '차종';
+                cols.binding = 'w_b_gubnnm';
+                cols.header = '품목분류';
                 cols.align = "center";
-                cols.width = 100;    
-                wtab02Grid.columns.push(cols);   
+                cols.width = 100;                  
+                wtab02Grid.columns.push(cols);  
+
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jchajong';
+                // cols.header = '차종';
+                // cols.align = "center";
+                // cols.width = 100;    
+                // wtab02Grid.columns.push(cols);   
 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'jpum';
                 cols.header = '제품명';
                 cols.align = "left";
-                cols.width = 250;    
-                wtab02Grid.columns.push(cols);   
+                cols.width = 250;      
+                cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                    text: '<b>${item.jpum}</b>',
+                    click: (e, ctx) => {                        
+                        wjcodeChk_a("B", ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
+                    }
+                });       
+                wtab02Grid.columns.push(cols); 
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jgumtypenm';
-                cols.header = '금형코드';
-                cols.align = "center";
-                cols.width = 200;                  
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jgumtypenm';
+                // cols.header = '금형코드';
+                // cols.align = "center";
+                // cols.width = 200;                  
+                // wtab02Grid.columns.push(cols);  
 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'jgugek';
@@ -2094,7 +2017,7 @@
                 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'jpumname';
-                cols.header = '유형'; 
+                cols.header = 'GRADE'; 
                 cols.align = "center"; 
                 cols.width = 100;
                 wtab02Grid.columns.push(cols);  
@@ -2102,90 +2025,90 @@
                 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'jdoor1';
-                cols.header = 'Door1'; 
+                cols.header = '제조사'; 
                 cols.align = "center"; 
-                cols.width = 100;
+                cols.width = 150;
                 wtab02Grid.columns.push(cols);  
 
                                 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'jdoor2';
-                cols.header = 'Door2'; 
+                cols.header = '공급처'; 
                 cols.align = "center"; 
-                cols.width = 100;
+                cols.width = 150;
                 wtab02Grid.columns.push(cols);  
 
                                 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jthick';
-                cols.header = '유리두께'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jthick';
+                // cols.header = '유리두께'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
                 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jdanwy';
-                cols.header = '단위'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jdanwy';
+                // cols.header = '단위'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
                 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jpumcode';
-                cols.header = 'KCC품번'; 
-                cols.align = "center"; 
-                cols.width = 200;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jpumcode';
+                // cols.header = 'KCC품번'; 
+                // cols.align = "center"; 
+                // cols.width = 200;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jsayang';
-                cols.header = '사양구분'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jsayang';
+                // cols.header = '사양구분'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_net';
-                cols.header = '제품중량'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_net';
+                // cols.header = '제품중량'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jchajong';
-                cols.header = '차종'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jchajong';
+                // cols.header = '차종'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_sr';
-                cols.header = '스프루'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_sr';
+                // cols.header = '스프루'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_ct';
-                cols.header = 'C/T'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_ct';
+                // cols.header = 'C/T'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_cavity';
-                cols.header = 'CAVITY'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_cavity';
+                // cols.header = 'CAVITY'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jbigo';
-                cols.header = '비고'; 
-                cols.align = "center"; 
-                cols.width = 100;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'jbigo';
+                // cols.header = '비고'; 
+                // cols.align = "center"; 
+                // cols.width = 100;
+                // wtab02Grid.columns.push(cols);  
 
                 cols = new wijmo.grid.Column(); 
                 cols.binding = 'w_b_gubn';
@@ -2208,26 +2131,19 @@
                 // cols.width = 0;
                 // wtab02Grid.columns.push(cols); 
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_misayong';
-                cols.header = '미사용여부'; 
-                cols.align = "center"; 
-                cols.width = 0;
-                wtab02Grid.columns.push(cols);  
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_misayong';
+                // cols.header = '미사용여부'; 
+                // cols.align = "center"; 
+                // cols.width = 0;
+                // wtab02Grid.columns.push(cols);  
 
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'j_yangsan';
-                cols.header = '양산'; 
-                cols.align = "center"; 
-                cols.width = 0;
-                wtab02Grid.columns.push(cols); 
-
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'jolip';
-                cols.header = '조립공정'; 
-                cols.align = "center"; 
-                cols.width = 0;
-                wtab02Grid.columns.push(cols); 
+                // cols = new wijmo.grid.Column(); 
+                // cols.binding = 'j_yangsan';
+                // cols.header = '양산'; 
+                // cols.align = "center"; 
+                // cols.width = 0;
+                // wtab02Grid.columns.push(cols); 
 
                 // cols = new wijmo.grid.Column(); 
                 // cols.binding = 'j_sang';
@@ -2510,10 +2426,12 @@
             
             } 
             
+            
              
             //모달 끝
     // 자바 끝
     </script>  
+
 </th:block>
 
 </html>

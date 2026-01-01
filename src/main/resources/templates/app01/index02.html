@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout_page}"> 
+
+<head>
+    <title>KyoungDuk MES</title>
+    <style>
+        .greenText span {
+            color: #66DA26;
+        }
+
+        .redText span {
+            color: #FF0000;
+        }
+
+        .grayText span {
+            color: #8C8C8C;
+        }
+
+        .blueText span {
+            color: #4374D9;
+        }
+
+        .yellowText span {
+            color: #FFE400;
+        }
+
+        [data-ax5grid] [data-ax5grid-container="root"] [data-ax5grid-container="body"] [data-ax5grid-panel] table tr td [data-ax5grid-cellHolder] {
+            font-size: 14px;
+        }
+        .card-text{
+            margin-bottom: 10px;
+        }
+
+        .wj-flexgrid,
+        canvas.wj-flexgrid {
+            flex: 1 1 auto;
+            min-height: 0;
+            background-color: #f8f8f8;
+        }
+
+        .chart-wrapper {
+            flex: 2;
+            min-width: 0;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* 혹시 몰라서 */
+        }
+    </style>
+</head>
+<th:block layout:fragment="content"> 
+    <!--- (레이아웃) Contents 영역 -->
+    <div class="layout-contents">
+ 
+        <div class="tab-wrap">
+            <ul class="tab-links">
+                <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
+                <li>
+                <a href="#tab1" title="공정별설비등록" id="listTabLink">공정별설비등록</a>
+                </li>
+                <!-- <li>
+                <a href="#tab2" title="분류상세등록">분류상세등록</a>
+                </li> -->
+            </ul>
+            <div class="tab-contents">
+                <!--      공정별설비등록 탭 시작       -->
+                <!-- Section -->
+                <section class="tab-item" id="tab1"> 
+                    <div style="display: flex; gap: 5px">
+                        <section class="section" style="width: 40%;"> 
+                            <div class="container-fluid">
+                                <p id="selectedItem"></p>
+                                <div id="wtab01Grid_div" style=""></div>
+                            </div>
+                            <div class="btn-wrap">
+                            </div>
+                        </section> 
+
+                        <section style="width: 60%;">
+                            <div class="section-top">
+                                <div class="search-wrap">
+                                    <ul>
+                         
+                                        <li>
+                                            <!-- <a class="btn btn-edit" id="btnSave" title="저장">
+                                                <img src="/images/icon/ico-save.svg" alt="저장 아이콘">
+                                                저장
+                                            </a>-->
+                                            <button type="button" class="btn-excellt btn-default" id="retrieveBtn"
+                                                    style="float:none; height: 36px; width:115px;" onclick="searchList_rtn()">
+                                            조회
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <!-- <a class="btn btn-edit" id="btnSave" title="저장">
+                                                <img src="/images/icon/ico-save.svg" alt="저장 아이콘">
+                                                저장
+                                            </a>-->
+                                            <button type="button" class="btn-excellt btn-default" id="btnSave"
+                                                    style="float:none; height: 36px; width:115px;" onclick="save_btn()">
+                                            <i class="fas fa-save"></i>저장
+                                            </button>
+                                        </li>
+                            
+                                        <li>
+                                            <!-- <a class="btn btn-delete" title="삭제" id="btnDel">
+                                                <img src="/images/icon/ico-delete.svg" alt="삭제 아이콘">
+                                                삭제
+                                            </a>  -->
+                                            <button type="button" class="btn-delete btn-danger " id="btnDel" onclick="delete_btn()"
+                                                    style="float:none; height: 36px; width:115px;"><i
+                                                    class="fas fa-trash"></i>삭제
+                                            </button>
+                                        </li>  
+                                        <li>
+                                            <!-- <a class="btn btn-excell" title="신규등록" id="btnNew" >
+                                                <img src="/images/icon/ico-plus.svg" alt="등록 아이콘">
+                                                신규등록
+                                            </a>-->
+                                            <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="new_btn()"
+                                                    style="height: 36px; width:115px;"><i
+                                                    class="fas fa-plus"></i>신규등록
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div> 
+                                
+                                <div class="table-wrap" style=" overflow-x: auto;">
+                                    <form id="basicForm">
+                                        <table class="write-table" style="width: 100%; border-collapse: collapse;">
+                                        <caption style="text-align: left; margin-bottom: 8px;">등록테이블</caption>
+                                        <colgroup>
+                                            <col class="wp20">
+                                            <col class="wp30">
+                                            <col class="wp20">
+                                            <col class="wp30">
+                                        </colgroup>
+                                        <input type="hidden" id="id" name="id"/>
+                                        <input id="jpcode" type="hidden"   />  
+                                        <input id="jpunit" type="hidden"   />  
+                                        <input id="pcode" type="hidden"   />  
+                                        <input id="punit" type="hidden"   />  
+                                        <tbody>
+                                        <tr>
+                                            <th>
+                                            <label for="com_code"><span class="eq">*</span>공정코드</label>
+                                            </th>
+                                            <td>
+                                                <input  type="text"  style="width: 70%;"  id="com_code"  placeholder="3자리" disabled >  
+                                            </td>
+                                            <th>
+                                            <label for="com_rem1"><span class="eq">*</span>공정명</label>
+                                            </th>
+                                            <td>
+                                            <input type="text" id="com_rem1" name="com_rem1" style="width: 90%;" disabled>
+                                            </td>
+                            
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                            <label for="wrmc" id="wrmc_txt"><span class="eq">*</span>설비코드</label>
+                                            </th>
+                                            <td>
+                                                <input id="wrmc" name="wrmc"   style="width: 70%;">   
+                                            </td>
+                                            <th>
+                                            <label for="wrmcnm" id="wrmcnm_txt"><span class="eq">*</span>설비명</label>
+                                            </th>
+                                            <td>
+                                            <input type="text" id="wrmcnm" name="wrmcnm" style="width: 90%;" >
+                                            </td>
+                            
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                            <label for="wperid" id="wperid_txt"><span class="eq">*</span>담당자명</label>
+                                            </th>
+                                            <td>
+                                                <input id="wperid" name="wperid"   style="width: 70%;" disabled>     
+                                                &nbsp;
+                                                <a class="btn btn-delete" title="검색" id="btnPernmSearch"
+                                                    style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">
+                                                    <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"
+                                                        style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
+                                                </a>
+                                            </td> 
+                                            <td colspan="2">
+                                            <input type="text" id="wpernm" name="wpernm" style="width: 50%;" disabled >
+                                            </td>
+                            
+                                        </tr>
+                            
+                                        </tbody>
+                                        </table>
+                                    </form>
+                                </div> 
+
+                            </div> 
+                            <!-- 하단: 그리드 -->
+                            <section class="sec-bottom">
+                                <div class="container-fluid">
+                                    <p id="selectedItem"></p>
+                                    <div id="wtab02Grid_div" style="overflow:scroll;   height:300px;   margin:0 auto; "></div>
+                                </div>
+                            </section>
+                            
+                            <div class="btn-wrap"></div>
+                        </section> 
+                    </div>   
+                </section>
+       
+           
+                <!--       주문등록 탭 종료   / 주문 의뢰현황 시작       -->
+                <!-- Section -->
+                <section class="tab-item" id="tab2" style="height: 832px;">
+              
+                </section>
+            
+            </div> <!--//tab-contens end-->
+        </div> <!--//tab-wrap end-->
+    </div> <!--//layout-contents end -->
+    <footer style="margin-top:5px;">
+        <p>Copyrightⓒ daesansystem corp. All rights reserved.</p>
+    </footer>
+    <div style="height: 10px"></div>
+
+    
+
+</th:block>
+ 
+<th:block layout:fragment="scripts">
+    <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block> 
+    <th:block th:replace="/common/popup_pernm:: popup_pernm"></th:block> 
+ 
+<script> 
+    $('#btnPernmSearch').click(function () {
+          let poppage = new PopPernmComponent();
+          let $poppage = $(poppage);
+          let searchcallback = function (items) { 
+            document.getElementById('wperid').value = items.insano; 
+            document.getElementById('wpernm').value = items.inname;  
+          };
+          poppage.show(searchcallback);
+        });   
+</script>  
+
+
+
+<script type="text/javascript" th:inline="javascript">
+    var view_p01tab01page;
+    var view_p01tab02page;
+    var view_p01tab03page; 
+    var view_innamepage
+    var wtab01Grid;
+    var wtab02Grid;
+    var wtab03Grid; 
+    var typeMenu;  
+    var treemap; 
+    var ll_delgetrow = 0; 
+   var wseries_data = [0]; 
+
+    window.onload = function() {  
+       localStorage.setItem("setpage", "app03p001");
+       //tab02 차트그리기
+       // Tab02Chartinit()
+       //tab03 차트그리기
+       // Tab03Chartinit()
+       //tab01검색 popup list
+       view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01(), {
+          // pageSize: 12
+       });
+       // tab01검색 페이지 이동
+       // new wijmo.input.CollectionViewNavigator('#tab01Pager', {
+       //     byPage: true,
+       //     headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
+       //     cv: view_p01tab01page
+       // });     
+       wtab01Grid = new wijmo.grid.FlexGrid('#wtab01Grid_div', {  
+           autoGenerateColumns: false,
+           showMarquee: true,
+           isReadOnly: false, 
+           // selectionMode: 'RowRange',
+           allowSorting: 'MultiColumn',
+           alternatingRowStep: 0,
+           columns: [      
+               { binding: 'com_code', header: '공정코드', align: "center", 
+                   cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                       text: '<b>${item.com_code}</b>',
+                       click: (e, ctx) => {
+                           wactnmChk(ctx.item.com_code, ctx.item.com_rem1);
+                       }
+                   }),
+               width: 100},  
+               { binding: 'com_rem1', header: '공정명', align: "center", 
+                   cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                       text: '<b>${item.com_rem1}</b>',
+                       click: (e, ctx) => {
+                           wactnmChk(ctx.item.com_code, ctx.item.com_rem1);
+                       }
+                   }),
+               width: 135},  
+               // { binding: 'psize', header: '규격', width: '*', format: '*' }  
+           ], 
+           itemsSource: view_p01tab01page
+       });  
+
+       // new FlexGridContextMenu(wtab01Grid); 
+       // // 선택기 생성
+       // // let selector = new wijmo.grid.selector.Selector(wtab01Grid, {
+       // //     itemChecked: () => {
+       // //         showCheckedCount();
+       // //     }
+       // // }); 
+       // 헤더 열 전환
+       setHeaderColumn(false);
+       function setHeaderColumn(headerOn) {
+           wtab01Grid.headersVisibility = headerOn
+           ? wijmo.grid.HeadersVisibility.All
+           : wijmo.grid.HeadersVisibility.Column; 
+       } 
+       wtab01Grid.showMarquee = true;
+       wtab01Grid.focus();
+       wijmo.toggleClass(wtab01Grid.hostElement, 'highlightActive', true);
+       wtab01Grid.focus();
+
+
+       // tab01검색 데이터 수집
+       function getData_tab01(){    
+           var wtab01Dto = [[${WflagList}]];
+           var wactnm_data = [];
+           var cnt = 1;
+           var rowcnt = wtab01Dto.length;
+           if(rowcnt == 0){
+               rowcnt = 20;
+               for (var i = 0; i < rowcnt; i++) {
+                   wactnm_data.push({
+                       id: i, 
+                       index: cnt,
+                       com_code: '', 
+                       com_rem1:''
+                   });
+                   cnt++;
+               }            
+           }else{
+               for (var i = 0; i < wtab01Dto.length; i++) {
+                   wactnm_data.push({
+                       id: i, 
+                       index: cnt,
+                       com_code:  wtab01Dto[i]["com_code"], 
+                       com_rem1:  wtab01Dto[i]["com_rem1"], 
+                   });
+                   cnt++;
+               }     
+           }  
+           return wactnm_data;                                          
+       }  
+
+       view_p01tab02page = new wijmo.collections.CollectionView(getData_tab02(), {
+           pageSize: 100
+       }); 
+       wtab02Grid = new wijmo.grid.FlexGrid('#wtab02Grid_div', {  
+           autoGenerateColumns: false,
+           showMarquee: true,
+           isReadOnly: false, 
+           // selectionMode: 'RowRange',
+           allowSorting: 'MultiColumn',
+           alternatingRowStep: 0,
+           columns: [       
+               { binding: 'wrmc', header: '설비코드', align: "center", width: 80 }, 
+               { binding: 'wrmcnm', header: '설비명', align: "center", width: 150 }, 
+               { binding: 'wperid', header: '담당자', align: "center", width: 100 }, 
+               { binding: 'wpernm', header: '담당자명', align: "center", width: 100 }, 
+           ], 
+               
+           itemsSource: view_p01tab02page
+           
+       });   
+       
+       wtab02Grid.select(new wijmo.grid.CellRange(0, 4), true); 
+        wtab02Grid.removeEventListener("click");
+        wtab02Grid.collectionView.clearChanges(); 
+        wtab02Grid.hostElement.addEventListener("click",function(e){
+            // console.log(e); 
+            var ht = wtab02Grid.hitTest(e);
+            if(ht.cellType === wijmo.grid.CellType.Cell){
+                if(wtab02Grid.rows[ht.row].isSelected === true){
+                console.log("kk");
+                } else { 
+                    let ls_pcode = wtab02Grid.getCellData(ht.row,0); 
+                    if(ls_pcode == null || ls_pcode.length == 0 || ls_pcode == ""){  
+                        return ;               
+                    }     
+                    ll_delgetrow = ht.row
+                    ls_delgetlot = ls_pcode
+                }  
+            }
+        })
+
+       // 첫번째 항목(정렬/그룹화한 후)을 선택
+       wtab02Grid.select(new wijmo.grid.CellRange(0, 0), true); 
+       setHeaderColumn02(false);
+       function setHeaderColumn02(headerOn) {
+           wtab02Grid.headersVisibility = headerOn
+           ? wijmo.grid.HeadersVisibility.All
+           : wijmo.grid.HeadersVisibility.Column; 
+       } 
+           // tab01검색 데이터 수집
+       function getData_tab02(){        
+           var wactnm_data = [];
+           var cnt = 1;
+           for (var i = 0; i < 20; i++) {
+               wactnm_data.push({
+                   id: i, 
+                   index: cnt,
+                   wrmc: '', 
+                   wrmcnm: '', 
+                   wperid: '', 
+                   wpernm: '', 
+               });
+               cnt++;
+           }     
+           return wactnm_data;                                              
+       }  
+
+       
+   //담당자현황 Modaㅣ
+   view_innamepage = new wijmo.collections.CollectionView(getData_wlist2(), {
+         //  pageSize: 12
+       });
+   // 담당자 페이지 이동
+   // new wijmo.input.CollectionViewNavigator('#thePager03', {
+   //     byPage: true,
+   //     headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
+   //     cv: view_innamepage
+   // });     
+   winnameGrid = new wijmo.grid.FlexGrid('#winnameGrid_div', {  
+       autoGenerateColumns: false,
+       isReadOnly: false, 
+       allowSorting: 'MultiColumn',
+       selectionMode: 'RowRange',
+       alternatingRowStep: 0,
+       columns: [     
+           { binding: 'insano', header: '담당자', align: "center", width: 80 },
+           { binding: 'inname', header: '담당자명', align: "center", width: 150 },
+       ], 
+       itemsSource: view_innamepage
+   });  
+   
+   winnameGrid.showMarquee = true;
+   winnameGrid.focus();
+   wijmo.toggleClass(winnameGrid.hostElement, 'highlightActive', true);
+   winnameGrid.focus();
+   // 담당자 데이터 수집
+   function getData_wlist2(){   
+       var winname_data = []; 
+       var cnt = 1;
+       for (var i = 0; i < 12; i++) {
+           winname_data.push({
+               id: i, 
+               index: cnt,
+               insano:"",
+               inname: "",                            
+           });
+           cnt++;
+       }    
+       return winname_data;                                      
+   } 
+} 
+// document.getElementById("searchCode").addEventListener("keyup", (e)=>{
+//    if(e.keyCode === 13){  
+//        document.getElementById("innamebtn").click();
+//        insaSearchList_rtn("M"); 
+//    }
+// }); 
+
+// document.getElementById("wpernm").addEventListener("keyup", (e)=>{ 
+//    if(e.keyCode === 13){  
+//        document.getElementById("innamebtn").click();
+//        insaSearchList_rtn("A"); 
+//    }
+// });  
+// document.getElementById("wpernm").addEventListener("click", (e)=>{  
+//        document.getElementById("innamebtn").click();
+//        insaSearchList_rtn("A"); 
+// });   
+
+function insaSearchList_rtn(arg){  
+   var insaText = "";
+   if(arg == "M"){
+       insaText = document.getElementById('searchCode').value;   
+   }
+   if(arg == "A"){
+       insaText = document.getElementById('wpernm').value;   
+   }
+   
+   $.ajax({
+       url: '/app01m/wperidlist',  
+       type:"POST",
+       data: { 
+           "searchtxt" :insaText, 
+       }, 
+       async:false,
+       success:function(data){  
+           tabpopup_grid(data);
+       },error:function(e){
+           console.log("error");                            
+       }
+   }).done(function(fragment){           
+
+   })        
+
+}     
+
+  //  거래처팝업 grid data 수집
+  function tabpopup_grid(data){
+       var wtab01Dto  = data;    
+       var wtab01_data = [];
+       var cnt = 1;
+       for (var i = 0; i < wtab01Dto.length; i++) {
+           wtab01_data.push({
+               id: i, 
+               index: cnt, 
+               insano: wtab01Dto[i]["insano"], 
+               inname: wtab01Dto[i]["inname"]       
+           });
+           cnt++;
+       }    
+       // console.log(wtab01_data); 
+       winnameGrid.columns.clear();  
+       winnameGrid.autoGenerateColumns = false; 
+       view_innamepage.sourceCollection  = wtab01_data;
+
+       var cols = new wijmo.grid.Column(); 
+       cols.binding = 'insano';
+       cols.header = '코드';
+       cols.align = "center";
+       cols.width = 80;  
+       winnameGrid.columns.push(cols);  
+
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'inname';
+       cols.header = '담당자명';
+       cols.align = "center";
+       cols.width = 150;  
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.inname}</b>',
+           click: (e, ctx) => {
+               winsaChk_a(ctx.item.inname, ctx.item.insano);  
+           }
+       });
+       winnameGrid.columns.push(cols);  
+   }
+   
+   function winsaChk_a(arg1, arg2){  
+
+       document.getElementById('wperid').value = arg2;  
+       document.getElementById('wpernm').value = arg1;
+
+       $("#winnamemodal_btn").trigger("click");
+   }
+
+   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+   //선택한 탭 체크 
+    function tabchk_rtn(arg){
+    //    document.getElementById('tabvalue').value = arg; 
+   } 
+
+   function wactnmChk(arg1,arg2){    
+       
+       document.getElementById('com_code').value = arg1;
+       document.getElementById('com_rem1').value = arg2;
+        
+       // console.log(ls_todate)
+       $.ajax({
+           url: '/app01m/fplandetaillist',  
+           type:"POST",
+           data: { 
+               "searchtxt" : '%',
+               "com_code" :arg1, 
+           }, 
+           async:false,
+           success:function(data){   
+               tabB_grid(data);
+           },error:function(e){
+               console.log("error");                            
+           }
+       }).done(function(fragment){           
+
+       })        
+
+   }   
+
+   function new_btn(arg){ ;
+       document.getElementById('wrmc').value = "";
+       document.getElementById('wrmcnm').value = "";
+       document.getElementById('wperid').value = "";
+       document.getElementById('wpernm').value = "";
+   }
+ 
+   function save_btn(arg){
+       var ls_tab = 'A';
+       var ls_code = document.getElementById('com_code').value;
+       var ls_codenm = document.getElementById('com_rem1').value;
+       var ls_wrmc = document.getElementById('wrmc').value;
+       var ls_wrmcnm = document.getElementById('wrmcnm').value;
+       var ls_wperid = document.getElementById('wperid').value;
+       var ls_wpernm = document.getElementById('wpernm').value;
+
+   
+       if (!confirm("저장하시겠습니까?")) {
+               return ; 
+       }   
+       
+       switch(ls_tab){
+           case 'A':
+               if(ls_wrmc == null || ls_wrmc.length == 0 || ls_wrmc == ""){ 
+                   alert("설비코드를 등록하세요") 
+                   document.getElementById("wrmc").focus(); 
+                   return ;               
+               }  
+               if(ls_wrmcnm == null || ls_wrmcnm.length == 0 || ls_wrmcnm == ""){ 
+                   alert("설비명을 등록하세요") 
+                   document.getElementById("wrmcnm").focus(); 
+                   return ;               
+               }
+            //    if(ls_wperid == null || ls_wperid.length == 0 || ls_wperid == ""){ 
+            //        alert("담당자를 등록하세요") 
+            //        document.getElementById("wperid").focus(); 
+            //        return ;               
+            //    }
+            //    if(ls_wpernm == null || ls_wpernm.length == 0 || ls_wpernm == ""){ 
+            //        alert("담당자명을 등록하세요") 
+            //        document.getElementById("ls_wpernm").focus(); 
+            //        return ;               
+            //    }        
+console.log(ls_code)
+console.log(ls_codenm)
+console.log(ls_wrmc)
+console.log(ls_wrmcnm)
+console.log(ls_wperid)
+console.log(ls_wpernm) 
+               $.ajax({
+                   url: '/app01m/fplandetailsave',  
+                   type:"POST",
+                   data: { 
+                       "com_code"       : ls_code,  
+                       "com_rem1"      : ls_codenm ,
+                       "wrmc"          : ls_wrmc,  
+                       "wrmcnm"        : ls_wrmcnm , 
+                       "wperid"        : ls_wperid , 
+                       "wpernm"        : ls_wpernm ,  
+                   }, 
+                   async:false,
+                   success:function(data){   
+                       if(data == "success"){
+                           alert("저장되었습니다.") 
+                           wactnmChk(ls_code, ls_codenm)
+                           //searchList_rtn(ls_tab);  
+                           clear_rtn(ls_tab);        
+                       }else{                       
+                           alert("저장중 오류가 발생했습니다. 관리자에게 문의하세요.")
+                           // listUp();
+                           console.log(data);  
+                       }
+                   },error:function(e){
+                       console.log("error"); 
+                   }
+               }).done(function(fragment){           
+
+               })  
+               break;           
+           default:    
+               break;                
+       } 
+
+   } 
+
+   function delete_btn(arg){
+       var ls_tab = 'A';
+       var ls_code = document.getElementById('com_code').value;
+       var ls_codenm = document.getElementById('com_rem1').value;
+       var ls_wrmc = document.getElementById('wrmc').value;
+       var ls_wrmcnm = document.getElementById('wrmcnm').value;
+       var ls_wperid = document.getElementById('wperid').value;
+       var ls_wpernm = document.getElementById('wpernm').value;
+
+   
+       if (!confirm("삭제하시겠습니까?")) {
+               return ; 
+       }   
+       
+       switch(ls_tab){
+           case 'A':
+
+           if(ls_code == null || ls_code.length == 0 || ls_code == ""){ 
+               alert("대분류코드를 확인하세요") 
+               document.getElementById("com_code").focus(); 
+               return ;               
+           }    
+
+               $.ajax({
+                   url: '/app01m/fplandetaildel',  
+                   type:"POST",
+                   data: { 
+                       "wrmc"      : ls_wrmc,  
+                       "wrmcnm"      : ls_wrmcnm , 
+                       "wperid"      : ls_wperid , 
+                   }, 
+                   async:false,
+                   success:function(data){   
+                       if(data == "success"){
+                           alert("삭제되었습니다.") 
+                           wactnmChk(ls_code, ls_codenm)
+                           //searchList_rtn(ls_tab);  
+                           clear_rtn(ls_tab);             
+                       }else{                       
+                           alert("삭제중 오류가 발생했습니다. 관리자에게 문의하세요.")  
+                       }
+                      
+                   },error:function(e){
+                       console.log("error"); 
+                   }
+               }).done(function(fragment){           
+
+               })  
+               break;
+           case 'B': 
+               $.ajax({
+                   url: '/app01m/comcodedetaildel',  
+                   type:"POST",
+                   data: { 
+                       "com_cls"      : ls_code02,  
+                       "com_rem1"      : ls_codenm02 ,
+                       "com_code"      : ls_codes,  
+                   }, 
+                   async:false,
+                   success:function(data){   
+                       if(data == "success"){
+                           alert("삭제되었습니다.") 
+                           searchList_rtn(ls_tab);  
+                           clear_rtn(ls_tab);             
+                       }else{                       
+                           alert("삭제중 오류가 발생했습니다. 관리자에게 문의하세요.")  
+                       }
+                      
+                   },error:function(e){
+                       console.log("error"); 
+                   }
+               }).done(function(fragment){           
+
+               })  
+               break;
+           case 'C':
+               break;                
+           default:    
+               break;                
+       } 
+
+   }         
+   function clear_rtn(arg){
+       switch(arg){
+           case 'A': 
+               //document.getElementById('com_code').value = "";
+               //document.getElementById('com_rem1').value = "";
+               document.getElementById('wrmc').value = "";
+               document.getElementById('wrmcnm').value = "";
+               document.getElementById('wperid').value = "";
+               document.getElementById('wpernm').value = "";
+               break;
+           case 'B': 
+               break;
+           case 'C':
+              
+               break;                
+           default:    
+               break;                
+       } 
+
+   }
+   //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+                                
+   // tab01 검색   
+   document.getElementById("retrieveBtn").addEventListener("click",function(){ 
+       
+       var ls_tab = 'A'   
+       searchList_rtn(ls_tab);
+   })   
+
+   function searchList_rtn(arg1){ 
+       arg = "A";
+       var ls_code = document.getElementById('com_code').value;
+       var ls_codenm = document.getElementById('com_rem1').value;
+       switch(arg1){
+           case 'A':
+           $.ajax({
+                   url: '/app01m/fplandetaillist',  
+                   type:"POST",
+                   data: { 
+                       "searchtxt" : '%',
+                       "com_code" :arg1, 
+                   }, 
+                   async:false,
+                   success:function(data){  
+                       console.log(data);
+                       tabC_grid(data);
+                   },error:function(e){
+                       console.log("error");                            
+                   }
+               }).done(function(fragment){           
+
+               })  
+               break;
+           case 'B': 
+               $.ajax({
+                   url: '/app01m/comcodedetaillist',  
+                   type:"POST",
+                   data: { 
+                       "searchtxt" : '%',
+                       "com_code" :ls_code, 
+                   }, 
+                   async:false,
+                   success:function(data){  
+                       console.log(data);
+                       tabC_grid(data);
+                   },error:function(e){
+                       console.log("error");                            
+                   }
+               }).done(function(fragment){           
+
+               })  
+               break;                
+           default:    
+               break;                
+       }
+   
+
+   }        
+   function tabA_grid(data){
+       var wtab01Dto  = data;    
+       var wtab01_data = [];
+       var cnt = 1;
+       for (var i = 0; i < wtab01Dto.length; i++) {
+           wtab01_data.push({
+               id: i, 
+               index: cnt,
+               com_code: wtab01Dto[i]["com_code"],
+               com_rem1: wtab01Dto[i]["com_rem1"],                                 
+           });
+           cnt++;
+       }   
+       // console.log("wtab01_data",wactnm_data) +
+       // console.log(wtab01_data.length);
+       wtab01Grid.columns.clear();  
+       wtab01Grid.autoGenerateColumns = false; 
+       view_p01tab01page.sourceCollection  = wtab01_data;
+       var cols = new wijmo.grid.Column(); 
+       cols.binding = 'com_code';
+       cols.header = '공정코드';
+       cols.align = "center";
+       cols.width = 100; 
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.com_code}</b>',
+           click: (e, ctx) => {
+               wactnmChk(ctx.item.com_code, ctx.item.com_rem1);
+           }
+       });
+       wtab01Grid.columns.push(cols);    
+       // console.log("cols", cols);  
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'com_rem1';
+       cols.header = '공정명';
+       cols.align = "center";
+       cols.width = 200; 
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.com_rem1}</b>',
+           click: (e, ctx) => {
+               wactnmChk(ctx.item.com_code, ctx.item.com_rem1);
+           }
+       });
+       wtab01Grid.columns.push(cols);   
+
+   }
+
+   function tabB_grid(data){
+       var wtab02Dto  = data;    
+       var wtab02_data = [];
+       var cnt = 1; 
+       for (var i = 0; i < wtab02Dto.length; i++) {
+           wtab02_data.push({
+               id: i, 
+               index: cnt,
+               com_code: wtab02Dto[i]["com_code"],
+               com_rem1: wtab02Dto[i]["com_rem1"],
+               wrmc: wtab02Dto[i]["wrmc"],
+               wrmcnm: wtab02Dto[i]["wrmcnm"],
+               wperid: wtab02Dto[i]["wperid"],
+               wpernm: wtab02Dto[i]["wpernm"]                               
+           });
+           cnt++;
+       }   
+       // console.log("wtab01_data",wactnm_data) +
+       // console.log(wtab01_data.length);
+       wtab02Grid.columns.clear();  
+       wtab02Grid.autoGenerateColumns = false; 
+       view_p01tab02page.sourceCollection  = wtab02_data;
+       var cols = new wijmo.grid.Column(); 
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'wrmc';
+       cols.header = '설비코드';
+       cols.align = "center";
+       cols.width = 100; 
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.wrmc}</b>',
+           click: (e, ctx) => {
+               wactnmChk1(ctx.item.wrmc, ctx.item.wrmcnm, ctx.item.wperid, ctx.item.com_rem1);
+           }
+       });  
+       wtab02Grid.columns.push(cols);   
+
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'wrmcnm';
+       cols.header = '설비명';
+       cols.align = "center";
+       cols.width = 150;  
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.wrmcnm}</b>',
+           click: (e, ctx) => {
+               wactnmChk1(ctx.item.wrmc, ctx.item.wrmcnm, ctx.item.wperid, ctx.item.wpernm);
+           }
+       });  
+       wtab02Grid.columns.push(cols);
+       
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'wperid';
+       cols.header = '담당자';
+       cols.align = "center";
+       cols.width = 80;  
+       wtab02Grid.columns.push(cols);  
+
+       cols = new wijmo.grid.Column(); 
+       cols.binding = 'wpernm';
+       cols.header = '담당자명';
+       cols.align = "center";
+       cols.width = 150;  
+       wtab02Grid.columns.push(cols);
+   }
+
+   function wactnmChk1(arg1,arg2,arg3,arg4){   
+       document.getElementById('wrmc').value = arg1; 
+       document.getElementById('wrmcnm').value = arg2;
+       document.getElementById('wperid').value = arg3;
+       document.getElementById('wpernm').value = arg4;     
+   }
+   
+
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+   $(document).ready(function() { 
+       getToday()
+       fn_egov_init_date() 
+       $("#frdate").change(function(e){ 
+           // console.log("달력클릭");
+           // console.log(convert_time(e.timestamp));
+       })
+       $("#todate").change(function(e){ 
+           // console.log("달력클릭");
+           // console.log(convert_time(e.timestamp));
+       })
+   })
+
+   function test_rtn(arg1){
+       console.log(arg1);
+       const disHtml = `
+           <div class="tab-pane fade show active" id=${arg1} role="tabpanel" aria-labelledby="profile-tab">${arg1}</div>`
+       $('#btnDiv02').before(disHtml);
+   }
+
+
+   function getToday(){
+       let today = new Date();   
+
+       let year = today.getFullYear(); // 년도
+       let month = today.getMonth() + 1;  // 월
+       let date = today.getDate();  // 날짜
+       let day = today.getDay();  // 요일
+       if(month > 0 && month < 10) {month = "0" + month};
+       if(date > 0 && date < 10) {date = "0" + date};
+       let ls_frday = year + '-' + month + '-01' 
+       let ls_today = year + '-' + month + '-' + date 
+       // document.getElementById('frdate').value = ls_frday;
+       // document.getElementById('todate').value = ls_today;
+   }
+
+   function convert_time(timestamp){ 
+       //현재시간
+       var date = new Date(timestamp); 
+       var year = date.getFullYear();
+       var month = ("0" + (1 + date.getMonth())).slice(-2);
+       var day = ("0" + date.getDate()).slice(-2); 
+       var hh = date.getHours();  
+       var min = ('0' + date.getMinutes()).slice(-2) 
+       time = year +  month +  day   ;
+       return time;  
+   }
+
+   function fn_egov_init_date(){
+        
+   } 
+</script>
+
+</th:block>
+
+</html>

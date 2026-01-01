@@ -19,7 +19,9 @@
 
     <select id="GetFplanDetailList"  parameterType="com.dae.kdmes.DTO.App01.Index02Dto" resultType="com.dae.kdmes.DTO.App01.Index02Dto">
         <![CDATA[
-           select * from TB_FPLAN_WRMC TB LEFT join TB_CA510 CA on TB.wperid = CA.com_code where wflag = #{com_code} order by wflag, wrmc
+           select wflag, wrmc, wrmcnm, wperid, indate, inperid,
+           (select com_rem1 from TB_CA510 where com_cls = '002' and com_code <>'00' and com_code = TB_FPLAN_WRMC.wperid ) as wpernm
+           from TB_FPLAN_WRMC   where wflag = #{com_code} order by wflag, wrmc
         ]]>
     </select>
 

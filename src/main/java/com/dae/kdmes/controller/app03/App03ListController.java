@@ -787,6 +787,11 @@ public class App03ListController {
             _indexCa613Dto.setOpcod(jpcode);
 
 
+            result = service35.DeleteBom501(_indexCa613Dto);
+            if (!result) {
+                return "error";
+            }
+
             for(int i = 0; i < pcodeArr.size(); i++){
                 _indexCa613Dto.setSpcod(pcodeArr.get(i));
                 _indexCa613Dto.setPname(pnameArr.get(i));

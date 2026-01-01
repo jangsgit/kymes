@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout_page}"> 
+
+<head>
+    <title>KyoungDuk MES</title>
+    <style>
+        .greenText span {
+            color: #66DA26;
+        }
+
+        .redText span {
+            color: #FF0000;
+        }
+
+        .grayText span {
+            color: #8C8C8C;
+        }
+
+        .blueText span {
+            color: #4374D9;
+        }
+
+        .yellowText span {
+            color: #FFE400;
+        }
+
+        [data-ax5grid] [data-ax5grid-container="root"] [data-ax5grid-container="body"] [data-ax5grid-panel] table tr td [data-ax5grid-cellHolder] {
+            font-size: 14px;
+        }
+        .card-text{
+            margin-bottom: 10px;
+        }
+
+        .wj-flexgrid,
+        canvas.wj-flexgrid {
+            flex: 1 1 auto;
+            min-height: 0;
+            background-color: #f8f8f8;
+        }
+
+        .chart-wrapper {
+            flex: 2;
+            min-width: 0;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* 혹시 몰라서 */
+        }
+    </style>
+</head>
+<th:block layout:fragment="content"> 
+    <!--- (레이아웃) Contents 영역 -->
+    <div class="layout-contents"> 
+ 
+        <div class="tab-wrap">
+            <ul class="tab-links">
+                <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
+                <li>
+                <a href="#tab1" title="예비자재입출고등록" id="listTabLink">예비자재입출고등록</a>
+                </li>
+                <li>
+                <a href="#tab2" title="예비자재수불현황">예비자재수불현황</a>
+                </li>
+                <li>
+                <a href="#tab2" title="현재고현황">현재고현황</a>
+                </li>
+            </ul>
+            <div class="tab-contents">
+                <!--      매출품목등록 탭 시작       -->
+                <!-- Section -->
+                <section class="tab-item" id="tab1"> 
+                    <div style="display: flex; gap: 5px">
+                        <section class="section" style="width: 35%;">
+                            <div class="section-top">
+                                <div class="search-wrap">
+                                <dl>
+                                    <dt>
+                                    <label>코드/품목명</label>
+                                    </dt>
+                                    <dd>
+                                    <div class="srch-box">
+                                        <input type="text" class="form-control2" id="searchtxt" name="searchtxt">
+                                        <input type="hidden" id="con_gubn" name="con_gubn" value="J"> 
+                                    </div>
+                                    </dd>
+                                </dl>
+                    
+                                <dl>
+                                    <dt><span class="eq"></span></dt>
+                                    <dd>
+                                    <li>
+                                        <a class="btn btn-delete" title="검색" id="retrieveBtn" >
+                                        <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
+                                        검색
+                                        </a>
+                                    </li>
+                                    </dd>
+                                </dl>
+                                </div>
+                    
+                            </div> <!--//section-top end -->
+                        <div class="container-fluid">
+                            <p id="selectedItem"></p>
+                            <div id="wtab01Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div>
+                        </div>
+                        <div class="btn-wrap">
+                        </div>
+                        </section> 
+
+                        <section style="width: 65%;">
+                            <div class="section-top">
+                            <div class="search-wrap">
+                                <ul>
+                                <li>
+                                    <!-- <a class="btn btn-excell" title="신규등록" id="btnNew" >
+                                        <img src="/images/icon/ico-plus.svg" alt="등록 아이콘">
+                                        신규등록
+                                    </a>-->
+                                    <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="clear_rtn()"
+                                            style="height: 36px; width:115px;"><i
+                                            class="fas fa-plus"></i>신규등록
+                                    </button>
+                                </li>
+                    
+                                <li>
+                                    <!-- <a class="btn btn-edit" id="btnSave" title="저장">
+                                        <img src="/images/icon/ico-save.svg" alt="저장 아이콘">
+                                        저장
+                                    </a>-->
+                                    <button type="button" class="btn-excellt btn-default" id="btnSave"
+                                            style="float:none; height: 36px; width:115px;" onclick="save_btn()">
+                                    <i class="fas fa-save"></i>저장
+                                    </button>
+                                </li>
+                    
+                                <li>
+                                      <!-- <a class="btn btn-delete" title="삭제" id="btnDel">
+                                        <img src="/images/icon/ico-delete.svg" alt="삭제 아이콘">
+                                        삭제
+                                    </a>  -->
+                                    <button type="button" class="btn-delete btn-danger " id="btnDel" onclick="delete_btn()"
+                                            style="float:none; height: 36px; width:115px;"><i
+                                            class="fas fa-trash"></i>삭제
+                                    </button>
+                                </li> 
+                                </ul>
+                            </div>
+                            </div>
+                    
+                            <div class="table-wrap" style=" overflow-x: auto;">
+                            <form id="basicForm">
+                                <img src="/img/waiting_page.png" alt="검색 아이콘"  >
+                            </form>
+                            </div>
+                        </section> 
+                    </div>    
+                </section>
+       
+           
+                <!--       주문등록 탭 종료   / 주문 의뢰현황 시작       -->
+                <!-- Section -->
+                <section class="tab-item" id="tab2" style="height: 832px;">
+                    <div style="display: flex; gap: 5px">
+                        <section class="section" style="width: 40%;">  
+                            <div class="section-top">
+                                <div class="search-wrap"> 
+                                <dl>
+                                    <dt>
+                                    <label>품명 검색</label>
+                                    </dt>
+                                    <dd>  
+                                    <div class="srch-box">
+                                        <input type="text" class="form-control2" id="conjpum" name="conjpum"
+                                        onkeyup="if(window.event.keyCode==13){searchListTot_rtn('M')}" placeholder="품명 검색">
+                                    </div>
+                                    </dd>
+                                </dl>
+                    
+                                <dl>
+                                    <dt><span class="eq"></span></dt>
+                                    <dd>
+                                    <li>
+                                        <a class="btn btn-delete" title="검색" id="wjpumlistBtn"  >
+                                        <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
+                                        검색
+                                        </a>
+                                    </li>
+                                    </dd>
+                                </dl>
+                                </div>
+                    
+                            </div> <!--//section-top end -->
+                            <section class="sec-bottom">
+                                <div id="gridWrap"> 
+                                    <div class="container-fluid">
+                                        <p id="selectedItem"></p>
+                                        <div id="wtab02Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div>
+                                    </div>
+                                    <div class="btn-wrap"></div>
+                                </div>
+                            </section>
+
+                        </section> 
+ 
+                    </div>  
+                </section>
+            
+            </div> <!--//tab-contens end-->
+        </div> <!--//tab-wrap end-->
+
+    </div> <!--//layout-contents end -->
+    <footer style="margin-top:5px;">
+        <p>Copyrightⓒ 0000 corp. All rights reserved.</p>
+    </footer>
+    <div style="height: 10px"></div>
+
+    
+
+</th:block>
+ 
+<th:block layout:fragment="scripts">
+    <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block>
+    <th:block th:replace="/common/popup_machnm :: popup_machnm"></th:block>
+    <th:block th:replace="/common/popup_addinfo :: popup_addinfo"></th:block>
+ 
+ 
+</th:block>
+
+</html>

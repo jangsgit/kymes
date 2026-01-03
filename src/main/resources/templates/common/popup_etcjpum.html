@@ -1,5 +1,5 @@
-<th:block th:fragment="popup_wonbujpum">
-<script type="text/x-tmpl" id="popup_wonbujpumSearchTemplate">
+<th:block th:fragment="popup_etcjpum">
+<script type="text/x-tmpl" id="popup_etcjpumSearchTemplate">
 
 <div class="content_wrap popup">
 
@@ -10,7 +10,7 @@
                 <dl>
                     <dt>
                         <label for="jpname">
-                            원부자재명<span class="eq"></span>
+                            예비품목명<span class="eq"></span>
                         </label>
                     </dt>
                     <dd>
@@ -51,7 +51,7 @@
 
 <script type="text/javascript">
 
-    class PopWonbujpumComponent {
+    class PopEtcjpumComponent {
         constructor() {
 
             this.grid = null;
@@ -69,7 +69,7 @@
             let url = '/app01m/index03/list';
             let data = { 
                         "searchtxt"       :  _this.$jpname.val(),  
-                        "gubn"      : 'W' , 
+                        "gubn"      : 'H' , 
             };
 
             let result = AjaxUtil.getSyncData(url, data); 
@@ -94,7 +94,7 @@
 
             this.callback = callback;
 
-            let content = tmpl('popup_wonbujpumSearchTemplate', {});
+            let content = tmpl('popup_etcjpumSearchTemplate', {});
             let $content = $(content);
             this.modalContainer.open({ width: 800, height: 500, $content });
 
@@ -104,9 +104,10 @@
                 showMarquee: true,
                 isReadOnly: true,
                 columns: [ 
-                    { binding: 'jkey', header: '제품코드', width: 180, align: 'center' }, 
+                    { binding: 'jkey', header: '제품코드', width: 150, align: 'center' }, 
                     { binding: 'jpum', header: '제품명', width: 250, align: 'left' }, 
-                    { binding: 'jgugek', header: '규격', width: 180, align: 'center' }, 
+                    { binding: 'jgugek', header: '규격', width: 120, align: 'center' }, 
+                    { binding: 'jbigo', header: '비고', width: 200, align: 'center' }, 
                 ],
                 itemsSource: this.viewData,
             });

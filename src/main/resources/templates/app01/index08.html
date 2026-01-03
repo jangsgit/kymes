@@ -117,7 +117,7 @@
                                             <img src="/images/icon/ico-plus.svg" alt="등록 아이콘">
                                             신규등록
                                         </a>-->
-                                        <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="clear_rtn()"
+                                        <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="clear_rtn('A')"
                                                 style="height: 36px; width:115px;"><i
                                                 class="fas fa-plus"></i>신규등록
                                         </button>
@@ -162,6 +162,7 @@
                                     <input type="hidden"  id="jpum"   >
                                     <input type="hidden"  id="pcode"   >
                                     <input type="hidden"   id="jbigo"    >  
+                                    <input type="hidden"  id="infixid"   >  
                                     <tbody>
                                     <tr>
                                         <th>
@@ -303,16 +304,12 @@
                                 <div class="search-wrap">
                                     <ul>
                          
-                                        <li>
-                                            <!-- <a class="btn btn-edit" id="btnSave" title="저장">
-                                                <img src="/images/icon/ico-save.svg" alt="저장 아이콘">
-                                                저장
-                                            </a>-->
+                                        <!-- <li> 
                                             <button type="button" class="btn-excellt btn-default" id="retrieveBtn"
                                                     style="float:none; height: 36px; width:115px;" onclick="searchList_rtn()">
                                             조회
                                             </button>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <!-- <a class="btn btn-edit" id="btnSave" title="저장">
                                                 <img src="/images/icon/ico-save.svg" alt="저장 아이콘">
@@ -382,10 +379,10 @@
                                                     <input id="infixmachno" name="infixmachno"   >
                                                     </td>
                                                     <th>
-                                                        <label for="infixflag" id="infixflag_txt">완료여부</label>
+                                                        <label for="infixcltnm" id="infixcltnm_txt">수리업체</label>
                                                     </th>
                                                     <td>
-                                                        <input  id="infixflag" type="checkbox" value="0" onchange="endflag()" >
+                                                        <input id="infixcltnm" name="infixcltnm"   >
                                                     </td> 
                                                 </tr>
                                                 <tr>
@@ -393,7 +390,7 @@
                                                     <label for="inreqdate" id="inreqdate_txt">의뢰일</label>
                                                     </th>
                                                     <td>
-                                                    <input type="text" id="inreqdate" name="inreqdate"  >
+                                                        <input type="text" id="inreqdate" name="inreqdate">  
                                                     </td> 
                                                     <th>
                                                     <label for="inreqtext" id="inreqtext_txt">의뢰내용</label>
@@ -407,13 +404,27 @@
                                                     <label for="inrespdate" id="inrespdate_txt">완료일</label>
                                                     </th>
                                                     <td>
-                                                    <input type="text" id="inrespdate" name="inrespdate"  >
+                                                        <input type="text" id="inrespdate" name="inrespdate">  
                                                     </td> 
                                                     <th>
                                                     <label for="infixtext" id="infixtext_txt">수리내용</label>
                                                     </th>
                                                     <td>
                                                     <input id="infixtext" name="infixtext"   >
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <label for="infixflag" id="infixflag_txt">완료여부</label>
+                                                    </th>
+                                                    <td>
+                                                        <input  id="infixflag" type="checkbox" value="0" onchange="endflag()" >
+                                                    </td> 
+                                                    <th>
+                                                     &nbsp;
+                                                    </th>
+                                                    <td>
+                                                        &nbsp;
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -440,6 +451,52 @@
                         </section> 
                     </div> 
                 </section>
+                <!-- Section -->
+                <section class="tab-item" id="tab3" style="height: 832px;"> 
+                    <div style="display: flex; gap: 5px">
+                        <section class="section" style="width: 40%;">  
+                            <div class="section-top">
+                                <div class="search-wrap"> 
+                                <dl>
+                                    <dt>
+                                    <label>품명/품번 검색</label>
+                                    </dt>
+                                    <dd>  
+                                    <div class="srch-box">
+                                        <input type="text" class="form-control2" id="txtfixmachcd" name="txtfixmachcd"
+                                        onkeyup="if(window.event.keyCode==13){searchListTot_rtn('M')}" placeholder="품명 검색">
+                                    </div>
+                                    </dd>
+                                </dl>
+                    
+                                <dl>
+                                    <dt><span class="eq"></span></dt>
+                                    <dd>
+                                    <li>
+                                        <a class="btn btn-delete" title="검색" id="wjpumlistBtn"  onclick="searchList_rtn('C')">
+                                        <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
+                                        검색
+                                        </a>
+                                    </li>
+                                    </dd>
+                                </dl>
+                                </div>
+                    
+                            </div> <!--//section-top end -->
+                            <section class="sec-bottom">
+                                <div id="gridWrap"> 
+                                    <div class="container-fluid">
+                                        <p id="selectedItem"></p>
+                                        <div id="wtab03Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div>
+                                    </div>
+                                    <div class="btn-wrap"></div>
+                                </div>
+                            </section>
+
+                        </section> 
+ 
+                    </div>  
+                </section>
             
             </div> <!--//tab-contens end-->
         </div> <!--//tab-wrap end-->
@@ -457,7 +514,8 @@
 <th:block layout:fragment="scripts">
     <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block> 
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block>
+    <th:block th:replace="/common/popup_surilist :: popup_surilist"></th:block>
  
     <script>
         $('a[href="#tab2"]').on('click', function () { 
@@ -466,9 +524,28 @@
                 wtab02Grid.invalidate();   // 또는 wtab02Grid.refresh();
                 }
             }, 0);
-        }); 
-    </script>
+        });  
 
+        $('#btnCifinfoSearch').click(function () {
+        let poppage = new PopSurilistComponent();
+        let $poppage = $(poppage);
+        let searchcallback = function (items) {
+            console.log('items : ', items); 
+            document.getElementById('acorp1').value = items.acorp1; 
+            document.getElementById('acorp2').value = items.acorp2; 
+            document.getElementById('acorp3').value = items.acorp3; 
+            document.getElementById('acode').value = items.acode; 
+            document.getElementById('acorp').value = items.acorp;  ; 
+            // AjaxUtil.getAsyncData('/api/definition/company/detail', { company_id: items.id }, function (result) {
+            //   if (result.success) {
+            //     const data = result.data;
+            //     $('#address1').val(data.address);              // 도로명 주소
+            //   }
+            // });
+        };
+        poppage.show(searchcallback);
+        });     
+    </script>
     <script type="text/javascript" th:inline="javascript">
         var view_p01tab01page;
         var view_p01tab02page;
@@ -779,47 +856,47 @@
         }  
     
     
-        view_p01tab05page = new wijmo.collections.CollectionView(getData_tab03(), {
-            sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
-            //pageSize: 18
-        });      
-        wtab05Grid = new wijmo.grid.FlexGrid('#wtab05Grid_div', {  
-            autoGenerateColumns: false,
-            showMarquee: true,
-            isReadOnly: false,   
-            allowSorting: 'MultiColumn',
-            alternatingRowStep: 0,
-            columns: [     
-                {
-                    binding: 'jkey',
-                    width: 180,
-                    header: '코드', 
-                    align:"center",
-                    cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                        text: '<b>${item.jkey}</b>',
-                        click: (e, ctx) => {
-                            wcifChk_1(ctx.item.jkey, ctx.item.jpum, ctx.item.jgugek, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy);                    
-                        }
-                    })
-                }, 
-                { binding: 'jpum', header: '제품명', align: "left", width: 250 }, 
-                { binding: 'jgugek', header: '규격', align: "center", width: 200 },   
-                { binding: 'jgugek2', header: '색상', align: "center", width: 100 },   
-                { binding: 'jdanwy', header: '단위', align: "center", width: 100 },  
-                { binding: 'jsayang', header: '사양구분', align: "center", width: 100 },
-                { binding: 'j_net', header: '제품중량', align: "center", width: 100 },
-                { binding: 'jchajong', header: '차종', align: "center", width: 100 },
-                { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
-                { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
-                { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
-                { binding: 'jbigo', header: '비고', align: "center", width: 100 },
-                { binding: 'w_b_gubn', header: '품목분류', align: "center", width: 100 },   
-                { binding: 'j_dae', header: '대분류', align: "center", width: 0 },               
-                { binding: 'j_jung', header: '중분류', align: "right", width: 0 },          
+        // view_p01tab05page = new wijmo.collections.CollectionView(getData_tab03(), {
+        //     sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
+        //     //pageSize: 18
+        // });      
+        // wtab05Grid = new wijmo.grid.FlexGrid('#wtab05Grid_div', {  
+        //     autoGenerateColumns: false,
+        //     showMarquee: true,
+        //     isReadOnly: false,   
+        //     allowSorting: 'MultiColumn',
+        //     alternatingRowStep: 0,
+        //     columns: [     
+        //         {
+        //             binding: 'jkey',
+        //             width: 180,
+        //             header: '코드', 
+        //             align:"center",
+        //             cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+        //                 text: '<b>${item.jkey}</b>',
+        //                 click: (e, ctx) => {
+        //                     wcifChk_1(ctx.item.jkey, ctx.item.jpum, ctx.item.jgugek, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy);                    
+        //                 }
+        //             })
+        //         }, 
+        //         { binding: 'jpum', header: '제품명', align: "left", width: 250 }, 
+        //         { binding: 'jgugek', header: '규격', align: "center", width: 200 },   
+        //         { binding: 'jgugek2', header: '색상', align: "center", width: 100 },   
+        //         { binding: 'jdanwy', header: '단위', align: "center", width: 100 },  
+        //         { binding: 'jsayang', header: '사양구분', align: "center", width: 100 },
+        //         { binding: 'j_net', header: '제품중량', align: "center", width: 100 },
+        //         { binding: 'jchajong', header: '차종', align: "center", width: 100 },
+        //         { binding: 'j_sr', header: '스프루', align: "center", width: 100 },
+        //         { binding: 'j_ct', header: 'C/T', align: "center", width: 100 },   
+        //         { binding: 'j_cavity', header: 'CAVITY', align: "center", width: 100 },
+        //         { binding: 'jbigo', header: '비고', align: "center", width: 100 },
+        //         { binding: 'w_b_gubn', header: '품목분류', align: "center", width: 100 },   
+        //         { binding: 'j_dae', header: '대분류', align: "center", width: 0 },               
+        //         { binding: 'j_jung', header: '중분류', align: "right", width: 0 },          
                 
-            ], 
-            itemsSource: view_p01tab05page
-        }); 
+        //     ], 
+        //     itemsSource: view_p01tab05page
+        // }); 
     
         // tab01검색 데이터 수집
         function getData_tab03(){         
@@ -1061,9 +1138,9 @@
                             if(data == "success"){
                                 alert("저장되었습니다.")
                                 // console.log(formData);
-                                // searchList_rtn(ls_tab);
-                                // clear_rtn();       
-                                listUp01()       
+                                 searchList_rtn(ls_tab);
+                                 clear_rtn();       
+                                //listUp01()       
                             }else if(data == "dupulchk"){
                                 alert("이미 등록된 품번입니다.")  
                             }else{                       
@@ -1189,7 +1266,7 @@
                         return ;               
                     }    
     
-                    if (!confirm("이력과 사진정보도 함께 삭제됩니다. 삭제하시겠습니까?")) {
+                    if (!confirm("이력정보도 함께 삭제됩니다. 삭제하시겠습니까?")) {
                             return ; 
                     }   
                    $.ajax({
@@ -1254,7 +1331,7 @@
     
        }         
        function clear_rtn(ls_tab){ 
-            //var ls_tab = document.getElementById('tabvalue').value;  
+            //var ls_tab = document.getElementById('tabvalue').value; 
            switch(ls_tab){
                case 'A':  
                     document.getElementById('inmachcd').value = "";
@@ -1389,76 +1466,76 @@
     
                 })  
     
-                const addImageToPDF = async () => {
-                    const ls_imgstr =
-                        'assets/upload/' + ls_inmachcd + '/' + ls_image01;
+                // const addImageToPDF = async () => {
+                //     const ls_imgstr =
+                //         'assets/upload/' + ls_inmachcd + '/' + ls_image01;
                      
-                    const imageUrl = `http://mes.c-kd.com:8500/${ls_imgstr}`;
+                //     const imageUrl = `http://mes.c-kd.com:8500/${ls_imgstr}`;
      
-                    console.log(imageUrl)
-                    try {
-                        const response = await fetch(imageUrl);
-                        if (!response.ok) {
-                            throw new Error('이미지 로드 실패');
-                        }
-                        const blob = await response.blob();
-                        const reader = new FileReader();
+                //     console.log(imageUrl)
+                //     try {
+                //         const response = await fetch(imageUrl);
+                //         if (!response.ok) {
+                //             throw new Error('이미지 로드 실패');
+                //         }
+                //         const blob = await response.blob();
+                //         const reader = new FileReader();
     
-                        return new Promise((resolve) => {
-                            reader.onloadend = function () {
-                                const base64EncodedImage = reader.result; // Base64 데이터
+                //         return new Promise((resolve) => {
+                //             reader.onloadend = function () {
+                //                 const base64EncodedImage = reader.result; // Base64 데이터
                                  
-                                doc.drawImage(base64EncodedImage, 36, 190, {
-                                    width: 250,
-                                    height: 150,
-                                });
-                                resolve();
-                            };
-                            reader.readAsDataURL(blob); // Blob을 Base64로 변환
-                        });
-                    } catch (error) {
-                        console.error('이미지 로드 중 오류 발생:', error);
-                    }
-                };
+                //                 doc.drawImage(base64EncodedImage, 36, 190, {
+                //                     width: 250,
+                //                     height: 150,
+                //                 });
+                //                 resolve();
+                //             };
+                //             reader.readAsDataURL(blob); // Blob을 Base64로 변환
+                //         });
+                //     } catch (error) {
+                //         console.error('이미지 로드 중 오류 발생:', error);
+                //     }
+                // };
     
-                const addImageToPDF02 = async () => {
-                    const ls_imgstr =
-                        'assets/upload/' + ls_inmachcd + '/' + ls_image02;
+                // const addImageToPDF02 = async () => {
+                //     const ls_imgstr =
+                //         'assets/upload/' + ls_inmachcd + '/' + ls_image02;
                      
-                    const imageUrl = `http://mes.c-kd.com:8500/${ls_imgstr}`;
+                //     const imageUrl = `http://mes.c-kd.com:8500/${ls_imgstr}`;
     
-                    console.log(imageUrl)
-                    try {
-                        const response = await fetch(imageUrl);
-                        if (!response.ok) {
-                            throw new Error('이미지 로드 실패');
-                        }
-                        const blob = await response.blob();
-                        const reader = new FileReader();
+                //     console.log(imageUrl)
+                //     try {
+                //         const response = await fetch(imageUrl);
+                //         if (!response.ok) {
+                //             throw new Error('이미지 로드 실패');
+                //         }
+                //         const blob = await response.blob();
+                //         const reader = new FileReader();
     
-                        return new Promise((resolve) => {
-                            reader.onloadend = function () {
-                                const base64EncodedImage = reader.result; // Base64 데이터
+                //         return new Promise((resolve) => {
+                //             reader.onloadend = function () {
+                //                 const base64EncodedImage = reader.result; // Base64 데이터
                                  
-                                doc.drawImage(base64EncodedImage, 300, 190, {
-                                    width: 250,
-                                    height: 150,
-                                });
-                                resolve();
-                            };
-                            reader.readAsDataURL(blob); // Blob을 Base64로 변환
-                        });
-                    } catch (error) {
-                        console.error('이미지 로드 중 오류 발생:', error);
-                    }
-                };
+                //                 doc.drawImage(base64EncodedImage, 300, 190, {
+                //                     width: 250,
+                //                     height: 150,
+                //                 });
+                //                 resolve();
+                //             };
+                //             reader.readAsDataURL(blob); // Blob을 Base64로 변환
+                //         });
+                //     } catch (error) {
+                //         console.error('이미지 로드 중 오류 발생:', error);
+                //     }
+                // };
                 const processPDF = async () => {
     
                     //getData.forEach((saledata, i, arr) => {
                         drawHeader(doc, getData);
                         
-                        await addImageToPDF();
-                        await addImageToPDF02();
+                        // await addImageToPDF();
+                        // await addImageToPDF02();
     
                         drawSales(doc, getData);
                          
@@ -1727,98 +1804,98 @@
      
         //  tab02 grid data 수집
         function tabF_grid(data){
-            var wtab05Dto  = data;    
-            var wtab05_data = [];
-            var cnt = 1;
-            for (var i = 0; i < wtab05Dto.length; i++) {
-                wtab05_data.push({
-                    id: i, 
-                    index: cnt, 
-                    jkey: wtab05Dto[i]["jkey"], 
-                    jpum: wtab05Dto[i]["jpum"], 
-                    jgugek: wtab05Dto[i]["jgugek"], 
-                    jgugek2: wtab05Dto[i]["jgugek2"], 
-                    jdanwy: wtab05Dto[i]["jdanwy"], 
-                    jpumcode: wtab05Dto[i]["jpumcode"], 
-                    jsayang: wtab05Dto[i]["jsayang"], 
-                    j_net: wtab05Dto[i]["j_net"], 
-                    jchajong: wtab05Dto[i]["jchajong"], 
-                    j_sr: wtab05Dto[i]["j_sr"], 
-                    j_ct: wtab05Dto[i]["j_ct"], 
-                    j_cavity: wtab05Dto[i]["j_cavity"], 
-                    jbigo: wtab05Dto[i]["jbigo"], 
-                    w_b_gubn: wtab05Dto[i]["w_b_gubn"],
-                    jchgoga0: wtab05Dto[i]["jchgoga0"], 
-                    j_dae: wtab05Dto[i]["j_dae"], 
-                    j_jung: wtab05Dto[i]["j_jung"],
-                    j_misayong: wtab05Dto[i]["j_misayong"],
-                    j_sang: wtab05Dto[i]["j_sang"]     ,
-                    cltcd: wtab05Dto[i]["cltcd"]        ,
-                    acorp: wtab05Dto[i]["acorp"]    ,
-                    jgumtype: wtab05Dto[i]["jgumtype"] ,  
-                    jgumtypenm: wtab05Dto[i]["jgumtypenm"] ,  
-                    jdoor1: wtab05Dto[i]["jdoor1"] ,  
-                    jdoor2: wtab05Dto[i]["jdoor2"] ,  
-                    jpumname: wtab05Dto[i]["jpumname"] , 
+            // var wtab05Dto  = data;    
+            // var wtab05_data = [];
+            // var cnt = 1;
+            // for (var i = 0; i < wtab05Dto.length; i++) {
+            //     wtab05_data.push({
+            //         id: i, 
+            //         index: cnt, 
+            //         jkey: wtab05Dto[i]["jkey"], 
+            //         jpum: wtab05Dto[i]["jpum"], 
+            //         jgugek: wtab05Dto[i]["jgugek"], 
+            //         jgugek2: wtab05Dto[i]["jgugek2"], 
+            //         jdanwy: wtab05Dto[i]["jdanwy"], 
+            //         jpumcode: wtab05Dto[i]["jpumcode"], 
+            //         jsayang: wtab05Dto[i]["jsayang"], 
+            //         j_net: wtab05Dto[i]["j_net"], 
+            //         jchajong: wtab05Dto[i]["jchajong"], 
+            //         j_sr: wtab05Dto[i]["j_sr"], 
+            //         j_ct: wtab05Dto[i]["j_ct"], 
+            //         j_cavity: wtab05Dto[i]["j_cavity"], 
+            //         jbigo: wtab05Dto[i]["jbigo"], 
+            //         w_b_gubn: wtab05Dto[i]["w_b_gubn"],
+            //         jchgoga0: wtab05Dto[i]["jchgoga0"], 
+            //         j_dae: wtab05Dto[i]["j_dae"], 
+            //         j_jung: wtab05Dto[i]["j_jung"],
+            //         j_misayong: wtab05Dto[i]["j_misayong"],
+            //         j_sang: wtab05Dto[i]["j_sang"]     ,
+            //         cltcd: wtab05Dto[i]["cltcd"]        ,
+            //         acorp: wtab05Dto[i]["acorp"]    ,
+            //         jgumtype: wtab05Dto[i]["jgumtype"] ,  
+            //         jgumtypenm: wtab05Dto[i]["jgumtypenm"] ,  
+            //         jdoor1: wtab05Dto[i]["jdoor1"] ,  
+            //         jdoor2: wtab05Dto[i]["jdoor2"] ,  
+            //         jpumname: wtab05Dto[i]["jpumname"] , 
                                 
-                });
-                cnt++;
-            }   
+            //     });
+            //     cnt++;
+            // }   
     
-            // console.log(wtab02_data); 
+            // // console.log(wtab02_data); 
     
-            wtab05Grid.columns.clear();  
-            wtab05Grid.autoGenerateColumns = false; 
-            view_p01tab05page.sourceCollection  = wtab05_data;
+            // wtab05Grid.columns.clear();  
+            // wtab05Grid.autoGenerateColumns = false; 
+            // view_p01tab05page.sourceCollection  = wtab05_data;
     
-            var cols = new wijmo.grid.Column(); 
-            cols.binding = 'jchajong';
-            cols.header = '차종';
-            cols.align = "center";
-            cols.width = 100;
-            wtab05Grid.columns.push(cols);  
+            // var cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jchajong';
+            // cols.header = '차종';
+            // cols.align = "center";
+            // cols.width = 100;
+            // wtab05Grid.columns.push(cols);  
     
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jpum';
-            cols.header = '제품명';
-            cols.align = "left";
-            cols.width = 150;       
-            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                text: '<b>${item.jpum}</b>',
-                click: (e, ctx) => {
-                    wcifChk_JKEY(ctx.item.jkey, ctx.item.jpum, ctx.item.jgugek, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy, ctx.item.cltcd, ctx.item.acorp);                 
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jpum';
+            // cols.header = '제품명';
+            // cols.align = "left";
+            // cols.width = 150;       
+            // cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+            //     text: '<b>${item.jpum}</b>',
+            //     click: (e, ctx) => {
+            //         wcifChk_JKEY(ctx.item.jkey, ctx.item.jpum, ctx.item.jgugek, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy, ctx.item.cltcd, ctx.item.acorp);                 
                     
-                }
-            });    
-            wtab05Grid.columns.push(cols);  
+            //     }
+            // });    
+            // wtab05Grid.columns.push(cols);  
     
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jpumname';
-            cols.header = '유형'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab05Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jpumname';
+            // cols.header = '유형'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab05Grid.columns.push(cols);  
             
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jdoor1';
-            cols.header = 'Door1'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab05Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jdoor1';
+            // cols.header = 'Door1'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab05Grid.columns.push(cols);  
             
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jdoor2';
-            cols.header = 'Door2'; 
-            cols.align = "center"; 
-            cols.width = 100;
-            wtab05Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jdoor2';
+            // cols.header = 'Door2'; 
+            // cols.align = "center"; 
+            // cols.width = 100;
+            // wtab05Grid.columns.push(cols);  
     
-            cols = new wijmo.grid.Column(); 
-            cols.binding = 'jgugek2';
-            cols.header = '색상';
-            cols.align = "center";
-            cols.width = 100;           
-            wtab05Grid.columns.push(cols);  
+            // cols = new wijmo.grid.Column(); 
+            // cols.binding = 'jgugek2';
+            // cols.header = '색상';
+            // cols.align = "center";
+            // cols.width = 100;           
+            // wtab05Grid.columns.push(cols);  
         }   
          
         //                   jkey, jpum, jgugek, jchajong, jsayang, jgugek2, j_sr, jpumcode, jdanwy, cltcd, acorp  
@@ -1965,6 +2042,12 @@
             cols.header = '의뢰내용';
             cols.align = "left";
             cols.width = 300;  
+           cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+               text: '<b>${item.reqtext}</b>',
+               click: (e, ctx) => {
+                wcifChk_b(ctx.item.fixid, ctx.item.fixmachcd, ctx.item.reqdate, ctx.item.respdate, ctx.item.fixtext, ctx.item.fixcltnm, ctx.item.remark, ctx.item.reqtext, ctx.item.fixflag );
+               }
+           });
             wtab02Grid.columns.push(cols);     
     
            cols = new wijmo.grid.Column(); 
@@ -1972,6 +2055,12 @@
            cols.header = '완료일';
            cols.align = "center";
            cols.width = 120;  
+           cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+               text: '<b>${item.respdate}</b>',
+               click: (e, ctx) => {
+                wcifChk_b(ctx.item.fixid, ctx.item.fixmachcd, ctx.item.reqdate, ctx.item.respdate, ctx.item.fixtext, ctx.item.fixcltnm, ctx.item.remark, ctx.item.reqtext, ctx.item.fixflag );
+               }
+           });
            wtab02Grid.columns.push(cols);     
     
             cols = new wijmo.grid.Column(); 
@@ -1979,6 +2068,12 @@
             cols.header = '수리내용';
             cols.align = "left";
             cols.width = 300;  
+           cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+               text: '<b>${item.fixtext}</b>',
+               click: (e, ctx) => {
+                wcifChk_b(ctx.item.fixid, ctx.item.fixmachcd, ctx.item.reqdate, ctx.item.respdate, ctx.item.fixtext, ctx.item.fixcltnm, ctx.item.remark, ctx.item.reqtext, ctx.item.fixflag );
+               }
+           });
             wtab02Grid.columns.push(cols);     
     
             cols = new wijmo.grid.Column(); 
@@ -2168,6 +2263,12 @@
            cols.header = '금형번호';
            cols.align = "center";
            cols.width = 120;  
+           cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+               text: '<b>${item.machno}</b>',
+                click: (e, ctx) => {                
+                    wcifChk_a(ctx.item.machcd,  ctx.item.machno, ctx.item.machname,ctx.item.machdate, ctx.item.machstdate,ctx.item.macheddate ,ctx.item.machshot,ctx.item.machgugek, ctx.item.machcavity,ctx.item.machuse,  ctx.item.machcha,ctx.item.machcltnm,ctx.item.machplace,ctx.item.machwon, ctx.item.machgrade,ctx.item.machgram, ctx.item.machncha,ctx.item.machjaejak,ctx.item.inpcode,ctx.item.injpum,ctx.item.machgugek02,ctx.item.machgugek03, ctx.item.machgumnm );  
+                }
+            }); 
            wtab04Grid.columns.push(cols);  
     
            cols = new wijmo.grid.Column(); 
@@ -2531,25 +2632,31 @@
     
        }   
        function wcifChk_c(arg){  
-            $.ajax({
-                url: '/app01m/index08/listtotfix',  
-                type:"POST",
-                data: { 
-                    "searchtxt" : arg, 
-                }, 
-                async:false,
-                success:function(data){  
-                    tabE_grid(data);
-                },error:function(e){
-                    console.log("error");                            
-                }
-            }).done(function(fragment){           
+            openFixHistoryPopup(arg);
+            // $.ajax({
+            //     url: '/app01m/index08/listtotfix',  
+            //     type:"POST",
+            //     data: { 
+            //         "searchtxt" : arg, 
+            //     }, 
+            //     async:false,
+            //     success:function(data){  
+            //         tabE_grid(data);
+            //     },error:function(e){
+            //         console.log("error");                            
+            //     }
+            // }).done(function(fragment){           
     
-            })  
-            document.getElementById("innamebtn").click();
+            // })  
+            // document.getElementById("innamebtn").click();
          
        }
-       
+       function openFixHistoryPopup(machcd) {
+            const pop = new PopSurilistComponent(); 
+            // 이 화면은 "선택"해서 값을 돌려받을 필요가 없고, 그냥 이력 리스트만 보여주면 됨
+            pop.show(null, machcd);
+       }
+
        function confirmDeletion(imgElement, arg){
             if (confirm("이미지를 삭제하시겠습니까?")) {
                     //이미지삭제     
@@ -2572,11 +2679,9 @@
                     imgElement.parentElement.innerHTML = "";
              }    
        }
-       function wcifChk_b(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9  ){   
-            // fixid, fixmachcd, reqdate, respdate, fixtext, fixcltnm, remark  
-           var ls_tab = document.getElementById('tabvalue').value; 
-              
-           document.getElementById('infixid').value = arg1; 
+       function wcifChk_b(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9  ){    
+            // fixid, fixmachcd, reqdate, respdate, fixtext, fixcltnm, remark, reqtext, fixflag   
+           document.getElementById('infixid').value = arg1;  
            document.getElementById('infixtext').value = arg5;
            document.getElementById('infixcltnm').value = arg6;
            document.getElementById('inremark').value = arg7;   
@@ -2589,9 +2694,7 @@
             wrespdate.isDisabled = true; 
            }
            wreqdate.value   = arg3;
-           wrespdate.value = arg4; 
-           
-    
+           wrespdate.value = arg4;  
        }   
     
     

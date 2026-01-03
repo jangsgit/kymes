@@ -58,17 +58,17 @@
             <ul class="tab-links">
                 <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
                 <li>
-                <a href="#tab1" title="예비자재입출고등록" id="listTabLink" onclick="tabchk_rtn('A')">예비자재입출고등록</a>
+                <a href="#tab1" title="예비부품입출고등록" id="listTabLink" onclick="tabchk_rtn('A')">예비부품입출고등록</a>
                 </li>
                 <li>
-                <a href="#tab2" title="예비자재수불현황" onclick="tabchk_rtn('B')">예비자재수불현황</a>
+                <a href="#tab2" title="예비부품수불현황" onclick="tabchk_rtn('B')">예비부품수불현황</a>
                 </li>
                 <li>
                 <a href="#tab3" title="현재고현황" onclick="tabchk_rtn('C')">현재고현황</a>
                 </li> 
             </ul>
             <div class="tab-contents">
-                <!--      예비자재입출고등록 탭 시작       -->
+                <!--      예비부품입출고등록 탭 시작       -->
                 <!-- Section -->
                 <section class="tab-item" id="tab1"> 
                     <div style="display: flex; gap: 5px">
@@ -535,8 +535,18 @@
                 // selectionMode: 'RowRange',
                 allowSorting: 'MultiColumn',
                 alternatingRowStep: 0,
-                columns: [     
-                    { binding: 'ibgdate', header: '일자', align: "center", width: 120 }, 
+                columns: [      
+                    { binding: 'ibgdate', 
+                        header: '일자', 
+                        align: "left", 
+                        width: 120, 
+                        cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                            text: '<b>${item.ibgdate}</b>',
+                            click: (e, ctx) => {
+                                wcifChk3_a(ctx.item.ibgdate, ctx.item.ibgnum, ctx.item.pcode ,ctx.item.pname, ctx.item.psize, ctx.item.punit, ctx.item.llqty, ctx.item.perid, ctx.item.pernm, ctx.item.remark, ctx.item.wonflag );                    
+                            }
+                        }) 
+                    },    
                     { binding: 'pname', 
                         header: '품목', 
                         align: "left", 
@@ -1103,9 +1113,7 @@
             if (ls_tab == "A"){
                 ls_search = "%" ;
                 ls_frdate     =  $('#frdate').val(); //convert_date(wfrdate.value);                    
-                ls_todate     =  $('#todate').val();  //convert_date(wtodate.value); 
-                console.log(ls_frdate)
-                console.log(ls_todate)
+                ls_todate     =  $('#todate').val();  //convert_date(wtodate.value);  
                 $.ajax({
                     url: '/app02m/index19/list',   
                     type:"POST",
@@ -1158,8 +1166,7 @@
         }    
     
             //  tab01 grid data 수집
-        function tabA_grid(data, arg_tab){
-            console.log(data)
+        function tabA_grid(data, arg_tab){ 
             var wtab01Dto  = data;    
             var wtab01_data = []; 
             var cnt = 1; 
@@ -1208,7 +1215,13 @@
                 cols.binding = 'ibgdate';
                 cols.header = '일자';
                 cols.align = "center";
-                cols.width = 120;           
+                cols.width = 120;  
+                cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                    text: '<b>${item.ibgdate}</b>',
+                    click: (e, ctx) => {
+                        wcifChk3_a(ctx.item.ibgdate, ctx.item.ibgnum, ctx.item.pcode ,ctx.item.pname, ctx.item.psize, ctx.item.punit, ctx.item.llqty, ctx.item.perid, ctx.item.pernm, ctx.item.remark, ctx.item.wonflag );                    
+                    }
+                });         
                 wtab01Grid.columns.push(cols);   
 
                 var cols = new wijmo.grid.Column(); 

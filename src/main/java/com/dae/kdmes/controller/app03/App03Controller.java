@@ -31,21 +31,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/app03", method = RequestMethod.POST)
 public class App03Controller {
-    private final Index01Service service01;
     private final Index33Service service33;
 
     private final Index34Service service34;
-
-    private final Index35Service service35;
-    CommonDto CommDto = new CommonDto();
-    PopupDto popupDto = new PopupDto();
-
-    Index01Dto index01Dto = new Index01Dto();
+    CommonDto CommDto = new CommonDto();  ;
     Index33Dto index33Dto = new Index33Dto();
 
     Index34Dto index34Dto = new Index34Dto();
-
-    Index35Dto index35Dto = new Index35Dto();
     List<Index01Dto> index01ListDto = new ArrayList<>();
 
     List<Index33Dto> index33ListDto = new ArrayList<>();
@@ -103,6 +95,134 @@ public class App03Controller {
         }
 
         return "App03/index34";
+    }
+
+
+    @GetMapping(value="/index00")
+    public String App03_index00(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index00";
+    }
+    @GetMapping(value="/index01")
+    public String App03_index01(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index01";
+    }
+    @GetMapping(value="/index02")
+    public String App03_index02(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index02";
+    }
+    @GetMapping(value="/index03")
+    public String App03_index03(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index03";
+    }
+    @GetMapping(value="/index04")
+    public String App03_index04(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index04";
+    }
+    @GetMapping(value="/index05")
+    public String App03_index05(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index05";
+    }
+    @GetMapping(value="/index06")
+    public String App03_index06(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index06";
+    }
+    @GetMapping(value="/index07")
+    public String App03_index07(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index07";
+    }
+    @GetMapping(value="/index08")
+    public String App03_index08(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index08";
+    }
+    @GetMapping(value="/index09")
+    public String App03_index09(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index09";
+    }
+    @GetMapping(value="/index10")
+    public String App03_index10(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index10";
+    }
+    @GetMapping(value="/index11")
+    public String App03_index11(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index11";
+    }
+    @GetMapping(value="/index12")
+    public String App03_index12(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index12";
+    }
+    @GetMapping(value="/index13")
+    public String App03_index13(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index13";
+    }
+    @GetMapping(value="/index14")
+    public String App03_index14(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index14";
+    }
+    @GetMapping(value="/index15")
+    public String App03_index15(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index15";
+    }
+    @GetMapping(value="/index16")
+    public String App03_index16(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index16";
+    }
+    @GetMapping(value="/index17")
+    public String App03_index17(Model model, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
+        model.addAttribute("userformDto",userformDto);
+        return "App03/index17";
     }
 
 //    @GetMapping(value="/index35")

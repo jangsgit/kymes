@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout_page}"> 
+
+<head>
+    <title>KyoungDuk MES</title>
+    <style>
+        .greenText span {
+            color: #66DA26;
+        }
+
+        .redText span {
+            color: #FF0000;
+        }
+
+        .grayText span {
+            color: #8C8C8C;
+        }
+
+        .blueText span {
+            color: #4374D9;
+        }
+
+        .yellowText span {
+            color: #FFE400;
+        }
+
+        [data-ax5grid] [data-ax5grid-container="root"] [data-ax5grid-container="body"] [data-ax5grid-panel] table tr td [data-ax5grid-cellHolder] {
+            font-size: 14px;
+        }
+        .card-text{
+            margin-bottom: 10px;
+        }
+
+        .wj-flexgrid,
+        canvas.wj-flexgrid {
+            flex: 1 1 auto;
+            min-height: 0;
+            background-color: #f8f8f8;
+        }
+
+        .chart-wrapper {
+            flex: 2;
+            min-width: 0;
+            : 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* 혹시 몰라서 */
+        }
+        
+        .waiting-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;     /* 카드 안 여백 */
+            }
+
+            .waiting-img { 
+            max-width: 95%;         /* 카드 기준 가로 70% */ 
+            width: auto;
+            height: auto;
+            }
+
+    </style>
+</head>
+<th:block layout:fragment="content"> 
+    <!--- (레이아웃) Contents 영역 -->
+    <div class="layout-contents">
+ 
+        <div class="tab-wrap">
+            <ul class="tab-links">
+                <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
+                <li>
+                <a href="#tab1" title="&nbsp;" id="listTabLink">&nbsp;</a>
+                </li>
+                <!-- <li>
+                <a href="#tab2" title="분류상세등록">분류상세등록</a>
+                </li> -->
+            </ul>
+            <div class="tab-contents">
+                <!--      공정별설비등록 탭 시작       -->
+                <!-- Section -->
+                <section class="tab-item" id="tab1"  > 
+                    <div style="display: flex; gap: 5px">
+                        <section class="section" style="width: 100%;  "> 
+                            <div class="container-fluid"> 
+                                <img src="/img/ready_img.jpg" class="waiting-img" >
+                            </div> 
+                        </section> 
+ 
+                    </div>   
+                </section>
+       
+            
+            </div> <!--//tab-contens end-->
+        </div> <!--//tab-wrap end-->
+    </div> <!--//layout-contents end -->
+    <footer style="margin-top:5px;">
+        <p>Copyrightⓒ daesansystem corp. All rights reserved.</p>
+    </footer>
+    <div style="height: 10px"></div>
+
+    
+
+</th:block>
+ 
+<th:block layout:fragment="scripts">
+    <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block>  
+  
+ 
+</th:block>
+
+</html>

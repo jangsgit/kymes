@@ -211,7 +211,7 @@
                                             <label for="com_cls02"><span class="eq">*</span>대분류</label>
                                         </th>
                                         <td >
-                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()"   disabled  >
+                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 100%;" onchange="handleItemCategoryChange()"   disabled  >
                                                 <option value="">선택</option>
                                                 <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                                             </select>    
@@ -220,7 +220,7 @@
                                             <label for="w_b_gubn"  >품목분류</label>
                                         </th>
                                         <td>
-                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn" > 
+                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn"  style="width: 60%;"> 
                                               <option value="W" checked>원자재</option>
                                               <option value="B">부자재</option> 
                                             </select>
@@ -232,7 +232,7 @@
                                         </th>
                                         <td>
                                             <div class="input_wrap" style="max-width: 225px;"  id="jpum_wrap"> 
-                                                <select th:field="*{jpumList}" name="jpum" id="jpum" style="width: 70%;">
+                                                <select th:field="*{jpumList}" name="jpum" id="jpum" style="width: 100%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${jpumList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>                                              
@@ -242,7 +242,7 @@
                                             <label for="jgugek"  >규격</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jgugek" name="jgugek" style="width: 70%;" >
+                                            <input type="text" id="jgugek" name="jgugek" style="width: 60%;" >
                                         </td>
                         
                                     </tr> 
@@ -252,7 +252,7 @@
                                         </th>
                                         <td  > 
                                             <div class="input_wrap" style="max-width: 225px;"    id="jgugek2_wrap"> 
-                                                <select th:field="*{colorList}" name="jgugek2" id="jgugek2" style="width: 70%;">
+                                                <select th:field="*{colorList}" name="jgugek2" id="jgugek2" style="width: 100%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${colorList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>                                              
@@ -262,7 +262,7 @@
                                             <label for="jdanwy"  >기본단위</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 70%;"  >
+                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 60%;"  >
                                         </td>
                                     </tr>   
                                     <tr> 
@@ -271,7 +271,7 @@
                                         </th>
                                         <td colspan="3">
                                             <div class="input_wrap"  id="jpumname_wrap">  
-                                                <select th:field="*{formList}" name="jpumname" id="jpumname" style="width: 70%;" >  
+                                                <select th:field="*{formList}" name="jpumname" id="jpumname" style="width: 90%;" >  
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${formList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>    
@@ -284,7 +284,7 @@
                                         </th>
                                         <td>
                                             <div class="input_wrap" style="max-width: 225px;"  id="jdoor1_wrap">   
-                                                <select th:field="*{door1List}" name="jdoor1" id="jdoor1" style="width: 70%;">
+                                                <select th:field="*{door1List}" name="jdoor1" id="jdoor1" style="width: 100%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${door1List}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>    

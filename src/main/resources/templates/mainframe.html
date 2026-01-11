@@ -490,6 +490,14 @@
             // 실제로 호출할 URL
             url: '/dashboard'
         };
+        const DEFAULT_MENU02 = {
+            // 탭 id: 중복 안 나게만 해주면 됨 (staticMenus에 있는 id 써도 되고, 새로 써도 됨)
+            id: 'indexds04',
+            // 탭 제목
+            title: '모니터링-생산가동현황',
+            // 실제로 호출할 URL
+            url: '/app01/indexds04'
+        };
 
          // ==========================
         //  하드코딩 메뉴 정의
@@ -554,7 +562,7 @@
                 { id: 'app03_index11',   title: '성형조건변경이력',  url: '/app03/index11' },
                 { id: 'app03_index12',  title: '알람발생이력',      url: '/app03/index12' },
                 { id: 'app02_index63', title: '성형조건기준 / 설비성형조건 (좌우표시)', url: '/app02/index63' },
-                { id: 'dashboard_cms',     title: '모니터링-실시간현황', url: '/dashboard' },
+                { id: 'dashboard_cms',     title: '모니터링-공정실시간현황', url: '/dashboard' },
                 { id: 'app01_indexds04',        title: '모니터링-생산가동현황', url: '/app01/indexds04' }
             ],
 
@@ -787,6 +795,25 @@
                 });
             }
         }
+        function openDefaultMenu02() {
+            if (!DEFAULT_MENU02 || !DEFAULT_MENU02.id) {
+                console.warn('DEFAULT_MENU02가 설정되어 있지 않습니다.');
+                return;
+            }
+
+            // 이미 열려 있으면 토글만
+            if (nthTabs.isExistsTab('#' + DEFAULT_MENU02.id)) {
+                nthTabs.toggleTab('#' + DEFAULT_MENU02.id);
+            } else {
+                nthTabs.addTab({
+                    id: DEFAULT_MENU02.id,
+                    title: DEFAULT_MENU02.title,
+                    url: DEFAULT_MENU02.url,   // 하드코딩 URL 직접 사용
+                    active: false,
+                    allowClose: false
+                });
+            }
+        }
 
         // bookmark 로딩 (없으면 그냥 건너뜀)
 
@@ -904,6 +931,7 @@
 
         // ✅ bookmark 성공/실패와 관계없이 default 메뉴는 항상 로딩
         openDefaultMenu();
+        openDefaultMenu02();
 
         $('.scrollbar-inner').scrollbar();
 

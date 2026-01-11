@@ -1302,12 +1302,14 @@
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }   
+            ls_j_dae = '03'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :arg1, 
                             "congubn" :ls_congubn, 
+                            "j_dae" :ls_j_dae, 
                         }, 
                         async:false,
                         success:function(data){  
@@ -1771,12 +1773,14 @@
                 searchCode = document.getElementById('pcode').value; 
                 ls_congubn = document.getElementById("con_gubn").value ; 
             }    
+            ls_j_dae = '03'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :searchCode,
-                            "congubn" :ls_congubn, 
+                            "congubn" :ls_congubn,  
+                            "j_dae" :ls_j_dae, 
                         }, 
                         async:false,
                         success:function(data){  

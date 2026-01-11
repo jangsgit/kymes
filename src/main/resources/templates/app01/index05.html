@@ -194,7 +194,7 @@
                                             <label for="com_cls02"><span class="eq">*</span>대분류</label>
                                         </th>
                                         <td >
-                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()"   >
+                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()" disabled  >
                                                 <option value="">선택</option>
                                                 <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                                             </select>    
@@ -532,6 +532,7 @@
             
             // document.querySelector('input[name="w_b_gubn"][value="J"]').checked = true; 
             document.getElementById("w_b_gubn").value = "J"; 
+            document.getElementById('j_dae').value =  "02";  
                 //tab01 grid list
             view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01(), {
                 //sortDescriptions: [new wijmo.collections.SortDescription("jkey", false)],
@@ -1440,12 +1441,14 @@
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }   
+            ls_j_dae = '02'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :arg1, 
                             "congubn" :ls_congubn, 
+                            "j_dae" :ls_j_dae, 
                         }, 
                         async:false,
                         success:function(data){  
@@ -1973,12 +1976,14 @@
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }  
+            ls_j_dae = '02'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :searchCode,
                             "congubn" :ls_congubn, 
+                            "j_dae" :ls_j_dae, 
                         }, 
                         async:false,
                         success:function(data){  

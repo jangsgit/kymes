@@ -479,6 +479,7 @@ public class App01CrudController {
     @GetMapping(value="/index03/listmain")
     public Object App03MainList_index(@RequestParam("searchtxt") String searchtxt,
                                       @RequestParam("congubn") String congubn,
+                                      @RequestParam("j_dae") String j_dae,
                                   Model model, HttpServletRequest request) throws Exception{
         CommDto.setMenuTitle("제품등록");
         CommDto.setMenuUrl("기준정보>제품정보");
@@ -492,10 +493,14 @@ public class App01CrudController {
             if(searchtxt == null || searchtxt.equals("")){
                 searchtxt = "%";
             }
+            if(j_dae == null || j_dae.equals("")){
+                j_dae = "%";
+            }
             index03Dto.setJpum(searchtxt);
             index03Dto.setJkey(searchtxt);
             index03Dto.setJ_misayong("%");
             index03Dto.setW_b_gubn(congubn);
+            index03Dto.setJ_dae(j_dae);
             index03List = service03.GetJpumList(index03Dto);
             model.addAttribute("index03List",index03List);
 
@@ -1757,7 +1762,7 @@ public class App01CrudController {
             int i = 0;
             String ls_filename = "";
             if(_Pc110DtoListDto.size() > 0){
-                for(int h =0; h <= _Pc110DtoListDto.size(); h++){
+                for(int h =0; h < _Pc110DtoListDto.size(); h++){
                     // 첫 번째 객체의 file_url 설정
                     Pc110Dto dto1 = _Pc110DtoListDto.get(h);
                     ls_filename = dto1.getSave_name();

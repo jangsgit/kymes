@@ -1328,12 +1328,14 @@
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }   
+            ls_j_dae = '01'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :arg1, 
                             "congubn" :ls_congubn, 
+                            "j_dae" :ls_j_dae,  
                         }, 
                         async:false,
                         success:function(data){  
@@ -1866,12 +1868,14 @@
             if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                 ls_congubn = "%";            
             }  
+            ls_j_dae = '01'
             $.ajax({
                         url: '/app01m/index03/listmain',  
                         type:"POST",
                         data: { 
                             "searchtxt" :searchCode,
                             "congubn" :ls_congubn, 
+                            "j_dae" :ls_j_dae, 
                         }, 
                         async:false,
                         success:function(data){  

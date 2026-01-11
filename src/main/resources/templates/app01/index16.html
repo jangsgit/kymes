@@ -198,7 +198,7 @@
                                             <label for="com_cls02"><span class="eq">*</span>대분류</label>
                                         </th>
                                         <td >
-                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;" onchange="handleItemCategoryChange()"   disabled  >
+                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 60%;"   disabled  >
                                                 <option value="">선택</option>
                                                 <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                                             </select>    
@@ -744,53 +744,7 @@
                     return wactnm_data;                                         
                 } 
         
-            
-    
-    
-    
-                // 거래처현황 리스트     
-                // // ################################################################ 
-                view_p01tab03page = new wijmo.collections.CollectionView(getData_wlist2(), {
-                    sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
-                    //pageSize: 21
-                });      
-                wtab03Grid = new wijmo.grid.FlexGrid('#wtab03Grid_div', {  
-                    autoGenerateColumns: false,
-                    isReadOnly: false, 
-                    allowSorting: 'MultiColumn',
-                    selectionMode: 'RowRange',
-                    alternatingRowStep: 0,
-                    columns: [     
-                        { binding: 'acode', header: '코드', align: "center", width: 80 },
-                        { binding: 'acorp', header: '거래처명', align: "center", width: 200 },
-                    ], 
-                    itemsSource: view_p01tab03page
-                });  
-                wtab03Grid.showMarquee = true; 
-                wijmo.toggleClass(wtab03Grid.hostElement, 'highlightActive', true);
-                wtab03Grid.focus();
-                // 거래처 데이터 수집
-                function getData_wlist2(){   
-                    var winname_data = []; 
-                    var cnt = 1;
-                    for (var i = 0; i < 12; i++) {
-                        winname_data.push({
-                            id: i, 
-                            index: cnt,
-                            acode:"",
-                            acorp: "",                            
-                        });
-                        cnt++;
-                    }    
-                    return winname_data;                                      
-                }  
-                setHeaderColumn03(false);
-                function setHeaderColumn03(headerOn) {
-                    wtab03Grid.headersVisibility = headerOn
-                    ? wijmo.grid.HeadersVisibility.All
-                    : wijmo.grid.HeadersVisibility.Column; 
-                }  
-    
+             
     
                 
                 document.getElementById('j_dae').value =  "04"; 
@@ -798,223 +752,7 @@
     
             } //window 호출 끝
     
-    
-            function handleItemCategoryChange(){ 
-                const category = document.getElementById('j_dae').value; 
-                
-                const select_01 = document.createElement('select');  //jpum
-                const input_01 = document.createElement('input');    //jpum
-                const select_02 = document.createElement('select');  //jgugek2
-                const input_02 = document.createElement('input');    //jgugek2
-                const select_03 = document.createElement('select');  //door1
-                const input_03 = document.createElement('input');    //door1
-                const select_04 = document.createElement('select');  //door2
-                const input_04 = document.createElement('input');    //door2
-                const select_05 = document.createElement('select');  //form
-                const input_05 = document.createElement('input');    //form
-                const select_06 = document.createElement('select');  //form
-                const input_06 = document.createElement('input');    //form
-    
-                const jpumWrap = document.getElementById('jpum_wrap');    
-                const jgugek2Wrap = document.getElementById('jgugek2_wrap');
-                const jpumnameWrap = document.getElementById('jpumname_wrap');
-                const jdoor1Wrap = document.getElementById('jdoor1_wrap');
-                const jdoor2Wrap = document.getElementById('jdoor2_wrap'); 
-                const jthick2Wrap = document.getElementById('jthick_wrap'); 
-                const jpumcode = document.getElementById('jpumcode'); 
-                // 완전히 제거
-                while (jpumWrap.firstChild) {
-                    jpumWrap.removeChild(jpumWrap.firstChild);
-                }
-                while (jgugek2Wrap.firstChild) {
-                    jgugek2Wrap.removeChild(jgugek2Wrap.firstChild);
-                }
-                while (jpumnameWrap.firstChild) {
-                    jpumnameWrap.removeChild(jpumnameWrap.firstChild);
-                }
-                while (jdoor1Wrap.firstChild) {
-                    jdoor1Wrap.removeChild(jdoor1Wrap.firstChild);
-                }
-                while (jdoor2Wrap.firstChild) {
-                    jdoor2Wrap.removeChild(jdoor2Wrap.firstChild);
-                }
-                while (jthick2Wrap.firstChild) {
-                    jthick2Wrap.removeChild(jthick2Wrap.firstChild);
-                }
-                
-    
-                if (category === '02') { 
-                    // jpum 생성 --------------------------------------
-                    select_01.name = "jpum";
-                    select_01.id = "jpum";
-                    select_01.className = "form-select form-select-sm";
-                    select_01.style.width = "200px";
-                    const dOpt = document.createElement('option'); 
-                    dOpt.value = "";
-                    dOpt.text = "선택";
-                    select_01.appendChild(dOpt);
-                    if (Array.isArray(productList)) {
-                        productList.forEach(item => {
-                            const opt = document.createElement('option');
-                            opt.value = item.pname;
-                            opt.text = item.pname;  
-                            select_01.appendChild(opt);
-                        }); 
-                    }
-                    jpumWrap.appendChild(select_01);
-                    // color 생성 --------------------------------------
-                    select_02.name = "jgugek2";
-                    select_02.id = "jgugek2";
-                    select_02.className = "form-select form-select-sm";
-                    select_02.style.width = "200px"; 
-                    const dOpt02 = document.createElement('option'); 
-                    dOpt02.value = "";
-                    dOpt02.text = "선택";
-                    select_02.appendChild(dOpt02);
-    
-                    colorList.forEach(item => {
-                        const opt02 = document.createElement('option');
-                        opt02.value = item.pname;
-                        opt02.text = item.pname;  
-                        select_02.appendChild(opt02);
-                    }); 
-                    jgugek2Wrap.appendChild(select_02);
-                    // door1 생성 --------------------------------------
-                    select_03.name = "jdoor1";
-                    select_03.id = "jdoor1";
-                    select_03.className = "form-select form-select-sm";
-                    select_03.style.width = "200px";
-    
-                    const dOpt03 = document.createElement('option'); 
-                    dOpt03.value = "";
-                    dOpt03.text = "선택";
-                    select_03.appendChild(dOpt03);
-    
-                    door1List.forEach(item => {
-                        const opt03 = document.createElement('option');
-                        opt03.value = item.pname;
-                        opt03.text = item.pname;  
-                        select_03.appendChild(opt03);
-                    }); 
-                    jdoor1Wrap.appendChild(select_03);
-                    // door2 생성 --------------------------------------
-                    select_04.name = "jdoor2";
-                    select_04.id = "jdoor2";
-                    select_04.className = "form-select form-select-sm";
-                    select_04.style.width = "200px";
-    
-                    const dOpt04 = document.createElement('option'); 
-                    dOpt04.value = "";
-                    dOpt04.text = "선택";
-                    select_04.appendChild(dOpt04);
-    
-                    door2List.forEach(item => {
-                        const opt04 = document.createElement('option');
-                        opt04.value = item.pname;
-                        opt04.text = item.pname;  
-                        select_04.appendChild(opt04);
-                    }); 
-                    jdoor2Wrap.appendChild(select_04);
-                    // jthick 생성 --------------------------------------
-                    select_06.name = "jthick";
-                    select_06.id = "jthick";
-                    select_06.className = "form-select form-select-sm";
-                    select_06.style.width = "200px";
-    
-                    const dOpt06 = document.createElement('option'); 
-                    dOpt06.value = "";
-                    dOpt06.text = "선택";
-                    select_06.appendChild(dOpt06);
-    
-                    jthickList.forEach(item => {
-                        const opt06 = document.createElement('option');
-                        opt06.value = item.pname;
-                        opt06.text = item.pname;  
-                        select_06.appendChild(opt06);
-                    }); 
-                    jthick2Wrap.appendChild(select_06);
-                    // form 생성 --------------------------------------
-                    select_05.name = "jpumname";
-                    select_05.id = "jpumname";
-                    select_05.className = "form-select form-select-sm";
-                    select_05.style.width = "200px";
-    
-                    const opt05 = document.createElement('option');
-                    opt05.value = "";
-                    opt05.text = "선택";
-                    select_05.appendChild(opt05);
-    
-                    formList.forEach(item => {
-                        const opt05 = document.createElement('option');
-                        opt05.value = item.pname;
-                        opt05.text = item.pname;  
-                        select_05.appendChild(opt05);
-                    }); 
-                    jpumnameWrap.appendChild(select_05);  
-                    jpumcode.disabled = false; // KCC 품번
-                    
-                } else {  
-                    // jpum 생성
-                    input_01.type = 'text';
-                    input_01.name = 'jpum';
-                    input_01.id = 'jpum';
-                    input_01.className = 'form-control form-control-sm';
-                    input_01.placeholder = '제품명을 직접 입력하세요';
-                    input_01.autocomplete = 'off';
-                    input_01.style.width = '200px';
-                    // jpumWrap.appendChild(input_01);
-                    // color 생성
-                    input_02.type = 'text';
-                    input_02.name = 'jgugek2';
-                    input_02.id = 'jgugek2';
-                    input_02.className = 'form-control form-control-sm';
-                    input_02.placeholder = '색상을 직접 입력하세요';
-                    input_02.autocomplete = 'off';
-                    input_02.style.width = '200px';
-                    jgugek2Wrap.appendChild(input_02);
-                    // door1 생성
-                    input_03.type = 'text';
-                    input_03.name = 'jdoor1';
-                    input_03.id = 'jdoor1';
-                    input_03.className = 'form-control form-control-sm';
-                    input_03.placeholder = 'door1을 직접 입력하세요';
-                    input_03.autocomplete = 'off';
-                    input_03.style.width = '200px';
-                    jdoor1Wrap.appendChild(input_03);
-                    // door2 생성
-                    input_04.type = 'text';
-                    input_04.name = 'jdoor2';
-                    input_04.id = 'jdoor2';
-                    input_04.className = 'form-control form-control-sm';
-                    input_04.placeholder = 'door2을 직접 입력하세요';
-                    input_04.autocomplete = 'off';
-                    input_04.style.width = '200px';
-                    jdoor2Wrap.appendChild(input_04);
-                    // jthick 생성
-                    input_06.type = 'text';
-                    input_06.name = 'jthick';
-                    input_06.id = 'jthick';
-                    input_06.className = 'form-control form-control-sm';
-                    input_06.placeholder = 'jthick을 직접 입력하세요';
-                    input_06.autocomplete = 'off';
-                    input_06.style.width = '200px';
-                    jthick2Wrap.appendChild(input_06);
-    
-                    
-                    // form 생성
-                    input_05.type = 'text';
-                    input_05.name = 'jpumname';
-                    input_05.id = 'jpumname';
-                    input_05.className = 'form-control form-control-sm';
-                    input_05.placeholder = '유형을 직접 입력하세요';
-                    input_05.autocomplete = 'off';
-                    input_05.style.width = '200px';
-                    jpumnameWrap.appendChild(input_05); 
-                    jpumcode.disabled = true; // KCC 품번
-                } 
-    
-            }
-        
+     
             function delete_btn(){             
                 if (!confirm("삭제하시겠습니까?")) {
                     return ; 
@@ -1282,18 +1020,18 @@
             document.getElementById("wjpumlistBtn").addEventListener("click",function(){   
                 searchListTot_rtn("M");  
             })
-            document.getElementById("conjpum").addEventListener("keyup", (e)=>{ 
-                if(e.keyCode === 13){  
-                    document.getElementById("wjpumlistBtn").click(); 
-                    searchListTot_rtn("M");
-                }      
-            })  
-            //popup 품목현황 검색  
-            document.getElementById("conjpum").addEventListener("keyup", (e)=>{ 
-                if(e.keyCode === 13){ 
-                    searchListTot_rtn(); 
-                }
-            }); 
+            // document.getElementById("conjpum").addEventListener("keyup", (e)=>{ 
+            //     if(e.keyCode === 13){  
+            //         document.getElementById("wjpumlistBtn").click(); 
+            //         searchListTot_rtn("M");
+            //     }      
+            // })  
+            // //popup 품목현황 검색  
+            // document.getElementById("conjpum").addEventListener("keyup", (e)=>{ 
+            //     if(e.keyCode === 13){ 
+            //         searchListTot_rtn(); 
+            //     }
+            // }); 
             
             // document.getElementById("wciflistBtn").addEventListener("click",function(){   
             //     searchListcif_rtn("M");  
@@ -1305,17 +1043,17 @@
             //     }
             // });    
             //거래처 조회 
-            document.getElementById("acode").addEventListener("click",function(){  
-                document.getElementById("incifbtn").click(); 
-                searchListcif_rtn("A"); 
+            // document.getElementById("acode").addEventListener("click",function(){  
+            //     document.getElementById("incifbtn").click(); 
+            //     searchListcif_rtn("A"); 
     
-            })  
-            document.getElementById("acode").addEventListener("keyup", (e)=>{ 
-                if(e.keyCode === 13){  
-                    document.getElementById("incifbtn").click(); 
-                    //searchListcif_rtn("A"); 
-                }
-            });    
+            // })  
+            // document.getElementById("acode").addEventListener("keyup", (e)=>{ 
+            //     if(e.keyCode === 13){  
+            //         document.getElementById("incifbtn").click(); 
+            //         //searchListcif_rtn("A"); 
+            //     }
+            // });    
     
             //품목현황 조회 
             document.getElementById("retrieveBtn").addEventListener("click",function(){  
@@ -1335,12 +1073,14 @@
                 if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                     ls_congubn = "%";            
                 }   
+                ls_j_dae = '04'
                 $.ajax({
                             url: '/app01m/index03/listmain',  
                             type:"POST",
                             data: { 
                                 "searchtxt" :arg1, 
                                 "congubn" :ls_congubn, 
+                                "j_dae" :ls_j_dae, 
                             }, 
                             async:false,
                             success:function(data){  
@@ -1583,222 +1323,7 @@
                 //   j_sr,j_ct, j_cavity, jdanwy, jbigo, w_b_gubn , jpumname, j_misayong, j_sang, jboxsu1, 
                 //   cltcd, acorp, jgumtype, jdoor1, jdoor2, j_yangsan, jolip
             function wjcodeChk_a(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27){            
-    
-    
-                const jpumWrap = document.getElementById('jpum_wrap');    
-                const jgugek2Wrap = document.getElementById('jgugek2_wrap');
-                const jpumnameWrap = document.getElementById('jpumname_wrap');
-                const jdoor1Wrap = document.getElementById('jdoor1_wrap');
-                const jdoor2Wrap = document.getElementById('jdoor2_wrap');
-                const jthickWrap = document.getElementById('jthick_wrap');
-                
-                const select_01 = document.createElement('select');  //jpum
-                const input_01 = document.createElement('input');    //jpum
-                const select_02 = document.createElement('select');  //jgugek2
-                const input_02 = document.createElement('input');    //jgugek2
-                const select_03 = document.createElement('select');  //door1
-                const input_03 = document.createElement('input');    //door1
-                const select_04 = document.createElement('select');  //door2
-                const input_04 = document.createElement('input');    //door2
-                const select_05 = document.createElement('select');  //form
-                const input_05 = document.createElement('input');    //form
-                const select_06 = document.createElement('select');  //jthick
-                const input_06 = document.createElement('input');    //jthick
-                
-                // ✅ 기존 하위 요소 제거
-                // jpumWrap.innerHTML = '';
-                jgugek2Wrap.innerHTML = '';
-                // jpumnameWrap.innerHTML = '';
-                // jdoor1Wrap.innerHTML = '';
-                // jdoor2Wrap.innerHTML = '';
-                // jthickWrap.innerHTML = '';
-                
-                // 완전히 제거
-                // while (jpumWrap.firstChild) {
-                //     jpumWrap.removeChild(jpumWrap.firstChild);
-                // }
-                while (jgugek2Wrap.firstChild) {
-                    jgugek2Wrap.removeChild(jgugek2Wrap.firstChild);
-                }
-                // while (jpumnameWrap.firstChild) {
-                //     jpumnameWrap.removeChild(jpumnameWrap.firstChild);
-                // }
-                // while (jdoor1Wrap.firstChild) {
-                //     jdoor1Wrap.removeChild(jdoor1Wrap.firstChild);
-                // }
-                // while (jdoor2Wrap.firstChild) {
-                //     jdoor2Wrap.removeChild(jdoor2Wrap.firstChild);
-                // }
-                // while (jthickWrap.firstChild) {
-                //     jthickWrap.removeChild(jthickWrap.firstChild);
-                // }
-                
-    
-                if (arg2 === '02') { 
-                    // jpum 생성 --------------------------------------
-                    select_01.name = "jpum";
-                    select_01.id = "jpum";
-                    select_01.className = "form-select form-select-sm";
-                    select_01.style.width = "200px";
-                    const dOpt = document.createElement('option'); 
-                    dOpt.value = "";
-                    dOpt.text = "선택";
-                    select_01.appendChild(dOpt);
-    
-                    productList.forEach(item => {
-                        const opt = document.createElement('option');
-                        opt.value = item.pname;
-                        opt.text = item.pname;  
-                        select_01.appendChild(opt);
-                    }); 
-                    jpumWrap.appendChild(select_01);
-                    // color 생성 --------------------------------------
-                    select_02.name = "jgugek2";
-                    select_02.id = "jgugek2";
-                    select_02.className = "form-select form-select-sm";
-                    select_02.style.width = "200px"; 
-                    const dOpt02 = document.createElement('option'); 
-                    dOpt02.value = "";
-                    dOpt02.text = "선택";
-                    select_02.appendChild(dOpt02);
-    
-                    colorList.forEach(item => {
-                        const opt02 = document.createElement('option');
-                        opt02.value = item.pname;
-                        opt02.text = item.pname;  
-                        select_02.appendChild(opt02);
-                    }); 
-                    jgugek2Wrap.appendChild(select_02);
-                    // door1 생성 --------------------------------------
-                    // select_03.name = "jdoor1";
-                    // select_03.id = "jdoor1";
-                    // select_03.className = "form-select form-select-sm";
-                    // select_03.style.width = "200px";
-    
-                    // const dOpt03 = document.createElement('option'); 
-                    // dOpt03.value = "";
-                    // dOpt03.text = "선택";
-                    // select_03.appendChild(dOpt03);
-    
-                    // door1List.forEach(item => {
-                    //     const opt03 = document.createElement('option');
-                    //     opt03.value = item.pname;
-                    //     opt03.text = item.pname;  
-                    //     select_03.appendChild(opt03);
-                    // }); 
-                    // jdoor1Wrap.appendChild(select_03);
-                    // door2 생성 --------------------------------------
-                    // select_04.name = "jdoor2";
-                    // select_04.id = "jdoor2";
-                    // select_04.className = "form-select form-select-sm";
-                    // select_04.style.width = "200px";
-    
-                    // const dOpt04 = document.createElement('option'); 
-                    // dOpt04.value = "";
-                    // dOpt04.text = "선택";
-                    // select_04.appendChild(dOpt04);
-    
-                    // door2List.forEach(item => {
-                    //     const opt04 = document.createElement('option');
-                    //     opt04.value = item.pname;
-                    //     opt04.text = item.pname;  
-                    //     select_04.appendChild(opt04);
-                    // }); 
-                    // jdoor2Wrap.appendChild(select_04);
-                    // jthick 생성 --------------------------------------
-                    // select_06.name = "jthick";
-                    // select_06.id = "jthick";
-                    // select_06.className = "form-select form-select-sm";
-                    // select_06.style.width = "200px";
-    
-                    // const dOpt06 = document.createElement('option'); 
-                    // dOpt06.value = "";
-                    // dOpt06.text = "선택";
-                    // select_06.appendChild(dOpt06);
-    
-                    // jthickList.forEach(item => {
-                    //     const opt06 = document.createElement('option');
-                    //     opt06.value = item.pname;
-                    //     opt06.text = item.pname;  
-                    //     select_06.appendChild(opt06);
-                    // }); 
-                    // jthickWrap.appendChild(select_06);
-                    // form 생성 --------------------------------------
-                    // select_05.name = "jpumname";
-                    // select_05.id = "jpumname";
-                    // select_05.className = "form-select form-select-sm";
-                    // select_05.style.width = "200px";
-    
-                    // const opt05 = document.createElement('option');
-                    // opt05.value = "";
-                    // opt05.text = "선택";
-                    // select_05.appendChild(opt05);
-    
-                    // formList.forEach(item => {
-                    //     const opt05 = document.createElement('option');
-                    //     opt05.value = item.pname;
-                    //     opt05.text = item.pname;  
-                    //     select_05.appendChild(opt05);
-                    // }); 
-                    // jpumnameWrap.appendChild(select_05); 
-                } else {  
-                    // jpum 생성
-                    input_01.type = 'text';
-                    input_01.name = 'jpum';
-                    input_01.id = 'jpum';
-                    input_01.className = 'form-control form-control-sm';
-                    input_01.placeholder = '제품명을 직접 입력하세요';
-                    input_01.autocomplete = 'off';
-                    input_01.style.width = '200px';
-                    // jpumWrap.appendChild(input_01);
-                    // color 생성
-                    input_02.type = 'text';
-                    input_02.name = 'jgugek2';
-                    input_02.id = 'jgugek2';
-                    input_02.className = 'form-control form-control-sm';
-                    input_02.placeholder = '색상을 직접 입력하세요';
-                    input_02.autocomplete = 'off';
-                    input_02.style.width = '200px';
-                    jgugek2Wrap.appendChild(input_02);
-                    // door1 생성
-                    // input_03.type = 'text';
-                    // input_03.name = 'jdoor1';
-                    // input_03.id = 'jdoor1';
-                    // input_03.className = 'form-control form-control-sm';
-                    // input_03.placeholder = 'door1을 직접 입력하세요';
-                    // input_03.autocomplete = 'off';
-                    // input_03.style.width = '200px';
-                    // jdoor1Wrap.appendChild(input_03);
-                    // door2 생성
-                    // input_04.type = 'text';
-                    // input_04.name = 'jdoor2';
-                    // input_04.id = 'jdoor2';
-                    // input_04.className = 'form-control form-control-sm';
-                    // input_04.placeholder = 'door2을 직접 입력하세요';
-                    // input_04.autocomplete = 'off';
-                    // input_04.style.width = '200px';
-                    // jdoor2Wrap.appendChild(input_04);
-                    // jthick 생성
-                    // input_06.type = 'text';
-                    // input_06.name = 'jthick';
-                    // input_06.id = 'jthick';
-                    // input_06.className = 'form-control form-control-sm';
-                    // input_06.placeholder = '유리두께를 직접 입력하세요';
-                    // input_06.autocomplete = 'off';
-                    // input_06.style.width = '200px';
-                    // jthickWrap.appendChild(input_06);
-                    // form 생성
-                    // input_05.type = 'text';
-                    // input_05.name = 'jpumname';
-                    // input_05.id = 'jpumname';
-                    // input_05.className = 'form-control form-control-sm';
-                    // input_05.placeholder = '유형을 직접 입력하세요';
-                    // input_05.autocomplete = 'off';
-                    // input_05.style.width = '200px';
-                    // jpumnameWrap.appendChild(input_05);
-                } 
-      
-    
+     
                 document.getElementById('jkey').value = arg1;  
                 document.getElementById('j_dae').value = arg2;   
                 document.getElementById('jthick').value = arg3;
@@ -1841,15 +1366,7 @@
                 }else{
                     j_jolip.checked = false; 
                 }   
-    
-                // var x = document.getElementsByName('w_b_gubn'); 
-                // for(var i=0; i<3; i++) {
-                //     if(x[i].value == arg16){
-                //         x[i].checked = true;
-                //     }else{
-                //         x[i].checked = false;
-                //     }
-                // }
+     
                 document.getElementById("w_b_gubn").value = arg16; 
                 if(arg0 == "B"){
                     $("#wjcodelist_rtn").trigger("click");
@@ -1868,12 +1385,14 @@
                 if(ls_congubn == null || ls_congubn.length == 0 || ls_congubn == ""){ 
                     ls_congubn = "%";            
                 }  
+                ls_j_dae = '04'
                 $.ajax({
                             url: '/app01m/index03/listmain',  
                             type:"POST",
                             data: { 
                                 "searchtxt" :searchCode,
                                 "congubn" :ls_congubn, 
+                                "j_dae" :ls_j_dae, 
                             }, 
                             async:false,
                             success:function(data){  
@@ -2221,65 +1740,7 @@
                 }
             
         // ####################################################################################################  
-        
-        // 우편번호  script 
-        function sample4_execDaumPostcode() {
-                new daum.Postcode({
-                    oncomplete: function(data) {
-                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-    
-                        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                        var roadAddr = data.roadAddress; // 도로명 주소 변수
-                        var extraRoadAddr = ''; // 참고 항목 변수
-    
-                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                            extraRoadAddr += data.bname;
-                        }
-                        // 건물명이 있고, 공동주택일 경우 추가한다.
-                        if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                        }
-                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                        if(extraRoadAddr !== ''){
-                            extraRoadAddr = ' (' + extraRoadAddr + ')';
-                        }
-    
-                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        document.getElementById('apost1').value = data.zonecode;
-                        document.getElementById("ajuso1").value = roadAddr;
-                        document.getElementById("ajuso2").focus();
-                        // alert(data.zonecode);
-                        // document.getElementById("ajuso2").value = data.jibunAddress;
-                        
-                        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                        // if(roadAddr !== ''){
-                        //     document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-                        // } else {
-                        //     document.getElementById("sample4_extraAddress").value = '';
-                        // }
-    
-                        // var guideTextBox = document.getElementById("guide");
-                        // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                        // if(data.autoRoadAddress) {
-                        //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                        //     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                        //     guideTextBox.style.display = 'block';
-    
-                        // } else if(data.autoJibunAddress) {
-                        //     var expJibunAddr = data.autoJibunAddress;
-                        //     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                        //     guideTextBox.style.display = 'block';
-                        // } else {
-                        //     guideTextBox.innerHTML = '';
-                        //     guideTextBox.style.display = 'none';
-                        // }
-                    }
-                }).open();
-            }
-    
+         
         // 바코드 
             function barcode_prt(){
                 // $("#bcTarget").barcode("1234567890128", "codabar");        

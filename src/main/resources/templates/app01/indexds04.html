@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout_page}"> 
+
+<head>
+    <title>KyoungDuk MES</title>
+    <style>
+        .greenText span {
+            color: #66DA26;
+        }
+
+        .redText span {
+            color: #FF0000;
+        }
+
+        .grayText span {
+            color: #8C8C8C;
+        }
+
+        .blueText span {
+            color: #4374D9;
+        }
+
+        .yellowText span {
+            color: #FFE400;
+        }
+
+        [data-ax5grid] [data-ax5grid-container="root"] [data-ax5grid-container="body"] [data-ax5grid-panel] table tr td [data-ax5grid-cellHolder] {
+            font-size: 14px;
+        }
+        .card-text{
+            margin-bottom: 10px;
+        }
+
+        .wj-flexgrid,
+        canvas.wj-flexgrid {
+            flex: 1 1 auto;
+            min-height: 0;
+            background-color: #f8f8f8;
+        }
+
+        .chart-wrapper {
+            flex: 2;
+            min-width: 0;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* 혹시 몰라서 */
+        }
+
+        /* 카드 영역: 기본은 4개씩 */
+        .dashboard{
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;               /* 카드 사이 간격 */
+        align-items: stretch;
+        }
+
+        /* 화면이 좁아지면 자동으로 3열/2열/1열 */
+        @media (max-width: 1400px){
+        .dashboard{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 1050px){
+        .dashboard{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 650px){
+        .dashboard{ grid-template-columns: 1fr; }
+        }
+
+        /* 카드가 칸 폭에 맞춰 줄어들도록(테이블 때문에 튀어나오는 것 방지) */
+        .card{
+        min-width: 0;
+        }
+
+        /* 캔버스(차트)도 컨테이너 폭에 맞추기 */
+        .chart-container{
+        width: 100%;
+        }
+        .chart-container canvas{
+        width: 100% !important;
+        height: auto !important;
+        display: block;
+        }
+        .progress-text{
+            background: #28a745;
+            color: #fff;
+            padding: 6px 0;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<th:block layout:fragment="content">
+    <div class="layout-contents">
+        <!-- <div class="page-title-wrap">
+            <div class="left">
+                <h2>생산 가동 현황</h2>
+                <a title="북마크" class="bookmark toggle">내 메뉴</a>
+            </div>
+            <ul class="page-navi">
+                <li><img src="/images/icon/ico-nav-home.svg" alt="홈아이콘"></li>
+                <li>대시보드</li>
+                <li>생산 가동 현황</li>
+            </ul>
+        </div> -->
+
+        <div class="tab-wrap">
+            <div class="tab-contents" style="display: flex; flex-direction: column; gap: 10px;">
+
+                <!-- 첫 줄 -->
+                <div style="display: flex; gap: 10px; flex: 1; min-height: 0;">
+                    <section style="flex: 1;">
+                        <div class="section-top">
+                            <div class="search-wrap">
+                                <dl>
+                                    <dt>
+                                        조회기간<span class="eq">*</span>
+                                    </dt>
+                                    <dd>
+                                        <ul class="date-box">
+                                            <li>
+                                                <input  type="datetime-local" id="startdate" name="startdate">
+                                                <label for="startdate" class="hide">시작일</label>
+                                            </li>
+                                            <li>
+                                                <input  type="datetime-local" id="enddate" name="enddate">
+                                                <label for="enddate" class="hide">종료일</label>
+                                            </li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <!-- <dl>
+                                    <dt>
+                                        <label for="inmachname">
+                                            Machine Name:<span class="eq">*</span>
+                                        </label>
+                                    </dt>
+                                    <dd>
+                                        <div class="srch-box">  
+                                            <input class="form-control2" type="text" id="inmachname" name="inmachname" 
+                                                        style="display: inline-block; width: 200px; vertical-align: middle;" /> 
+                                        </div>
+                                    </dd>
+                                </dl> -->
+                                <!-- <dl>
+                                    <dt>
+                                        <label for="inaddinfo">
+                                            Material:<span class="eq">*</span>
+                                        </label>
+                                    </dt>
+                                    <dd>
+                                        <div class="srch-box"> 
+                                            <input class="form-control2" type="text" id="inaddinfo" name="inaddinfo" 
+                                                    style="display: inline-block; width: 200px; vertical-align: middle;" /> 
+                                        </div>
+                                    </dd>
+                                </dl> 
+                                <dl>
+                                    <dt>&nbsp;</dt>
+                                    <dd>
+                                        <li>
+                                            <a class="btn btn-delete" title="검색" id="retrieveBtn"   > 
+                                                <img src="/images/icon/btn-srch.svg" alt="검색 아이콘">
+                                                검색
+                                            </a>
+                                        </li>
+                                    </dd>
+                                </dl>  -->
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <p id="selectedItem"></p> 
+                             
+
+                            <div class="dashboard">
+                                <!-- Cards for each product -->
+                                <div class="card">
+                                    <div class="card-header" id="addname0">No. 1 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart0"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState0" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty0">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty0">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty0"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature0"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp0">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp0">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount0"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime0"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime0"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-0"></div>
+                                </div>
+                        
+                                <div class="card">
+                                    <div class="card-header" id="addname1">No. 2 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart1"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState1" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty1">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty1">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty1"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature1"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp1">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp1">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount1"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime1"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime1"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-1"></div>
+                                </div>
+                        
+                                <div class="card">
+                                    <div class="card-header" id="addname2">No. 3 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart2"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table> 
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState2" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty2">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty2">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty2"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature2"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp2">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp2">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount2"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime2"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime2"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-2"></div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header" id="addname3">No. 4 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart3"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState3" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty3">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty3">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty3"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature3"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp3">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp3">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount3"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime3"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime3"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-3"></div>
+                                </div>
+                        
+
+
+                                <div class="card">
+                                    <div class="card-header" id="addname4">No. 5 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart4"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState4" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty4">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty4">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty4"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature4"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp4">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp4">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount4"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime4"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime4"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-4"></div>
+                                </div>
+                        
+                                <div class="card">
+                                    <div class="card-header" id="addname5">No. 6 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart5"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState5" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty5">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty5">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty5"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature5"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp5">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp5">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount5"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime5"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime5"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-5"></div>
+                                </div>
+                        
+                                <div class="card">
+                                    <div class="card-header" id="addname6">No. 7 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart6"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState6" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty6">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty6">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty6"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature6"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp6">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp6">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount6"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime6"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime6"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-6"></div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header" id="addname7">No. 8 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart7"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState7" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty7">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty7">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty7"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature7"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp7">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp7">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount7"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime7"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime7"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-7"></div>
+                                </div>
+                                                        
+                                <!-- Additional cards... -->
+                            </div>
+
+ 
+
+                        </div>
+ 
+                    </section> 
+                </div>
+ 
+                
+            </div>
+        </div>
+    </div>
+
+</th:block>
+ 
+<th:block layout:fragment="scripts">
+    <script src="/resource/apexcharts/apexcharts.3.26.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <th:block th:replace="/common/columns_setting :: columns_setting"></th:block> 
+
+
+    <script> 
+
+        window.onload = function() { 
+            let chartInstance; 
+            const done0 = 543;
+            const notDone0 = 0;
+     
+            function createPieChart(ctx, data, labels) {
+                return new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#FF6384', '#4BC0C0', '#FFCD56', '#4BC0C0', '#36A2EB'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+            }
+    
+                   
+          // Initialize charts  ['#FF6384', '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB'],
+            // Initialize charts
+            const chart0 = createPieChart(
+                document.getElementById('chart0').getContext('2d'),
+                [40, 60],
+                ['미완료',   '완료', ]
+            );
+    
+            const chart1 = createPieChart(
+                document.getElementById('chart1').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+     
+            const chart2 = createPieChart(
+                document.getElementById('chart2').getContext('2d'),
+                [ 25, 75],
+                ['미완료',   '완료', ]
+            );
+     
+            const chart3 = createPieChart(
+                document.getElementById('chart3').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+     
+            const chart4 = createPieChart(
+                document.getElementById('chart4').getContext('2d'),
+                [40, 60],
+                ['미완료',   '완료', ]
+            );
+    
+            const chart5 = createPieChart(
+                document.getElementById('chart5').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+     
+            const chart6 = createPieChart(
+                document.getElementById('chart6').getContext('2d'),
+                [ 25, 75],
+                ['미완료',   '완료', ]
+            );
+     
+            const chart7 = createPieChart(
+                document.getElementById('chart7').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+     
+            // const chart8 = createPieChart(
+            //     document.getElementById('chart8').getContext('2d'),
+            //     [30, 70],
+            //     ['미완료',   '완료', ]
+            // );
+    
+            function convert_date(arg_date){  
+                var ls_arg_date = String(arg_date); 
+                if(ls_arg_date == null || ls_arg_date.length == 0 || ls_arg_date == ""|| ls_arg_date == "null"){  
+                    return "";
+                }  
+                // Date 객체로 변환
+                const dateObj = new Date(arg_date);
+    
+                // 년, 월, 일 추출 (월은 0부터 시작하므로 +1 필요)
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+    
+    
+                // 시간과 분 추출
+                const hours = String(dateObj.getHours()).padStart(2, '0');
+                const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    
+                // "YYYY-MM-DD" 형식으로 변환
+                const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+                arg_date = formattedDate; 
+                return arg_date; 
+            }
+    
+     
+        }
+       
+        function updateCardData(machineId, data) {
+            document.getElementById(`status${machineId}`).textContent = data.status;
+            document.getElementById(`current${machineId}`).textContent = data.current;
+            document.getElementById(`remaining${machineId}`).textContent = data.remaining;
+            document.getElementById(`cavity${machineId}`).textContent = data.cavity;
+            document.getElementById(`process${machineId}`).textContent = data.process;
+            document.getElementById(`yield${machineId}`).textContent = data.yield;
+        }
+    
+        async function fetchData() {
+            // Example fetch logic
+               
+            var wtab01_data = []; 
+            var cnt = 0;
+            const response = await fetch('/appcms/addlistinfo'); // Replace with actual API endpoint
+            const data = await response.json();
+            // console.log(data)
+            for (var i = 0; i < data.length; i++) {
+                if(data[i]["mold_Temperature_1"] + 
+                   data[i]["mold_Temperature_2"] + 
+                   data[i]["mold_Temperature_3"] + 
+                   data[i]["mold_Temperature_4"] + 
+                   data[i]["mold_Temperature_5"] + 
+                   data[i]["mold_Temperature_6"] == 0){
+                    continue
+                }
+                wtab01_data.push({
+                    id: i, 
+                    index: cnt,
+                    machine_name: data[i]["machine_name"], 
+                    additional_Info_1: data[i]["additional_Info_1"], 
+                    status: data[i]["status"], 
+                    wotqty: data[i]["wotqty"], 
+                    mold_Temperature_1: data[i]["mold_Temperature_1"], 
+                    mold_Temperature_2: data[i]["mold_Temperature_2"], 
+                    mold_Temperature_3: data[i]["mold_Temperature_3"], 
+                    mold_Temperature_4: data[i]["mold_Temperature_4"], 
+                    mold_Temperature_5: data[i]["mold_Temperature_5"], 
+                    mold_Temperature_6: data[i]["mold_Temperature_6"], 
+                    cavity: data[i]["cavity"], 
+                    operatingTimeHours: data[i]["operatingTimeHours"], 
+                    idleTimeMinute: data[i]["idleTimeMinute"],  
+                    starttime: data[i]["starttime"],  
+                    endtime: data[i]["endtime"],   
+                    
+                });
+            }
+            const startdate = document.getElementById(`startdate`);
+            const enddate = document.getElementById(`enddate`);
+    
+            // 날짜 문자열을 `datetime-local` 형식으로 변환
+            const date01 = new Date(data[0].starttime);
+            const date02 = new Date(data[0].endtime);
+    
+            // 로컬 시간으로 변환 (YYYY-MM-DD HH:mm:ss 형식)
+            const localDate01 = date01.getFullYear() +
+                "-" +
+                String(date01.getMonth() + 1).padStart(2, "0") +
+                "-" +
+                String(date01.getDate()).padStart(2, "0") +
+                " " +
+                String(date01.getHours()).padStart(2, "0") +
+                ":" +
+                String(date01.getMinutes()).padStart(2, "0") +
+                ":" +
+                String(date01.getSeconds()).padStart(2, "0");
+            // 로컬 시간으로 변환 (YYYY-MM-DD HH:mm:ss 형식)
+            const localDate02 = date02.getFullYear() +
+                "-" +
+                String(date02.getMonth() + 1).padStart(2, "0") +
+                "-" +
+                String(date02.getDate()).padStart(2, "0") +
+                " " +
+                String(date02.getHours()).padStart(2, "0") +
+                ":" +
+                String(date02.getMinutes()).padStart(2, "0") +
+                ":" +
+                String(date02.getSeconds()).padStart(2, "0");
+     
+            // datetime-local 형식으로 변환 (YYYY-MM-DDTHH:mm) 
+             startdate.value = localDate01.replace(" ", "T").slice(0, 16);
+             enddate.value = localDate02.replace(" ", "T").slice(0, 16); 
+            for (var i = 0; i < wtab01_data.length; i++) {
+                
+                const element = document.getElementById(`addname${i}`);
+                const machine = document.getElementById(`machineState${i}`);
+                const planqty = document.getElementById(`plannedQty${i}`);
+                const proqty = document.getElementById(`producedQty${i}`);
+                const defqty = document.getElementById(`defectiveQty${i}`);
+                const temp = document.getElementById(`temperature${i}`);
+                const onsutemp = document.getElementById(`onsutemp${i}`);
+                const drytemp = document.getElementById(`drytemp${i}`);
+                const cavity = document.getElementById(`cavityCount${i}`);
+                const opertime = document.getElementById(`operatingTime${i}`);
+                const idletime = document.getElementById(`idleTime${i}`); 
+                
+                 
+                if (element) { // Check if the element exists
+                    element.innerHTML = `${wtab01_data[i].machine_name}호기  ${wtab01_data[i].additional_Info_1}`;
+                } else {
+                    console.warn(`Element with id addname${i} not found.`);
+                } 
+                if (machine) { // Check if the element exists
+                    machine.innerHTML = `${wtab01_data[i].status}`;
+                } else {
+                    console.warn(`Element with id machine${i} not found.`);
+                } 
+                if (planqty) { // Check if the element exists
+                    planqty.innerHTML = `0`;
+                } else {
+                    console.warn(`Element with id planqty${i} not found.`);
+                } 
+                if (proqty) { // Check if the element exists
+                    proqty.innerHTML = `${wtab01_data[i].wotqty}`;
+                } else {
+                    console.warn(`Element with id wotqty${i} not found.`);
+                } 
+                if (defqty) { // Check if the element exists
+                    defqty.innerHTML = `0`;
+                } else {
+                    console.warn(`Element with id defqty${i} not found.`);
+                } 
+                if (temp) { // Check if the element existsmold_Temperature_1
+                    temp.innerHTML = `${wtab01_data[i].mold_Temperature_1} ( ${wtab01_data[i].mold_Temperature_2} ) ${wtab01_data[i].mold_Temperature_3} (${wtab01_data[i].mold_Temperature_4})`;
+                } else {
+                    console.warn(`Element with id mold_Temperature_1${i} not found.`);
+                } 
+                if (onsutemp) { // Check if the element existsmold_Temperature_1
+                    onsutemp.innerHTML = `${wtab01_data[i].mold_Temperature_5}`;
+                } else {
+                    console.warn(`Element with id onsutemp${i} not found.`);
+                } 
+                if (drytemp) { // Check if the element existsmold_Temperature_1
+                    drytemp.innerHTML = `${wtab01_data[i].mold_Temperature_6}`;
+                } else {
+                    console.warn(`Element with id drytemp${i} not found.`);
+                } 
+                if (cavity) { // Check if the element existsmold_Temperature_1
+                    cavity.innerHTML = `${wtab01_data[i].cavity}`;
+                } else {
+                    console.warn(`Element with id cavity${i} not found.`);
+                } 
+                if (opertime) { // Check if the element existsmold_Temperature_1
+                    opertime.innerHTML = `${wtab01_data[i].operatingTimeHours}시간`;
+                } else {
+                    console.warn(`Element with id opertime${i} not found.`);
+                } 
+                if (idletime) { // Check if the element existsmold_Temperature_1
+                    idletime.innerHTML = `${wtab01_data[i].idleTimeMinute}분`;
+                } else {
+                    console.warn(`Element with id idletime${i} not found.`);
+                } 
+            }
+              
+            // Update data for each machine
+            // updateCardData(7, data.machine7);
+            // updateCardData(8, data.machine8);
+            // Add more machines as needed
+        }
+    
+        setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    
+        // Update current time every second
+        function updateTime() {
+            const el = document.getElementById('current-time');
+            if (!el) return;               // ★ 없으면 그냥 종료
+            el.textContent = new Date().toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        
+
+        function updateProgress(cardIndex, completed, incomplete) {
+            const el = document.getElementById(`progress-${cardIndex}`);
+            if (!el) return;
+
+            const total = completed + incomplete;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+            el.textContent = `${percent}% Completed`;
+        }
+
+    
+        // Fetch initial data
+        fetchData();     
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    
+    
+    $(document).ready(function() {   
+            // init()          
+            // getToday() 
+            // $('datetimepicker').datetimepicker({
+                
+            // }); 
+    
+            // $("#frdate").change(function(e){ 
+            //     // console.log("달력클릭");
+            //     // console.log(convert_time(e.timestamp));
+            // })
+            // $("#todate").change(function(e){ 
+            //     // console.log("달력클릭");
+            //     // console.log(convert_time(e.timestamp));
+            // })
+       })    
+        function init(){ 
+                
+                wfrdate = new wijmo.input.InputDateTime('#startdate', {
+                    isRequired: false,
+                    value: null,
+                    placeholder: '',
+                    format: 'yyyy-MM-dd HH:mm', 
+                });
+                wtodate = new wijmo.input.InputDateTime('#enddate', {
+                    isRequired: false,
+                    value: null,
+                    placeholder: '',
+                    format: 'yyyy-MM-dd HH:mm', 
+                }); 
+    
+                var result = new Date();
+                result.setHours(result.getHours() + 9); 
+                var ls_date01 = result.toISOString().substring(0,10);    
+                
+                // ls_date02 값을 날짜와 시간을 "23:59"로 설정
+                
+                // result.setHours(result.getHours() + 10); 
+                var today = new Date();
+                today.setHours(23, 59, 0, 0); // 시간: 23, 분: 59, 초: 0, 밀리초: 0 
+                var ls_date02 = today.toISOString().substring(0, 10) + " " + today.toTimeString().substring(0, 5); 
+                              
+                wfrdate.value = ls_date01;   
+                wtodate.value = ls_date02;  
+                
+        } 
+        
+    
+    
+        function getToday(){
+            let today = new Date();   
+    
+            let year = today.getFullYear(); // 년도
+            let month = today.getMonth() + 1;  // 월
+            let date = today.getDate();  // 날짜
+            let day = today.getDay();  // 요일
+            if(month > 0 && month < 10) {month = "0" + month};
+            if(date > 0 && date < 10) {date = "0" + date};
+            let ls_frday = year + '-' + month + '-01'  
+            let ls_today = year + '-' + month + '-' + date 
+            document.getElementById('frdate').value = ls_frday;  
+            document.getElementById('todate').value = ls_today;
+            
+            // document.getElementById('todate').value = ls_today;
+        }
+    
+        function convert_time(timestamp){ 
+            //현재시간
+            var date = new Date(timestamp); 
+            var year = date.getFullYear();
+            var month = ("0" + (1 + date.getMonth())).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2); 
+            var hh = date.getHours();  
+            var min = ('0' + date.getMinutes()).slice(-2) 
+            time = year +  month +  day   ;
+            return time;  
+        } 
+     
+     
+        function logout(){   
+          var ip_addr = "" ;
+          if (!confirm("로그아웃하시겠습니까?") ){
+              return    
+          } 
+          var ls_loginid   = localStorage.getItem("userid"); 
+              ip_addr = document.getElementById('ipaddr').value; 
+          $.ajax({
+              url: '/authcrud/logoutlog',
+              type:"POST",
+              data: {
+                  "loginid" : ls_loginid ,
+                  "ipaddr" : ip_addr ,
+              },
+              async:false,
+              success:function(){
+                      console.log('success');
+              }
+          });
+          localStorage.removeItem("perid");
+          localStorage.removeItem("pernm");
+          localStorage.removeItem("userid");
+          localStorage.removeItem("flag");
+          localStorage.removeItem("custnm") ;
+          location.href = "/" ;
+      }   
+    
+     
+    
+        </script>
+ 
+</th:block>
+
+</html>

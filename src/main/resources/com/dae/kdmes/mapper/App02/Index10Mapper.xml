@@ -801,7 +801,7 @@
                   from  TB_CA609 A WITH (NOLOCK)
                   LEFT JOIN JCODE B ON A.pcode = B.jkey
                   LEFT JOIN TB_JSTOCK D ON D.jkey = B.jkey
-                  where  isnull(A.pcode,'')  Like #{pcode} + '%'
+                  where  A.pname Like (#{pcode} + '%')
                     AND  A.baldate between #{frdate} and #{todate}
 					group by A.pcode, A.pname, A.PSIZE
                   ORDER BY  A.pcode, A.pname, A.PSIZE

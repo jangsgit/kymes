@@ -1345,14 +1345,26 @@
               cols.binding = 'ibgdate';
               cols.header = '입고일자';
               cols.align = "center";
-              cols.width = 150;           
+              cols.width = 150;   
+              cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                  text: '<b>${item.ibgdate}</b>',
+                  click: (e, ctx) => {
+                      wcifChk3_a(ctx.item.ibgdate, ctx.item.ibgnum, ctx.item.cltcd, ctx.item.acorp, ctx.item.pcode ,ctx.item.pname, ctx.item.psize, ctx.item.punit, ctx.item.qty,  ctx.item.uamt, ctx.item.samt, ctx.item.perid, ctx.item.pernm, ctx.item.remark, ctx.item.lotno, ctx.item.istore, ctx.item.ostore, ctx.item.cqty, ctx.item.wonflag);                    
+                  }
+              });        
               wtab01Grid.columns.push(cols);  
   
               cols = new wijmo.grid.Column(); 
               cols.binding = 'acorp';
               cols.header = '거래처';
               cols.align = "left";
-              cols.width = 180;           
+              cols.width = 180;      
+              cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                  text: '<b>${item.acorp}</b>',
+                  click: (e, ctx) => {
+                      wcifChk3_a(ctx.item.ibgdate, ctx.item.ibgnum, ctx.item.cltcd, ctx.item.acorp, ctx.item.pcode ,ctx.item.pname, ctx.item.psize, ctx.item.punit, ctx.item.qty,  ctx.item.uamt, ctx.item.samt, ctx.item.perid, ctx.item.pernm, ctx.item.remark, ctx.item.lotno, ctx.item.istore, ctx.item.ostore, ctx.item.cqty, ctx.item.wonflag);                    
+                  }
+              });     
               wtab01Grid.columns.push(cols);  
   
               var cols = new wijmo.grid.Column(); 

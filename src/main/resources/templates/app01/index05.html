@@ -89,7 +89,7 @@
                 <!-- Section -->
                 <section class="tab-item" id="tab1"> 
                     <div style="display: flex; gap: 5px">
-                        <section class="section" style="width: 35%;">
+                        <section class="section" style="width: 45%;">
                             <div class="section-top">
                                 <div class="search-wrap">
                                 <dl>
@@ -126,7 +126,7 @@
                         </div>
                         </section> 
 
-                        <section style="width: 65%;">
+                        <section style="width: 55%;">
                             <div class="section-top">
                             <div class="search-wrap">
                                 <ul>
@@ -233,7 +233,7 @@
                                             <label for="w_b_gubn"  >품목분류</label>
                                         </th>
                                         <td>
-                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn" disabled>
+                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn"  style="width: 70%;" disabled>
                                               <option value="J" checked>제품</option>
                                               <option value="W">원자재</option>
                                               <option value="B">부자재</option>
@@ -248,14 +248,14 @@
                                             <label for="jgugek"  >규격</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jgugek" name="jgugek" style="width: 70%;" >
+                                            <input type="text" id="jgugek" name="jgugek" style="width: 60%;" >
                                         </td>
                                         <th>
                                             <label for="jpum"  >제품명</label>
                                         </th>
                                         <td>
                                             <div class="input_wrap" style="max-width: 225px;"  id="jpum_wrap"> 
-                                                <select th:field="*{jpumList}" name="jpum" id="jpum">
+                                                <select th:field="*{jpumList}" name="jpum" id="jpum"  style="width: 70%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${jpumList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>                                              
@@ -268,7 +268,7 @@
                                             <label for="jgumtype"  >금형코드</label>
                                         </th>
                                         <td  >
-                                            <input type="text" id="jgumtype" name="jgumtype"   style="width: 50%;">
+                                            <input type="text" id="jgumtype" name="jgumtype"   style="width: 60%;">
                                         </td> 
                                         <th>
                                             <label for="jgugek2"  >색상</label>
@@ -288,7 +288,7 @@
                                         </th>
                                         <td >
                                             <div class="input_wrap"  id="jpumname_wrap">     
-                                                <select th:field="*{formList}" name="jpumname" id="jpumname"  style="width: 70%;">  
+                                                <select th:field="*{formList}" name="jpumname" id="jpumname"  style="width: 60%;">  
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${formList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>    
@@ -312,7 +312,7 @@
                                         </th>
                                         <td >
                                             <div class="input_wrap"  id="jdoor2_wrap">      
-                                                <select th:field="*{door2List}" name="jdoor2" id="jdoor2" style="width: 70%;">
+                                                <select th:field="*{door2List}" name="jdoor2" id="jdoor2" style="width: 60%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${door2List}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>    
@@ -335,7 +335,7 @@
                                             <label for="j_cavity"  >CAVITY</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="j_cavity" name="j_cavity" style="width: 70%;"  >
+                                            <input type="text" id="j_cavity" name="j_cavity" style="width: 60%;"  >
                                         </td>
                                         <th>
                                             <label for="j_sr"  >스프루</label>
@@ -349,7 +349,7 @@
                                             <label for="jboxsu1"  >적입수량</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jboxsu1" name="jboxsu1" style="width: 70%;"  >
+                                            <input type="text" id="jboxsu1" name="jboxsu1" style="width: 60%;"  >
                                         </td>
                                         <th>
                                             <label for="jpumcode"  >KCC품번</label>
@@ -363,7 +363,7 @@
                                             <label for="jsayang"  >포장박스규격</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jsayang" name="jsayang" style="width: 70%;"  >
+                                            <input type="text" id="jsayang" name="jsayang" style="width: 60%;"  >
                                         </td>
                                         <th>
                                             <label for="j_ct"  >C/T</label>
@@ -377,7 +377,7 @@
                                             <label for="jdanwy"  >기본단위</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 70%;"  >
+                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 60%;"  >
                                         </td>
                                         <th>
                                             <label for="jbigo"  >비고</label>
@@ -391,7 +391,7 @@
                                             <label for="acode"  >거래처명</label>
                                         </th>
                                         <td colspan="2">
-                                            <input type="text" id="acode" name="acode" style="width: 70%;"  >  
+                                            <input type="text" id="acode" name="acode" style="width: 60%;"  >  
                                             &nbsp;
                                             <a class="btn btn-delete" title="거래처검색" id="btnCifinfoSearch"
                                                 style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">

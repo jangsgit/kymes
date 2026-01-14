@@ -84,7 +84,7 @@
               <!-- Section -->
               <section class="tab-item" id="tab1"> 
                   <div style="display: flex; gap: 5px">
-                      <section class="section" style="width: 35%;">
+                      <section class="section" style="width: 70%;">
                           <div class="section-top">
                               <div class="search-wrap">
                               <dl>
@@ -127,7 +127,7 @@
                       </div>
                       </section> 
 
-                      <section style="width: 65%;">
+                      <section style="width: 30%;">
                           <div class="section-top">
                               <div class="search-wrap">
                                   <ul>
@@ -173,9 +173,7 @@
                                   <caption style="text-align: left; margin-bottom: 8px;">등록테이블</caption>
                                   <colgroup>
                                       <col class="wp20">
-                                      <col class="wp30">
-                                      <col class="wp20">
-                                      <col class="wp30">
+                                      <col class="wp30"> 
                                   </colgroup>
                                   <input type="hidden" id="id" name="id"/>  
                                   <input  id="acorp1" type="hidden"  />
@@ -198,14 +196,16 @@
                                       <td> 
                                       <input type="date" id="ibgdate" name="ibgdate"  style="width: 70%;"  >
                                       </td>
-                                      <th>
-                                      <label for="com_cnam02"><span class="eq">*</span>LOTNO</label>
-                                      </th>
-                                      <td>
-                                          <div class="d-flex gap-2 align-items-end"> 
+                                  </tr>
+                                  <tr> 
+                                    <th>
+                                    <label for="com_cnam02"><span class="eq">*</span>LOTNO</label>
+                                    </th>
+                                    <td>
+                                        <div class="d-flex gap-2 align-items-end"> 
                                             <input type="text" id="lotno" name="lotno"  style="width: 70%;"  >
-                                          </div>
-                                      </td> 
+                                        </div>
+                                    </td> 
                                   </tr>
                                   <tr>
                                       <th>
@@ -220,7 +220,9 @@
                                               style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
                                       </a>
                                       </td>
-                                      <th>
+                                  </tr>
+                                  <tr> 
+                                    <th>
                                         <label for="pname" id="pname_txt"><span class="eq">*</span>품목명</label>
                                       </th>
                                       <td>
@@ -240,12 +242,14 @@
                                       <td>
                                           <input type="text" id="psize" name="psize" style="width: 70%;" >                                    
                                       </td>
-                                      <th>
-                                      <label for="punit" id="punit_txt">단위</label>
-                                      </th>
-                                      <td>
-                                      <input type="text" id="punit" name="punit" style="width: 70%;" >
-                                      </td> 
+                                  </tr>
+                                  <tr> 
+                                    <th>
+                                        <label for="punit" id="punit_txt">단위</label>
+                                        </th>
+                                        <td>
+                                        <input type="text" id="punit" name="punit" style="width: 70%;" >
+                                        </td> 
                                   </tr>
                                   <tr>
                                       <th>
@@ -254,19 +258,21 @@
                                       <td>
                                           <input type="number" id="qty" name="qty" style="width: 70%;" >          
                                       </td>
-                                      <th>
-                                      <label for="cqty" id="cqty_txt">출고수량</label>
-                                      </th>
-                                      <td>
-                                          <input type="number" id="cqty" name="cqty" style="width: 70%;" disabled>          
-                                      </td>
+                                  </tr>
+                                  <tr> 
+                                    <th>
+                                        <label for="cqty" id="cqty_txt">출고수량</label>
+                                        </th>
+                                        <td>
+                                            <input type="number" id="cqty" name="cqty" style="width: 70%;" disabled>          
+                                        </td>
                                   </tr>
                                   <tr>
                                     <th>
                                     <label for="pernm" id="pernm_txt">담당자</label>
                                     </th>
                                     <td>
-                                    <input type="text" id="pernm" name="pernm" style="width: 50%;" >
+                                    <input type="text" id="pernm" name="pernm" style="width: 70%;" >
                                     &nbsp;
                                     <a class="btn btn-delete" title="담당자검색" id="btnPernminfoSearch"
                                         style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">
@@ -274,17 +280,19 @@
                                             style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
                                     </a>
                                     </td> 
-                                      <th>
-                                      <label for="wonflag" id="wonflag_txt">자재구분</label>
-                                      </th>
-                                      <td>
-                                        <select  name="wonflag" id="wonflag" style="width: 70%;">
-                                            <option value="%">선택</option>
-                                            <option value="1" th:text="원재료"></option>
-                                            <option value="2" th:text="부재료"></option>
-                                        </select>                                   
-                                      </td> 
                                   </tr> 
+                                  <tr> 
+                                    <th>
+                                        <label for="wonflag" id="wonflag_txt">자재구분</label>
+                                        </th>
+                                        <td>
+                                          <select  name="wonflag" id="wonflag" style="width: 70%;">
+                                              <option value="%">선택</option>
+                                              <option value="1" th:text="원재료"></option>
+                                              <option value="2" th:text="부재료"></option>
+                                          </select>                                   
+                                        </td> 
+                                  </tr>
                                   <tr>
                                       <th>
                                       <label for="remark" id="remark_txt">비고</label>

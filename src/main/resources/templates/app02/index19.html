@@ -72,7 +72,7 @@
                 <!-- Section -->
                 <section class="tab-item" id="tab1"> 
                     <div style="display: flex; gap: 5px">
-                        <section class="section" style="width: 35%;">
+                        <section class="section" style="width: 55%;">
                             <div class="section-top">
                                 <div class="search-wrap">
                                 <dl>
@@ -115,7 +115,7 @@
                         </div>
                         </section> 
 
-                        <section style="width: 65%;">
+                        <section style="width: 45%;">
                             <div class="section-top">
                                 <div class="search-wrap">
                                     <ul>
@@ -161,9 +161,7 @@
                                     <caption style="text-align: left; margin-bottom: 8px;">등록테이블</caption>
                                     <colgroup>
                                         <col class="wp20">
-                                        <col class="wp30">
-                                        <col class="wp20">
-                                        <col class="wp30">
+                                        <col class="wp30"> 
                                     </colgroup>
                                     <input type="hidden" id="id" name="id"/>                                                                      
                                     <input  id="cltnm" type="hidden"    >
@@ -184,19 +182,21 @@
                                         <label for="ibgdate"><span class="eq">*</span>등록일자</label>
                                         </th>
                                         <td> 
-                                        <input type="date" id="ibgdate" name="ibgdate"  style="width: 100%;"  >
+                                        <input type="date" id="ibgdate" name="ibgdate"  style="width: 60%;"  >
                                         </td>
+                                    </tr>
+                                    <tr> 
                                         <th>
-                                        <label for="com_cnam02"><span class="eq">*</span>구분</label>
-                                        </th>
-                                        <td>
-                                            <div class="d-flex gap-2 align-items-end"> 
-                                                <select  name="wonflag" id="wonflag"> 
-                                                    <option value="0" th:text="입고"></option>
-                                                    <option value="1" th:text="출고"></option>
-                                                </select>
-                                            </div>
-                                        </td> 
+                                            <label for="com_cnam02"><span class="eq">*</span>구분</label>
+                                            </th>
+                                            <td>
+                                                <div class="d-flex gap-2 align-items-end"> 
+                                                    <select  name="wonflag" id="wonflag" style="width: 60%;"> 
+                                                        <option value="0" th:text="입고"></option>
+                                                        <option value="1" th:text="출고"></option>
+                                                    </select>
+                                                </div>
+                                            </td> 
                                     </tr>
                                     <tr>
                                         <th>
@@ -210,26 +210,30 @@
                                             <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"
                                                 style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
                                         </a>
-                                        </td>
+                                        </td> 
+                                    </tr>
+                                    <tr> 
                                         <th>
                                         <label for="pname" id="pname_txt">품목명</label>
                                         </th>
                                         <td>
-                                        <input type="text" id="pname" name="pname" style="width: 100%;" disabled >
-                                        </td> 
+                                        <input type="text" id="pname" name="pname" style="width: 60%;" disabled >
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>
                                         <label for="psize" id="psize_txt">규격</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="psize" name="psize" style="width: 100%;" >                                    
+                                            <input type="text" id="psize" name="psize" style="width: 60%;" >                                    
                                         </td>
+                                    </tr>
+                                    <tr> 
                                         <th>
                                         <label for="punit" id="punit_txt">단위</label>
                                         </th>
                                         <td>
-                                        <input type="text" id="punit" name="punit" style="width: 100%;" >
+                                        <input type="text" id="punit" name="punit" style="width: 60%;" >
                                         </td> 
                                     </tr>
                                     <tr>
@@ -237,27 +241,29 @@
                                         <label for="qty" id="qty_txt"><span class="eq">*</span>수량</label>
                                         </th>
                                         <td>
-                                            <input type="number" id="qty" name="qty" style="width: 100%;" >          
-                                        </td>
+                                            <input type="number" id="qty" name="qty" style="width: 60%;" >          
+                                        </td> 
+                                    </tr>
+                                    <tr> 
                                         <th>
                                         <label for="pernm" id="pernm_txt">담당자</label>
                                         </th>
                                         <td>
-                                        <input type="text" id="pernm" name="pernm" style="width: 50%;" >
+                                        <input type="text" id="pernm" name="pernm" style="width: 60%;" >
                                         &nbsp;
                                         <a class="btn btn-delete" title="담당자검색" id="btnPernminfoSearch"
                                             style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">
                                             <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"
                                                 style="width: 20px; height: 20px; display: block; margin-left: -9px;" />
                                         </a>
-                                        </td> 
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>
                                         <label for="remark" id="remark_txt">비고</label>
                                         </th>
                                         <td colspan="3">
-                                            <input type="text" id="remark" name="remark" style="width: 100%;" >          
+                                            <input type="text" id="remark" name="remark" style="width: 60%;" >          
                                         </td> 
                                     </tr> 
                         

@@ -89,7 +89,7 @@
                 <!-- Section -->
                 <section class="tab-item" id="tab1"> 
                     <div style="display: flex; gap: 5px">
-                        <section class="section" style="width: 45%;">
+                        <section class="section" style="width: 65%;">
                             <div class="section-top">
                                 <div class="search-wrap"> 
                                     <dl>
@@ -135,7 +135,7 @@
                         </div>
                         </section> 
 
-                        <section style="width: 55%;">
+                        <section style="width: 35%;">
                             <div class="section-top">
                             <div class="search-wrap">
                                 <ul>
@@ -181,9 +181,7 @@
                                 <caption style="text-align: left; margin-bottom: 8px;">등록테이블</caption>
                                 <colgroup>
                                     <col class="wp20">
-                                    <col class="wp30">
-                                    <col class="wp20">
-                                    <col class="wp30">
+                                    <col class="wp30"> 
                                 </colgroup>
                                 <input type="hidden" id="id" name="id"/> 
                                 <input type="hidden" id="jgumtype"   /> <!---  금형코드  -->
@@ -214,61 +212,66 @@
                                             <label for="com_cls02"><span class="eq">*</span>대분류</label>
                                         </th>
                                         <td >
-                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 100%;" onchange="handleItemCategoryChange()"   disabled  >
+                                            <select th:field="*{j1_keyList}" name="j_dae" id="j_dae" style="width: 80%;" onchange="handleItemCategoryChange()"   disabled  >
                                                 <option value="">선택</option>
                                                 <option th:each="val : ${j1_keyList}" th:value="${val.j1_key}" th:text="${val.j1_name}" >
                                             </select>    
                                         </td>
+                                    </tr> 
+                                    <tr> 
                                         <th>
                                             <label for="w_b_gubn"  >품목분류</label>
                                         </th>
                                         <td>
-                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn"  style="width: 70%;" > 
+                                            <select class="form-select" id="w_b_gubn" name="w_b_gubn"  style="width: 80%;" > 
                                                 <option value="H" checked>예비부품</option>
                                                 <option value="G">기타</option>
                                             </select>
                                         </td>
-                                    </tr> 
+                                    </tr>
                                     <tr>
                                         <th>
                                             <label for="jpum"  >제품명</label>
                                         </th>
                                         <td>
                                             <div class="input_wrap" style="max-width: 225px;"  id="jpum_wrap"> 
-                                                <select th:field="*{jpumList}" name="jpum" id="jpum" style="width: 100%;">
+                                                <select th:field="*{jpumList}" name="jpum" id="jpum" style="width: 80%;">
                                                     <option value="">선택</option>
                                                     <option th:each="val : ${jpumList}" th:value="${val.pcode}" th:text="${val.pname}">
                                                 </select>                                              
                                             </div>
-                                        </td>
+                                        </td>                        
+                                    </tr> 
+                                    <tr>                                        
                                         <th>
                                             <label for="jgugek"  >규격</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jgugek" name="jgugek" style="width: 70%;" >
+                                            <input type="text" id="jgugek" name="jgugek" style="width: 80%;" >
                                         </td>
-                        
-                                    </tr> 
+                                    </tr>
                                     <tr>
                                         <th>
                                             <label for="jgugek2"  >구분</label>
                                         </th>
                                         <td  > 
                                             <div class="input_wrap" style="max-width: 225px;"    id="jgugek2_wrap"> 
-                                                <select th:field="*{colorList}" name="jgugek2" id="jgugek2" style="width: 100%;">
+                                                <select th:field="*{colorList}" name="jgugek2" id="jgugek2" style="width: 80%;">
                                                     <option value="">선택</option>
                                                     <option value="01" text="금형"></option>
                                                     <option value="02" text="설비"></option>
                                                 </select>                                              
                                             </div>   
                                         </td> 
+                                    </tr>  
+                                    <tr>                                        
                                         <th>
                                             <label for="jdanwy"  >기본단위</label>
                                         </th>
                                         <td>
-                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 70%;"  >
+                                            <input type="text" id="jdanwy" name="jdanwy" style="width: 80%;"  >
                                         </td>
-                                    </tr>  
+                                    </tr>
                                 </tbody>
                                 </table>
                             </form>
@@ -453,9 +456,31 @@
                                 wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
                             }
                         })
-                    },   
-                    { binding: 'w_b_gubnnm', header: '품목분류', align: "center", width: 100 },  
-                    { binding: 'jgugek', header: '규격', align: "center", width: 200 },   
+                    },    
+                    {
+                        binding: 'w_b_gubnnm',
+                        width: 100,
+                        header: '품목분류', 
+                        align:"center",
+                        cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                            text: '<b>${item.w_b_gubnnm}</b>',
+                            click: (e, ctx) => {
+                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
+                            }
+                        })
+                    },      
+                    {
+                        binding: 'jgugek',
+                        width: 200,
+                        header: '규격', 
+                        align:"center",
+                        cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                            text: '<b>${item.jgugek}</b>',
+                            click: (e, ctx) => {
+                                wjcodeChk_a("A", ctx.item.jkey, ctx.item.j_dae, ctx.item.jthick, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname, ctx.item.j_misayong, ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);
+                            }
+                        })
+                    },        
                     { binding: 'jgugek2nm', header: '구분', align: "center", width: 100 },   
                     { binding: 'jdanwy', header: '단위', align: "center", width: 100 },                                     
                     
@@ -702,54 +727,12 @@
         
 
 
-
-            // 거래처현황 리스트     
-            // // ################################################################ 
-            view_p01tab03page = new wijmo.collections.CollectionView(getData_wlist2(), {
-                sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
-                //pageSize: 21
-            });      
-            wtab03Grid = new wijmo.grid.FlexGrid('#wtab03Grid_div', {  
-                autoGenerateColumns: false,
-                isReadOnly: false, 
-                allowSorting: 'MultiColumn',
-                selectionMode: 'RowRange',
-                alternatingRowStep: 0,
-                columns: [     
-                    { binding: 'acode', header: '코드', align: "center", width: 80 },
-                    { binding: 'acorp', header: '거래처명', align: "center", width: 200 },
-                ], 
-                itemsSource: view_p01tab03page
-            });  
-            wtab03Grid.showMarquee = true; 
-            wijmo.toggleClass(wtab03Grid.hostElement, 'highlightActive', true);
-            wtab03Grid.focus();
-            // 거래처 데이터 수집
-            function getData_wlist2(){   
-                var winname_data = []; 
-                var cnt = 1;
-                for (var i = 0; i < 12; i++) {
-                    winname_data.push({
-                        id: i, 
-                        index: cnt,
-                        acode:"",
-                        acorp: "",                            
-                    });
-                    cnt++;
-                }    
-                return winname_data;                                      
-            }  
-            setHeaderColumn03(false);
-            function setHeaderColumn03(headerOn) {
-                wtab03Grid.headersVisibility = headerOn
-                ? wijmo.grid.HeadersVisibility.All
-                : wijmo.grid.HeadersVisibility.Column; 
-            }  
-
+ 
 
             
             document.getElementById('j_dae').value =  "03"; 
             handleItemCategoryChange()
+            clear_rtn()
             
 
 
@@ -1435,14 +1418,28 @@
             cols.binding = 'w_b_gubnnm';
             cols.header = '품목분류';
             cols.align = "center";
-            cols.width = 100;                  
+            cols.width = 100;     
+            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                text: '<b>${item.w_b_gubnnm}</b>',
+                click: (e, ctx) => {
+                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);                 
+                    
+                }
+            });                      
             wtab01Grid.columns.push(cols);   
 
             cols = new wijmo.grid.Column(); 
             cols.binding = 'jgugek';
             cols.header = '규격';
             cols.align = "center";
-            cols.width = 200;                  
+            cols.width = 200; 
+            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                text: '<b>${item.jgugek}</b>',
+                click: (e, ctx) => {
+                    wjcodeChk_a("A",ctx.item.jkey, ctx.item.j_dae, ctx.item.j_jung, ctx.item.jgugek, ctx.item.jgugek2,ctx.item.jpum, ctx.item.jpumcode, ctx.item.jsayang, ctx.item.j_net, ctx.item.jchajong, ctx.item.j_sr,ctx.item.j_ct, ctx.item.j_cavity, ctx.item.jdanwy, ctx.item.jbigo, ctx.item.w_b_gubn , ctx.item.jpumname , ctx.item.j_misayong , ctx.item.j_sang, ctx.item.jboxsu1, ctx.item.cltcd, ctx.item.acorp, ctx.item.jgumtype, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.j_yangsan);                 
+                    
+                }
+            });                        
             wtab01Grid.columns.push(cols);  
 
             cols = new wijmo.grid.Column(); 

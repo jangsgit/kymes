@@ -502,7 +502,63 @@
                                     </div>
                                     <div class="progress-text" id="progress-11"></div>
                                 </div>                                 
-                                                        
+                                                       
+
+                                <div class="card">
+                                    <div class="card-header" id="addname12">No.13 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart12"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState12" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty12">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty12">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty12"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature12"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp12">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp12">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount12"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime12"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime12"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-12"></div>
+                                </div>                  
+                                
+
+                                <div class="card">
+                                    <div class="card-header" id="addname13">No.14 - 금형명칭: </div>
+                                    <div class="chart-container">
+                                        <canvas id="chart13"></canvas>
+                                    </div>
+                                    <div class="info">
+                                        <table>
+                                            <tr>
+                                                <td style="font-weight: bold;">기계 상태:</td><td  id="machineState13" >자동</td>
+                                                <td style="font-weight: bold;">계획:</td><td  id="plannedQty13">75</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">생산:</td><td  id="producedQty13">125</td>
+                                                <td style="font-weight: bold;">불량:</td><td  id="defectiveQty13"  colspan="3">125</td>
+                                            </tr>  
+                                            <tr><td style="font-weight: bold;">금형온도:</td><td id="temperature13"  colspan="3">0</td></tr>
+                                            <tr><td style="font-weight: bold;">온수기:</td><td id="onsutemp13">0</td><td style="font-weight: bold;">건조기:</td><td id="drytemp13">0</td></tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">캐비티:</td><td id="cavityCount13"  >0</td>
+                                                <td style="font-weight: bold;">가동시간:</td><td id="operatingTime13"  >0</td>
+                                            </tr> 
+                                            <tr><td style="font-weight: bold;">설비유휴시간:</td><td id="idleTime13"  colspan="3">100%</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="progress-text" id="progress-13"></div>
+                                </div>                                                  
+
                                 <!-- Additional cards... -->
                             </div>
 
@@ -628,6 +684,16 @@
             
             const chart11 = createPieChart(
                 document.getElementById('chart11').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+            const chart12 = createPieChart(
+                document.getElementById('chart12').getContext('2d'),
+                [30, 70],
+                ['미완료',   '완료', ]
+            );
+            const chart13 = createPieChart(
+                document.getElementById('chart13').getContext('2d'),
                 [30, 70],
                 ['미완료',   '완료', ]
             );

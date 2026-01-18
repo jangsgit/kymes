@@ -1,6 +1,7 @@
 package com.dae.kdmes.Service.Appm;
 
 import com.dae.kdmes.DTO.*;
+import com.dae.kdmes.DTO.App01.Index01Dto;
 import com.dae.kdmes.DTO.Appm.FPLANBOM_VO;
 import com.dae.kdmes.DTO.Appm.FPLANIWORK_VO;
 import com.dae.kdmes.DTO.Appm.TBPopupVO;
@@ -51,7 +52,7 @@ public class AppPopupService {
     public List<TBPopupVO> FPLAN_OWORK_List(TBPopupVO parm){return Popupmapper.FPLAN_OWORK_List(parm);}
 
 
-    public Object GetPernmList(TBPopupVO parm){
+    public List<TBPopupVO> GetPernmList(TBPopupVO parm){
         return Popupmapper.GetPernmList(parm);
     }
     public Object GetWrmcList01(TBPopupVO parm){
@@ -61,7 +62,7 @@ public class AppPopupService {
         return Popupmapper.GetWBadList01(parm);
     }
 
-    public Object GetStopList(TBPopupVO parm){
+    public List<TBPopupVO> GetStopList(TBPopupVO parm){
         return Popupmapper.GetStopList(parm);
     }
 

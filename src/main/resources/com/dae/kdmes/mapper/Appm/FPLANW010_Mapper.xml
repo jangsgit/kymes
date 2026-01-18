@@ -142,8 +142,9 @@
                CAST(DBO.DF_NM_RTN('TB_FPLAN_WORK_WOTQT', A.plan_no, '00010', '', '') as DECIMAL(18,3)) winqt,
                A.tordqty,
                isnull(D.wotqt,0) as owqty,
-               (select isnull(sum(wbqty),0) as wbqty from TB_FPLAN_WBAD where plan_no=A.plan_no  and wflag= '00010' group by plan_no,wseq,wflag ) as obqty,
+               (select isnull(sum(wbqty),0) as wbqty from TB_FPLAN_WBAD where plan_no=A.plan_no  and wflag= '00010' AND LOTNO=D.LOTNO group by plan_no,wseq,wflag ) as obqty,
                isnull(D.wotqt,0) - isnull(D.wbdqt,0) as otqty,
+               isnull(D.wbdqt,0) as wbdqt,
                D.partcode  as partcode,
                D.partnm  as partnm,
                D.subpartcode  as subpartcode,
@@ -168,7 +169,7 @@
 		   and D.lotno = F.lotno
           AND (ISNULL(A.cltcd,'')   lIKE  concat('%',#{cltcd},'%') )
           AND (ISNULL(A.pcode,'')   lIKE  concat('%',#{pcode},'%') )
-           AND (ISNULL(A.lotno,'')   lIKE  concat('%',#{lotno},'%') )
+           AND (ISNULL(D.lotno,'')   lIKE  concat('%',#{lotno},'%') )
            AND (ISNULL(A.inmonth,'')   lIKE  concat('%',#{inmonth},'%') )
            AND (ISNULL(A.inweeks,'')   lIKE  concat('%',#{inweeks},'%') )
            AND ( ISNULL(A.line,'')  = '00' )

@@ -1,5 +1,5 @@
-<th:block th:fragment="popup_pernm">
-<script type="text/x-tmpl" id="popup_pernmSearchTemplate">
+<th:block th:fragment="popup_sachulworker">
+<script type="text/x-tmpl" id="popup_sachulworkerSearchTemplate">
 
 <div class="content_wrap popup">
 
@@ -51,7 +51,7 @@
 
 <script type="text/javascript">
 
-    class PopPernmComponent {
+    class PopSachulworkerComponent {
         constructor() {
 
             this.grid = null;
@@ -66,12 +66,13 @@
 
         searchDataBind() {
             let _this = this;
-            let url = '/app01m/wperidlist';
+            let url = '/app01m/wsaworkerlist';
             let data = { 
                         "searchtxt"       :  _this.$searchCode.val(),  
             };
 
             let result = AjaxUtil.getSyncData(url, data); 
+            console.log(result)
             if (result) {
                 _this.viewData.sourceCollection = result;
             }
@@ -93,7 +94,7 @@
 
             this.callback = callback;
 
-            let content = tmpl('popup_pernmSearchTemplate', {});
+            let content = tmpl('popup_sachulworkerSearchTemplate', {});
             let $content = $(content);
             this.modalContainer.open({ width: 800, height: 500, $content });
 
@@ -103,14 +104,14 @@
                 showMarquee: true,
                 isReadOnly: true,
                 columns: [ 
-                    { binding: 'insano', header: '담당자', width: 80, align: 'center' }, 
-                    { binding: 'inname', header: '담당자명', width: 150, align: 'center' },  
+                    { binding: 'wperid', header: '작업자', width: 80, align: 'center' }, 
+                    { binding: 'wpernm', header: '작업자명', width: 150, align: 'center' },  
                 ],
                 itemsSource: this.viewData,
             });
             this.grid.rowHeaders.columns.splice(0, 1);
             new FlexGridContextMenu(this.grid);
-            this.grid.downloadFileName = '담당자검색';
+            this.grid.downloadFileName = '작업자검색';
 
             this.$btnCompSearch = $content.find('#btnCompSearch'); 
             this.$searchCode = $content.find('#searchCode'); 

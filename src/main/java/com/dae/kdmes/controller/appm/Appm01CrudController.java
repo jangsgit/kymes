@@ -258,7 +258,7 @@ public class Appm01CrudController {
         workDto.setLotno(lotno);
         workDto.setWrmc(wrmc);
         workDto.setWinqt(winqt); //계획량
-        workDto.setBqty(wbdqt);
+        workDto.setBqty(wbdqt);  //불량
         workDto.setWbdqt(wbdqt);
         workDto.setWflag("00010");
         workDto.setWsyul(wsyul);
@@ -305,7 +305,6 @@ public class Appm01CrudController {
 
                 ls_lotno = plan_no.substring(0,8) + rwflag + ls_seq;
             }
-            log.info("ls_lotno =====>" + ls_lotno);
             _index10Dto.setLotno(ls_lotno);
             result = service10.UpdateFplan(_index10Dto);
             if (!result) {
@@ -319,6 +318,10 @@ public class Appm01CrudController {
             workDto.setWorkdv(workdv);
             workDto.setDecision(workdv);
             workDto.setDecision1(workdv);
+        }
+        if(workdv.equals("9")){        //작업중단
+            workDto.setDecision("9");
+            workDto.setDecision1("9");
         }
         if(workdv.equals("0")){          // 공정종료
             workDto.setClsflag("3");
@@ -346,6 +349,11 @@ public class Appm01CrudController {
 
             // 임시적으로 막음 25.01.21
             // wotqt = cmsservice01.getSHOTDATA_wotqty(cmsdto);  //생산량
+            workDto.setWqty(wotqt);
+            workDto.setQty(wotqt);
+            workDto.setWotqt(wotqt);
+            workDto.setJqty(wotqt - wbdqt);
+        }else if(workdv.equals("4")){
             workDto.setWqty(wotqt);
             workDto.setQty(wotqt);
             workDto.setWotqt(wotqt);

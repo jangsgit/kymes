@@ -131,7 +131,10 @@
     <script src="https://cdn.grapecity.com/wijmo/5.20202.732/controls/wijmo.grid.cellmaker.min.js"></script>
  
 
-    <link rel="stylesheet" href="https://cdn.grapecity.com/wijmo/5.20202.732/styles/wijmo.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.grapecity.com/wijmo/5.20202.732/styles/wijmo.min.css"> --> 
+    <!-- <link href="https://cdn.grapecity.com/wijmo/5.20211.781/styles/wijmo.min.css" rel="stylesheet" /> -->
+    <link th:href="@{/css/wijmo.min.css}" rel="stylesheet">
+    <link th:href="@{/wijimo/checkbox.css}" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.0.0/jszip.min.js"></script>
     <script src="/js/flex-grid-context-menu.js"></script>
     <script src="/js/wijmo-flex-grid.js"></script>
@@ -145,6 +148,9 @@
     <script src="https://cdn.grapecity.com/wijmo/5.20221.842/controls/wijmo.barcode.common.min.js"></script>  
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!-- 필요한 라이브러리 로드: jsPDF, html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
    
 </head>
 <style>

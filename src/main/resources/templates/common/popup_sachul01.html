@@ -1,0 +1,269 @@
+<th:block th:fragment="popup_sachul01">
+<script type="text/x-tmpl" id="popup_sachul01SearchTemplate">
+
+<div class="content_wrap popup">
+
+    <section class="section" style="padding-top: 10px;">
+
+        <div class="section-top">
+            <div class="search-wrap" style="text-align: left;"> 
+                <dl>
+                    <dt>
+                        작업지시현황<span class="eq">*</span>
+                    </dt>
+                    <dd> 
+                        <div class="inline-wrap month-week">
+                            <select class="form-select mw-select" id="inmonth" >
+                                <option selected="">월</option>
+                                <option value="1월">1월</option>
+                                <option value="2월">2월</option>
+                                <option value="3월">3월</option>
+                                <option value="4월">4월</option>
+                                <option value="5월">5월</option>
+                                <option value="6월">6월</option>
+                                <option value="7월">7월</option>
+                                <option value="8월">8월</option>
+                                <option value="9월">9월</option>
+                                <option value="10월">10월</option>
+                                <option value="11월">11월</option>
+                                <option value="12월">12월</option>
+                            </select>       
+                            <select class="form-select mw-select"  id="inweeks">
+                                <option selected="">주차</option>
+                                <option value="1">1주차</option>
+                                <option value="2">2주차</option>
+                                <option value="3">3주차</option>
+                                <option value="4">4주차</option>
+                                <option value="5">5주차</option>
+                                <option value="6">6주차</option>
+                            </select> 
+                            <select th:field="*{wrmcDto}" name="con_wrmc" id="con_wrmc" style="width: 70%;">
+                                <option value="">호기</option>
+                                <option th:each="val : ${wrmcDto}" th:value="${val.wrmc}" th:text="${val.wrmcnm}">
+                            </select>                                   
+                        </div>  
+                    </dd> 
+                </dl> 
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <li>
+                            <a class="btn btn-delete" title="검색" id="btnCompSearch">
+                                <!--                                        class 쓰이는 곳 찾고 없으면 클래스명 수정하기-->
+                                <img src="/images/icon/btn-srch.svg" alt="검색 아이콘">
+                                검색
+                            </a>
+                        </li>
+                    </dd>
+                </dl>
+            </div>
+            <div class="container-fluid">
+                <div id="theGrid2" style="height: 300px; width: 100%"></div>
+            </div>
+        </div>
+
+    </section>
+
+
+        <div class="popup-button">
+            <button type="button" class="btn-popup" id="btnCompSelect" ><span data-commonCd="선택">선택</span></button>
+            <button type="button" class="btn-popup" id="btn-search-close"><span data-commonCd="닫기">닫기</span></button>
+        </div>
+
+
+</div>
+</script>
+
+<script type="text/javascript">
+
+    class PopSachul01Component {
+        constructor() { 
+            this.grid = null;
+            this.viewData = new wijmo.collections.CollectionView();
+            this.selectedItem = null;
+            this.callback = null;
+            this.modalContainer = new PopupDraggable('작업지시리스트 선택');
+            this.$btnCompSearch = null; 
+            this.$btnCompSelect = null;
+            this.$con_wrmc = null; 
+            this.$inmonth = null; 
+            this.$inweeks = null; 
+        }
+
+        searchDataBind() {
+            let _this = this;
+            var ls_inmonth;
+            var ls_inweeks;
+            var ls_con_wrmc =  "%";
+            // ✅ 팝업 DOM 안에서 요소를 못 찾으면 바로 리턴
+            if (!_this.$inmonth || _this.$inmonth.length === 0) return;
+            if (!_this.$inweeks || _this.$inweeks.length === 0) return;
+            // (호기 select는 없을 수도 있으니 optional)
+            if (_this.$con_wrmc && _this.$con_wrmc.length > 0) {
+                const wrmcVal = _this.$con_wrmc.val(); // ✅ jQuery는 val()
+
+                // ✅ 기본값(placeholder: "호기" 또는 빈값)이면 %
+                if (!wrmcVal || wrmcVal === '호기') {
+                    ls_con_wrmc = '%';
+                } else {
+                    ls_con_wrmc = wrmcVal;
+                }
+            }
+            ls_inmonth = this.$inmonth.val()
+            ls_inweeks = this.$inweeks.val() 
+            let url = '/input/w010ordlist'; 
+            let data = { 
+                        "lotno"      : "%",  
+                        "inmonth"      : ls_inmonth,  
+                        "inweeks"      : ls_inweeks,  
+                        "wrmc"      : ls_con_wrmc,    
+            };
+
+            let result = AjaxUtil.postSyncData(url, data); 
+            if (result) {
+                _this.viewData.sourceCollection = result;
+            }
+
+            //검색버튼을 누르고 초기화한다
+            this.selectedItem = null;
+        }
+
+        selectData(item) {
+            console.log(item)
+            if (typeof this.callback !== 'undefined' && this.callback != null) {
+                this.callback(item);
+            }
+            this.close();
+        }
+
+        show(callback, keyword = '') {
+            let _this = this;
+
+            this.callback = callback;
+
+            let content = tmpl('popup_sachul01SearchTemplate', {});
+            let $content = $(content);
+            this.modalContainer.open({ width: 1300, height: 500, $content });
+            // ✅ 로드 직후 기본값 세팅
+            setDefaultMonthWeek($content);
+
+            this.grid = new wijmo.grid.FlexGrid('#theGrid2', {
+                selectionMode: wijmo.grid.SelectionMode.Row,
+                autoGenerateColumns: false,
+                showMarquee: true,
+                isReadOnly: true,
+                columns: [ 
+                    { binding: 'wrmcnm', header: '호기', width: 100, align: 'center' }, 
+                    { binding: 'prod_sdate', header: '일자', width: 120, align: 'center' }, 
+                    { binding: 'inmonth', header: '주차', width: 130, align: 'center' }, 
+                    { binding: 'pname', header: '품목명', width: 150, align: 'center' }, 
+                    { binding: 'jchajong', header: '차종', width: 100, align: 'center' }, 
+                    { binding: 'psize', header: '규격', width: 100, align: 'center' }, 
+                    { binding: 'jgumnm', header: '금형', width: 150, align: 'left' }, 
+                    { binding: 'prod_qty', header: '계획량', width: 100, align: 'center' }, 
+                    { binding: 'end_qty', header: '생산량', width: 100, align: 'center' }, 
+                ],
+                itemsSource: this.viewData,
+            });
+            this.grid.rowHeaders.columns.splice(0, 1);
+            new FlexGridContextMenu(this.grid);
+            this.grid.downloadFileName = '작업지시 내역';
+
+            this.$btnCompSearch = $content.find('#btnCompSearch'); 
+            this.$btnCompSelect = $content.find('#btnCompSelect');
+            // ✅ 추가: select 요소들 캐시
+            this.$inmonth = $content.find('#inmonth');
+            this.$inweeks = $content.find('#inweeks');
+            this.$con_wrmc = $content.find('#con_wrmc');
+
+            if (keyword) {
+              this.$pname.val(keyword);
+            }
+            this.searchDataBind();
+
+            this.$btnCompSearch.click(function (e) {
+                _this.searchDataBind();
+            });
+
+            $('#btnCompSearch').click();
+
+
+            this.$btnCompSelect.click(function (e) {
+                // 그리드에서 현재 선택된 item을 찾아서 호출한다.
+                let items = _this.grid.selectedItems; 
+                if (items.length === 0) {
+                    return false;
+                }
+                _this.selectData(items[0]);
+            });
+
+
+            //닫기버튼을 아래 ID로 사용한다면 호출하는 화면에서 이벤트 처리 필요없음
+            $content.find('#btn-search-close').on('click', function () {
+                _this.close();
+            });
+
+            //새로고침
+            // $('#btnTest').click(function (e) {
+            //     _this.grid.collectionView.refresh(); // Wijmo 그리드 새로고침
+            // });
+
+            this.grid.hostElement.addEventListener('dblclick', function (e) {
+                let items = _this.grid.selectedItems;
+                if (items.length === 0) {
+                    return false;
+                }
+                _this.selectData(items[0]); // btnCompSelect 클릭과 동일한 동작
+            });
+          this.grid.hostElement.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+              setTimeout(() => {
+                const selected = _this.grid.selectedItems;
+                if (selected.length > 0) {
+                  _this.selectData(selected[0]);
+                } else {
+                  console.log('선택된 행 없음');
+                }
+              }, 0); // 다음 이벤트 루프에서 실행
+            }
+          });
+        }
+ 
+
+        close() {
+            this.modalContainer.close();
+        }
+    }
+        // ISO 주차(월요일 시작) 계산
+        function getISOWeek(date = new Date()) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7; // Mon=1..Sun=7
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        function setDefaultMonthWeek($root) {
+            const now = new Date();
+            const month = (now.getMonth() + 1);               // 1~12
+            const week = getISOWeek(now);                      // 1~53 (ISO)
+
+            // 옵션 value가 "1월","2월" 형태라서 맞춰줌
+            const monthVal = month + '월';
+            const weekVal  = week; // ⚠️ 주차 select value 형태에 맞게 수정
+
+            const $inmonth = $root.find('#inmonth');
+            const $inweeks = $root.find('#inweeks');
+
+            // 월 세팅
+            if ($inmonth.length) $inmonth.val(monthVal).trigger('change');
+
+            // 주차 세팅 (옵션 value가 다르면 weekVal 가공 필요)
+            if ($inweeks.length) $inweeks.val(weekVal).trigger('change');
+
+            // bootstrap-select 같은 플러그인 쓰면 refresh 필요
+            if ($inmonth.hasClass('selectpicker')) $inmonth.selectpicker('refresh');
+            if ($inweeks.hasClass('selectpicker')) $inweeks.selectpicker('refresh');
+        }
+
+</script>

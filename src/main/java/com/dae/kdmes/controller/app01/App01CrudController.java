@@ -2,12 +2,14 @@ package com.dae.kdmes.controller.app01;
 
 import com.dae.kdmes.DTO.App01.*;
 import com.dae.kdmes.DTO.App05ElvlrtDto;
+import com.dae.kdmes.DTO.Appm.TBPopupVO;
 import com.dae.kdmes.DTO.AttachDTO;
 import com.dae.kdmes.DTO.CommonDto;
 import com.dae.kdmes.DTO.Popup.PopupDto;
 import com.dae.kdmes.DTO.UserFormDto;
 import com.dae.kdmes.Exception.AttachFileException;
 import com.dae.kdmes.Service.App01.*;
+import com.dae.kdmes.Service.Appm.AppPopupService;
 import com.dae.kdmes.Service.impl.AppUploadServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -42,6 +44,7 @@ public class App01CrudController {
     private final Index04Service service04;
 
     private final Index08Service service08;
+    private final AppPopupService appPopupService;
     private final AppUploadServiceImpl appServiceImpl;
     CommonDto CommDto = new CommonDto();
     PopupDto popupDto = new PopupDto();
@@ -180,6 +183,33 @@ public class App01CrudController {
         }
 
         return index01ListDto;
+    }
+
+
+    //담당자현황
+    @GetMapping(value="/wsaworkerlist")
+    public Object App01WsaworkerList_index(@RequestParam("searchtxt") String searchtxt,
+                                        Model model, HttpServletRequest request) throws Exception{
+        TBPopupVO wperidDto = new TBPopupVO();
+        List<TBPopupVO> _popupListDto = new ArrayList<>();
+        try {
+
+            if(searchtxt == null || searchtxt.equals("")){
+                searchtxt = "%";
+            }
+            wperidDto.setWflag("00010");  //첫번째공정
+            wperidDto.setWpernm(searchtxt);
+            log.info("searchtxt =====>" + searchtxt);
+            _popupListDto = appPopupService.GetPernmList(wperidDto);
+            model.addAttribute("wperidList",_popupListDto);
+
+        } catch (Exception ex) {
+//                dispatchException = ex;
+            log.info("insalist Exception =====>" + ex.toString());
+//            log.debug("Exception =====>" + ex.toString() );
+        }
+
+        return _popupListDto;
     }
 
     @GetMapping(value="/wbadlist")

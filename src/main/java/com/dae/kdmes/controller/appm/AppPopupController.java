@@ -239,6 +239,19 @@ public class AppPopupController {
     }
 
 
+    //wstop  LIST
+    @GetMapping(value="/wstop")
+    public Object Appwwstop_index(
+            @RequestParam("searchtxt") String searchtxt,Model model, HttpServletRequest request) throws Exception{
+        TBPopupVO wperidDto = new TBPopupVO();
+        if (searchtxt == null || searchtxt.equals("")){
+            searchtxt = "%";
+        }
+        wperidDto.setWpernm(searchtxt);
+        return  appPopupService.GetStopList(wperidDto);
+
+    }
+
 
     @GetMapping(value="/oworklist")
     public Object Appwiwork_index( @RequestParam("plan_no") String plan_no

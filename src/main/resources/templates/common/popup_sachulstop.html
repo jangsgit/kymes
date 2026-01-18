@@ -1,5 +1,5 @@
-<th:block th:fragment="popup_pernm">
-<script type="text/x-tmpl" id="popup_pernmSearchTemplate">
+<th:block th:fragment="popup_sachulstop">
+<script type="text/x-tmpl" id="popup_SchulstopSearchTemplate">
 
 <div class="content_wrap popup">
 
@@ -9,13 +9,13 @@
             <div class="search-wrap" style="text-align: left;"> 
                 <dl>
                     <dt>
-                        <label for="searchCode">
-                            작업자명<span class="eq"></span>
+                        <label for="jpname">
+                            비가동사유<span class="eq"></span>
                         </label>
                     </dt>
                     <dd>
                         <div class="srch-box">
-                            <input type="text" id='searchCode' name="searchCode" style="width:160px;"/>
+                            <input type="text" id='jpname' name="jpname" style="width:160px;"/>
                         </div>
                     </dd>
                 </dl>  
@@ -51,24 +51,24 @@
 
 <script type="text/javascript">
 
-    class PopPernmComponent {
+    class PopSachulstopComponent {
         constructor() {
 
             this.grid = null;
             this.viewData = new wijmo.collections.CollectionView();
             this.selectedItem = null;
             this.callback = null;
-            this.modalContainer = new PopupDraggable('작업자 선택');
+            this.modalContainer = new PopupDraggable('비가동사유');
             this.$btnCompSearch = null; 
             this.$btnCompSelect = null;
-            this.$searchCode = null; 
+            this.$jpname = null; 
         }
 
         searchDataBind() {
             let _this = this;
-            let url = '/app01m/wperidlist';
+            let url = '/popup/wstop';
             let data = { 
-                        "searchtxt"       :  _this.$searchCode.val(),  
+                        "searchtxt"       :  _this.$jpname.val(),   
             };
 
             let result = AjaxUtil.getSyncData(url, data); 
@@ -93,7 +93,7 @@
 
             this.callback = callback;
 
-            let content = tmpl('popup_pernmSearchTemplate', {});
+            let content = tmpl('popup_SchulstopSearchTemplate', {});
             let $content = $(content);
             this.modalContainer.open({ width: 800, height: 500, $content });
 
@@ -103,21 +103,21 @@
                 showMarquee: true,
                 isReadOnly: true,
                 columns: [ 
-                    { binding: 'insano', header: '담당자', width: 80, align: 'center' }, 
-                    { binding: 'inname', header: '담당자명', width: 150, align: 'center' },  
+                    { binding: 'wcode', header: '코드', width: 80, align: 'center' }, 
+                    { binding: 'wcdnm', header: '비가동사유', width: 250, align: 'left' },  
                 ],
                 itemsSource: this.viewData,
             });
             this.grid.rowHeaders.columns.splice(0, 1);
             new FlexGridContextMenu(this.grid);
-            this.grid.downloadFileName = '담당자검색';
+            this.grid.downloadFileName = '비가동사유';
 
             this.$btnCompSearch = $content.find('#btnCompSearch'); 
-            this.$searchCode = $content.find('#searchCode'); 
+            this.$jpname = $content.find('#jpname'); 
             this.$btnCompSelect = $content.find('#btnCompSelect');
 
             if (keyword) {
-              this.$searchCode.val(keyword);
+              this.$jpname.val(keyword);
             }
             this.searchDataBind();
 

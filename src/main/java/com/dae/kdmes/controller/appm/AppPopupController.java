@@ -238,6 +238,31 @@ public class AppPopupController {
         }
     }
 
+    //wbad  LIST
+    @GetMapping(value="/wgumbad")
+    public Object AppwGum_index(
+            @RequestParam("plan_no") String plan_no
+            ,@RequestParam("lotno") String lotno
+            ,@RequestParam("wflag") String wflag
+            ,Model model, HttpServletRequest request) throws Exception{
+        TBPopupVO wbadDto = new TBPopupVO();
+        if (plan_no == null || plan_no.equals("")){
+            plan_no = "%";
+        }
+
+        wbadDto.setMachname("%");
+        wbadDto.setPlan_no("%");      //불량구분 팝업
+        wbadDto.setWseq("%");
+        wbadDto.setWflag("00020");
+        wbadDto.setWclscode("1");
+
+        if(appPopupService.GetWBadList01(wbadDto) == null){
+            return appPopupService.GetWBadList_blank();
+        }else{
+            return  appPopupService.GetWBadList01(wbadDto);
+        }
+    }
+
 
     //wstop  LIST
     @GetMapping(value="/wstop")

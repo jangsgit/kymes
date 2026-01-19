@@ -1,0 +1,324 @@
+<th:block th:fragment="popup_gumsachul">
+<script type="text/x-tmpl" id="popup_gumsachulSearchTemplate">
+
+<div class="content_wrap popup">
+
+    <section class="section" style="padding-top: 10px;">
+
+        <div class="section-top">
+            <div class="search-wrap" style="text-align: left;">  
+                <p>
+                    선택된 총 검사량 : <b><span id="checked-count">0</span></b>  
+                </p> 
+                <a class="btn btn-delete" title="검색" id="btnCompSearch">
+                    <!--                                        class 쓰이는 곳 찾고 없으면 클래스명 수정하기-->
+                    <img src="/images/icon/btn-srch.svg" alt="검색 아이콘">
+                    검색
+                </a>  
+            </div>
+            <div class="container-fluid">
+                <p id="selectedItem"></p>
+                <div id="wtab03Grid_div" style="height: 300px; width: 100%"></div>
+            </div>
+        </div>
+
+    </section>
+
+
+        <div class="popup-button">
+            <button type="button" class="btn-popup" id="btnCompSelect" ><span data-commonCd="선택">선택</span></button>
+            <button type="button" class="btn-popup" id="btn-search-close"><span data-commonCd="닫기">닫기</span></button>
+        </div>
+
+
+</div>
+</script>
+
+<script type="text/javascript">
+
+    class PopGumsachulComponent {
+        constructor() { 
+            this.grid = null;
+            this.viewData = new wijmo.collections.CollectionView();
+            this.selectedItem = null;
+            this.callback = null;
+            this.modalContainer = new PopupDraggable('사출완료리스트 선택');
+            this.$btnCompSearch = null; 
+            this.$btnCompSelect = null;
+            this.$con_wrmc = null; 
+            this.$inmonth = null; 
+            this.$inweeks = null; 
+        }
+
+        searchDataBind() {
+            let _this = this;
+            var ls_inmonth;
+            var ls_inweeks;
+            var ls_flag = "2"; 
+            var gubun = "B" ;
+            addlotno.pop();
+            addlotno.push( "%"); 
+            let url = '/input02/w020ordlist'; 
+            let data = { 
+                        "lotno"      : addlotno,  
+                        "flag"      : ls_flag,    
+            };
+
+            let result = AjaxUtil.postSyncData(url, data); 
+            if (result) { 
+                var ListDto = result;  
+                var dataArr = [];
+                var cnt = 1; 
+                var ll_obqty = 0; 
+                //console.log(ListDto)
+                for (var i = 0; i < ListDto.length; i++) {
+                    var psdate = ListDto[i]["prod_sdate"];
+                    psdate = psdate.substr(0,4) + '-' + psdate.substr(4,2)+ '-' + psdate.substr(6,2);
+                    ll_obqty = 0;
+                    ll_obqty = ListDto[i]["prod_qty"] - ListDto[i]["otqty"];   //잔여수량
+                    var date_format = new Date(psdate);  //wijmo.DateTime.addDays(date_format, 0),
+                    dataArr.push({
+                        id: i, 
+                        index: cnt,                                                                
+                        prod_sdate: psdate, 
+                        wono: ListDto[i]["wono"], 
+                        lotno: ListDto[i]["lotno"]  ,       
+                        plan_no: ListDto[i]["plan_no"] ,   
+                        cltcd: ListDto[i]["cltcd"] , 
+                        cltnm: ListDto[i]["cltnm"], 
+                        pcode: ListDto[i]["pcode"] , 
+                        pname: ListDto[i]["pname"], 
+                        psize: ListDto[i]["psize"], 
+                        prod_qty: ListDto[i]["prod_qty"], 
+                        otqty: ListDto[i]["otqty"] ,   
+                        jboxsu1: ListDto[i]["jboxsu1"] ,   
+                        obqty: ll_obqty  
+                    });
+                    cnt++;
+                }    
+                sachul_list(dataArr)  
+                _this.viewData.sourceCollection = dataArr;
+            }
+
+            //검색버튼을 누르고 초기화한다
+            this.selectedItem = null;
+        }
+
+        selectData(item) {
+            console.log(item)
+            if (typeof this.callback !== 'undefined' && this.callback != null) {
+                this.callback(item);
+            }
+            this.close();
+        }
+
+        show(callback, keyword = '') {
+            let _this = this;
+
+            this.callback = callback;
+
+            let content = tmpl('popup_gumsachulSearchTemplate', {});
+            let $content = $(content);
+            this.modalContainer.open({ width: 1300, height: 500, $content });
+            // ✅ 로드 직후 기본값 세팅
+            setDefaultMonthWeek($content);
+
+            view_p01tab03page = new wijmo.collections.CollectionView(getData_tab03(), {
+                //   pageSize: 12
+               });  
+            wtab03Grid = new wijmo.grid.FlexGrid('#wtab03Grid_div', {
+                selectionMode: wijmo.grid.SelectionMode.Row,
+                headersVisibility: wijmo.grid.HeadersVisibility.Column,
+                autoGenerateColumns: false,
+                showMarquee: true,
+                isReadOnly: true,
+                formatItem: (sender, e) => {
+                    if (e.panel.cellType === wijmo.grid.CellType.ColumnHeader) {
+                    e.cell.style.textAlign = 'center';
+                    }
+                },
+                columns: [ 
+                    { binding: 'prod_sdate', header: '생산시작일', width: 130, align: 'center' }, 
+                    { binding: 'lotno', header: 'LotNo', width: 200, align: 'center' }, 
+                    { binding: 'pname', header: '품목명', width: 130, align: 'center' }, 
+                    { binding: 'pname', header: '품목명', width: 150, align: 'center' }, 
+                    { binding: 'psize', header: '규격', width: 130, align: 'center' }, 
+                    { binding: 'prod_qty', header: '사출완료량', width: 130, align: 'center' }, 
+                    { binding: 'otqty', header: '기검사량', width: 90, align: 'center' }, 
+                    { binding: 'obqty', header: '잔여량', width: 90, align: 'center' }, 
+                    { binding: 'jboxsu1', header: '적입수량', width: 130, align: 'center' }, 
+                    { binding: 'plan_no', header: '작지번호', width: 150, align: 'center' }, 
+                ],
+                itemsSource: view_p01tab03page,
+            }); 
+            new FlexGridContextMenu(wtab03Grid);
+            wtab03Grid.downloadFileName = '사출완료내역';
+
+
+            setHeaderColumn02(true);
+            function setHeaderColumn02(headerOn) {
+                wtab03Grid.headersVisibility = headerOn
+                ? wijmo.grid.HeadersVisibility.All
+                : wijmo.grid.HeadersVisibility.Column; 
+            } 
+            // 선택기 생성
+            let selector = new wijmo.grid.selector.Selector(wtab03Grid, {                
+                itemChecked: () => { 
+                    showCheckedCount();
+                }                
+            }); 
+
+            this.$btnCompSearch = $content.find('#btnCompSearch'); 
+            this.$btnCompSelect = $content.find('#btnCompSelect'); 
+
+            if (keyword) {
+              this.$pname.val(keyword);
+            }
+            this.searchDataBind();
+
+            this.$btnCompSearch.click(function (e) {
+                _this.searchDataBind();
+            });
+
+            $('#btnCompSearch').click();
+
+
+            this.$btnCompSelect.click(function (e) {
+                // 그리드에서 현재 선택된 item을 찾아서 호출한다.
+                let items = wtab03Grid.selectedItems; 
+                if (items.length === 0) {
+                    return false;
+                }
+                _this.selectData(items[0]);
+            });
+
+
+            //닫기버튼을 아래 ID로 사용한다면 호출하는 화면에서 이벤트 처리 필요없음
+            $content.find('#btn-search-close').on('click', function () {
+                _this.close();
+            });
+
+            //새로고침
+            // $('#btnTest').click(function (e) {
+            //     _wtab03Grid.collectionView.refresh(); // Wijmo 그리드 새로고침
+            // });
+
+            wtab03Grid.hostElement.addEventListener('dblclick', function (e) {
+                let items = wtab03Grid.selectedItems;
+                if (items.length === 0) {
+                    return false;
+                }
+                _this.selectData(items[0]); // btnCompSelect 클릭과 동일한 동작
+            });
+             
+          
+          wtab03Grid.hostElement.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+              setTimeout(() => {
+                const selected = wtab03Grid.selectedItems;
+                if (selected.length > 0) {
+                  _this.selectData(selected[0]);
+                } else {
+                  console.log('선택된 행 없음');
+                }
+              }, 0); // 다음 이벤트 루프에서 실행
+            }
+          });
+        }
+ 
+
+        close() {
+            this.modalContainer.close();
+        }
+    }
+        // ISO 주차(월요일 시작) 계산
+        function getISOWeek(date = new Date()) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7; // Mon=1..Sun=7
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        function setDefaultMonthWeek($root) {
+            const now = new Date();
+            const month = (now.getMonth() + 1);               // 1~12
+            const week = getISOWeek(now);                      // 1~53 (ISO)
+
+            // 옵션 value가 "1월","2월" 형태라서 맞춰줌
+            const monthVal = month + '월';
+            const weekVal  = week; // ⚠️ 주차 select value 형태에 맞게 수정
+
+            const $inmonth = $root.find('#inmonth');
+            const $inweeks = $root.find('#inweeks');
+
+            // 월 세팅
+            if ($inmonth.length) $inmonth.val(monthVal).trigger('change');
+
+            // 주차 세팅 (옵션 value가 다르면 weekVal 가공 필요)
+            if ($inweeks.length) $inweeks.val(weekVal).trigger('change');
+
+            // bootstrap-select 같은 플러그인 쓰면 refresh 필요
+            if ($inmonth.hasClass('selectpicker')) $inmonth.selectpicker('refresh');
+            if ($inweeks.hasClass('selectpicker')) $inweeks.selectpicker('refresh');
+        }
+
+
+        function showCheckedCount() {
+            let cnt = document.getElementById('checked-count'), sel = wtab03Grid.rows.filter(r => r.isSelected);
+            //cnt.textContent = sel.length.toString();  
+            chkTabA = sel;   
+            console.log(chkTabA);   
+            var _ls_qty = 0;   
+            var _ls_owqty = 0; 
+            var _ls_prod_qty = 0 
+            var _ls_jboxsu_qty = 0 
+            var _ls_pname = "";
+            var _ls_psize = "";
+            var _ls_cltnm = "";
+            var _ls_cltcd = "";
+            var _ls_lotno = "";
+            var _ls_plan_no = "";
+            for (var i = 0; i < sel.length; i++) { 
+                _ls_prod_qty = 0
+                _ls_prod_qty=  sel[i]._data.prod_qty; //사출완료량
+                _ls_owqty   =  sel[i]._data.owqty; //기검사량
+                _ls_pname   =  sel[i]._data.pname; //품목
+                _ls_psize   =  sel[i]._data.psize; //품목
+                _ls_cltnm   =  sel[i]._data.cltnm; //거래처
+                _ls_cltcd   =  sel[i]._data.cltcd; //거래처 
+                _ls_lotno   =  sel[i]._data.lotno; //거래처 
+                _ls_jboxsu_qty  =  sel[i]._data.jboxsu1; //거래처 
+                _ls_plan_no  =  sel[i]._data.plan_no; //거래처 
+                _ls_prod_qty = _ls_prod_qty - _ls_owqty     //검사가능수량 완료량-기검사량
+                
+                if(_ls_prod_qty < sel[i]._data.obqty){      //검사량이 가능수량보다 클경우 
+                    _ls_qty   = _ls_qty + _ls_prod_qty; 
+                }else{
+                    _ls_qty   = _ls_qty + sel[i]._data.obqty; 
+                } 
+            }     
+            cnt.textContent = _ls_qty.toString();
+            document.getElementById('inwotqt').value= Number(_ls_qty); 
+            document.getElementById('incltnm').value= _ls_cltnm;  
+            document.getElementById('incltcd').value= _ls_cltcd;   
+            document.getElementById('inboxsu1').value= _ls_jboxsu_qty; 
+            document.getElementById('inpsize').value= _ls_psize; 
+            document.getElementById('insalotno01').value= _ls_lotno;  
+            document.getElementById('inplan_no').value= _ls_plan_no; 
+            document.getElementById('inwqcqt').value= Number(_ls_qty);
+            chkTabA_row = sel.length;
+            if(sel.length > 1 ){
+                document.getElementById('inpname').value= _ls_pname; 
+            }else{
+                document.getElementById('inpname').value= _ls_pname + Number(sel.length - 1).toString(); 
+            }   
+            $('#btn-search-close').click();
+    }  
+
+    function getData_tab03(){
+        return
+    }
+
+
+</script>

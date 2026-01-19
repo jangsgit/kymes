@@ -1226,18 +1226,17 @@
     </update>
 
     <update id="FPLANW010_Update_GDEL" parameterType="com.dae.kdmes.DTO.Appm.FPLANW010_VO"  >
-        UPDATE TB_FPLAN_W010 SET
-               gqty01 = subquery.total_qty,
-               glotnono = subquery.glotno
-        FROM(
-            SELECT D.plan_no, D.lotno, max(D.glotno) as glotno,  SUM(D.jqty) as total_qty
+        UPDATE W SET
+               gqty01 = COALESCE(X.total_qty,0),
+               glotnono = X.glotno
+        FROM TB_FPLAN_W010 W
+        OUTER APPLY (
+            SELECT   max(D.glotno) as glotno,  SUM(D.jqty) as total_qty
             FROM TB_FPLAN_IWORK D WITH(NOLOCK)
-            WHERE D.plan_no =#{plan_no}
-            Group by D.plan_no, D.lotno
-        ) AS subquery
-        where TB_FPLAN_W010.plan_no = subquery.plan_no
-        and TB_FPLAN_W010.lotno = subquery.lotno
-        and TB_FPLAN_W010.plan_no = #{plan_no}
+            WHERE D.plan_no =W.plan_no
+             and D.lotno = W.lotno
+        ) X
+        where  W.plan_no = #{plan_no}
     </update>
 <!--    UPDATE TB_FPLAN_W010 SET-->
 <!--    gqty01 = #{gqty01}-->

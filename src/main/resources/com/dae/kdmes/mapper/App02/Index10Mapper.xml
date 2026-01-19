@@ -24,7 +24,7 @@
               WHERE isnull(TB.wrmc,'') Like concat('%',#{wrmc},'%')
               and isnull(TB.inmonth,'') Like concat('%',#{inmonth},'%')
               and isnull(TB.inweeks,'') Like concat('%',#{inweeks},'%')
-            ORDER BY TB.wrmc, TB.indate desc, TB.plan_no
+            ORDER BY TB.wrmc, TB.prod_sdate desc, TB.plan_no
         ]]>
     </select>
 

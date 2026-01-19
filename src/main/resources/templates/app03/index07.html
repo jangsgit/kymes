@@ -67,34 +67,14 @@
 <th:block layout:fragment="content"> 
     <!--- (레이아웃) Contents 영역 -->
     <div class="layout-contents">
- 
-        <div class="tab-wrap">
-            <ul class="tab-links">
-                <input type="hidden" id="checkdtParam" name="checkdtParam" th:value="${checkdt}"/>
-                <li>
-                <a href="#tab1" title="&nbsp;" id="listTabLink">&nbsp;</a>
-                </li>
-                <!-- <li>
-                <a href="#tab2" title="분류상세등록">분류상세등록</a>
-                </li> -->
-            </ul>
-            <div class="tab-contents">
-                <!--      공정별설비등록 탭 시작       -->
-                <!-- Section -->
-                <section class="tab-item" id="tab1"  > 
-                    <div style="display: flex; gap: 5px">
-                        <section class="section" style="width: 100%;  "> 
-                            <div class="container-fluid"> 
-                                <img src="/img/ready_img.jpg" class="waiting-img" >
-                            </div> 
-                        </section> 
- 
-                    </div>   
-                </section>
-       
-            
-            </div> <!--//tab-contens end-->
-        </div> <!--//tab-wrap end-->
+  
+        <div style="display: flex; gap: 5px">
+            <section class="section" style="width: 100%;  "> 
+                <div class="container-fluid"> 
+                    <img src="/img/ready_img.jpg" class="waiting-img" >
+                </div> 
+            </section>  
+        </div>   
     </div> <!--//layout-contents end -->
     <footer style="margin-top:5px;">
         <p>Copyrightⓒ daesansystem corp. All rights reserved.</p>

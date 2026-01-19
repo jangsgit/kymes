@@ -48,6 +48,20 @@
             box-sizing: border-box;
             overflow: hidden; /* 혹시 몰라서 */
         }
+        /* 라벨(제목) 셀: 한글은 단어 단위로만 줄바꿈 */
+        .label,
+        dt, th {
+        word-break: keep-all;      /* 한글 글자 단위 쪼개기 방지 */
+        overflow-wrap: normal;     /* anywhere/break-word 방지 */
+        white-space: normal;       /* 필요하면 줄은 바뀌되 '단어' 기준 */
+        line-height: 1.2;
+        }
+
+        /* 라벨 칸이 너무 좁으면 최소폭도 같이 */
+        .label-cell,
+        dt, th {
+        min-width: 170px;           /* 상황에 맞게 90~120px 조절 */
+        }
     </style>
 </head>
 <th:block layout:fragment="content"> 
@@ -99,13 +113,8 @@
                                 </dl>
                                 </div>
                     
-                            </div> <!--//section-top end -->
-                            <div class="container-fluid">
-                                <p id="selectedItem"></p>
-                                <div id="wtab04Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div>
-                            </div>
-                        <div class="btn-wrap">
-                        </div>
+                            </div> <!--//section-top end --> 
+                            <div id="wtab04Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div> 
                         </section> 
 
                         <section style="width: 65%;">
@@ -441,11 +450,8 @@
                                 </div>  
                             </div> 
                             <!-- 하단: 그리드 -->
-                            <section class="sec-bottom">
-                                 
-                                <div class="container-fluid"> 
-                                    <div id="wtab02Grid_div" style="overflow:scroll;   height:255px;   margin:0 auto; "></div>
-                                </div>
+                            <section class="sec-bottom"> 
+                                    <div id="wtab02Grid_div" style="overflow:scroll;   height:255px;   margin:0 auto; "></div> 
                             </section>
                              
                         </section> 
@@ -484,12 +490,8 @@
                     
                             </div> <!--//section-top end -->
                             <section class="sec-bottom">
-                                <div id="gridWrap"> 
-                                    <div class="container-fluid">
-                                        <p id="selectedItem"></p>
-                                        <div id="wtab03Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div>
-                                    </div>
-                                    <div class="btn-wrap"></div>
+                                <div id="gridWrap">  
+                                    <div id="wtab03Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div> 
                                 </div>
                             </section>
 

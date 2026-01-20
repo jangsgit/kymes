@@ -567,7 +567,13 @@ public class App01Controller {
 
         return "App01/index22";
     }
+    ///26.01.20 14시
+    @GetMapping(value="/mesaianalysis")
+    public String App01_Mesaianalysis(Model model, HttpServletRequest request) throws Exception{
 
+
+        return "App01/mesaianalysis";
+    }
 
     @GetMapping(value="/index23")
     public String App01_index23(Model model, HttpServletRequest request) throws Exception{

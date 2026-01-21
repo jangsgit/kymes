@@ -57,6 +57,11 @@
         box-sizing: content-box;
         }
 
+        /* 라벨 칸이 너무 좁으면 최소폭도 같이 */
+        .label-cell,
+        dt, th {
+        min-width: 130px;           /* 상황에 맞게 90~120px 조절 */
+        } 
     </style>
 </head>
 <th:block layout:fragment="content"> 
@@ -156,7 +161,7 @@
                                         <img src="/images/icon/ico-delete.svg" alt="삭제 아이콘">
                                         삭제
                                     </a>  -->
-                                    <button type="button" class="btn-delete btn-danger " id="btnDel"
+                                    <button type="button" class="btn-delete btn-danger " id="btnDel" onclick="delete_btn()"
                                             style="float:none; height: 36px; width:115px;"><i
                                             class="fas fa-trash"></i>삭제
                                     </button>
@@ -223,7 +228,7 @@
                                             <input type="text" id="aname" name="aname" style="width: 70%;" >
                                         </td>
                                         <th>
-                                            <label for="atelno"  >대표전화</label>
+                                            <label for="atelno"  ><span class="eq">*</span>대표전화</label>
                                         </th>
                                         <td>
                                             <input type="text" id="atelno" name="aupte" style="width: 70%;" >
@@ -447,13 +452,7 @@
             view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01(), {
                 // sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
                 // pageSize: 21
-            });
-        // tab01 grid page
-            // new wijmo.input.CollectionViewNavigator('#tab01Pager', {
-            //     byPage: true,
-            //     headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
-            //     cv: view_p01tab01page
-            // });      
+            }); 
             
             wtab01Grid = new wijmo.grid.FlexGrid('#wtab01Grid_div', {  
                 autoGenerateColumns: false,
@@ -512,18 +511,7 @@
             });        
     
             
-                new FlexGridContextMenu(wtab01Grid);
-                // 그룹 패널 생성
-                // var theGroupPanel = new wijmo.grid.grouppanel.GroupPanel('#theGroupPanel', {
-                //     placeholder: '그룹을 만들려면 열을 여기로 끌어다 놓아주세요.  마우스 우 클릭하시면 엑셀로 받으실 수 있습니다.',
-                //     grid: wtab01Grid
-                // }); 
-                // 선택기 생성
-                // let selector = new wijmo.grid.selector.Selector(wtab01Grid, {
-                //     itemChecked: () => {
-                //         showCheckedCount();
-                //     }
-                // });  
+                new FlexGridContextMenu(wtab01Grid); 
                 // 헤더 열 전환
                 setHeaderColumn(false);
                 function setHeaderColumn(headerOn) {
@@ -604,13 +592,7 @@
             view_p01tab02page = new wijmo.collections.CollectionView(getData_tab02(), {
                 sortDescriptions: [new wijmo.collections.SortDescription("acode", false)],
                 //pageSize: 18
-            });
-        // tab02 grid page
-            // new wijmo.input.CollectionViewNavigator('#tab02Pager', {
-            //     byPage: true,
-            //     headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
-            //     cv: view_p01tab02page
-            // });      
+            });  
             wtab02Grid = new wijmo.grid.FlexGrid('#wtab02Grid_div', {  
                 autoGenerateColumns: false,
                 showMarquee: true,
@@ -665,12 +647,7 @@
             });       
     
 
-            new FlexGridContextMenu(wtab02Grid);
-                // 그룹 패널 생성
-                // var theGroupPanel = new wijmo.grid.grouppanel.GroupPanel('#theGroupPanel', {
-                //     placeholder: '그룹을 만들려면 열을 여기로 끌어다 놓아주세요.  마우스 우 클릭하시면 엑셀로 받으실 수 있습니다.',
-                //     grid: wtab02Grid
-                // });  
+            new FlexGridContextMenu(wtab02Grid); 
                 // 헤더 열 전환
                 setHeaderColumn02(false);
                 function setHeaderColumn02(headerOn) {
@@ -740,49 +717,7 @@
             } 
     
             // // ################################################################
-
-            //사원현황 Modalㅁ
-            view_innamepage = new wijmo.collections.CollectionView(getData_wlist(), {
-                pageSize: 12
-            });
-            // 고장부위 페이지 이동
-            new wijmo.input.CollectionViewNavigator('#thePager02', {
-                byPage: true,
-                headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
-                cv: view_innamepage
-            });     
-            winnameGrid = new wijmo.grid.FlexGrid('#winnameGrid_div', {  
-                autoGenerateColumns: false,
-                isReadOnly: false, 
-                allowSorting: 'MultiColumn',
-                selectionMode: 'RowRange',
-                alternatingRowStep: 0,
-                columns: [     
-                    { binding: 'insano', header: '코드', align: "center", width: '1*' },
-                    { binding: 'inname', header: '사원명', align: "center", width: '1*' },
-                ], 
-                itemsSource: view_innamepage
-            });  
-            
-            winnameGrid.showMarquee = true;
-            winnameGrid.focus();
-            wijmo.toggleClass(winnameGrid.hostElement, 'highlightActive', true);
-            winnameGrid.focus();
-            // 고장부위 데이터 수집
-            function getData_wlist(){   
-                var winname_data = []; 
-                var cnt = 1;
-                for (var i = 0; i < 12; i++) {
-                    winname_data.push({
-                        id: i, 
-                        index: cnt,
-                        insano:"",
-                        inname: "",                            
-                    });
-                    cnt++;
-                }    
-                return winname_data;                                      
-            }   
+  
 
         } //window 호출 끝
 
@@ -991,6 +926,9 @@
                         return ;                 
                     }
                 }    
+                if(ls_afax == null || ls_afax.length == 0 || ls_afax == ""){ 
+                    ls_afax = ""             ;
+                }    
                 
                 
                 var inputdata = {  
@@ -1026,7 +964,7 @@
                 } 
                 //직전 데이타가 메모리에 남아 폼데이타 키를 삭제후 다시 데이타를 전송해야함. 
                 formData.delete("key");  
-                // console.log(inputdata);
+                 console.log(inputdata);
 
             formData.append("key", new Blob([ JSON.stringify(inputdata) ], {type : "application/json"}));
             
@@ -1151,71 +1089,9 @@
                         })        
 
             }     
-    
-            function tabB_grid(data){
-                var wtab01Dto  = data;    
-                var wtab01_data = [];
-                var cnt = 1;
-                for (var i = 0; i < wtab01Dto.length; i++) {
-                    wtab01_data.push({
-                        id: i, 
-                        index: cnt, 
-                        insano: wtab01Dto[i]["insano"], 
-                        inname: wtab01Dto[i]["inname"]       
-                    });
-                    cnt++;
-                }     
-                winnameGrid.columns.clear();  
-                winnameGrid.autoGenerateColumns = false; 
-                view_innamepage.sourceCollection  = wtab01_data;
+     
 
-                var cols = new wijmo.grid.Column(); 
-                cols.binding = 'insano';
-                cols.header = '코드';
-                cols.align = "center";
-                cols.width = '*';  
-                cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                    text: '<b>${item.insano}</b>',
-                    click: (e, ctx) => {
-                        winsaChk_a(ctx.item.inname, ctx.item.insano);  
-                    }
-                });
-                winnameGrid.columns.push(cols);  
-    
-                cols = new wijmo.grid.Column(); 
-                cols.binding = 'inname';
-                cols.header = '사원명';
-                cols.align = "center";
-                cols.width = '*';  
-                winnameGrid.columns.push(cols);  
-        
-            }     
-            function winsaChk_a(arg1, arg2){  
-                switch (insaflag){
-                    case "A":
-                        document.getElementById('inname01').value = arg1;  
-                        document.getElementById('abonsadam1').value = arg2; 
-                        break;
-                    case "B":
-                        document.getElementById('inname02').value = arg1;  
-                        document.getElementById('abonsadam2').value = arg2; 
-                        break;
-                    case "C":
-                        document.getElementById('inname03').value = arg1;  
-                        document.getElementById('abonsadam3').value = arg2; 
-                        break;
-                    default:
-                        break;
-                } 
-                
-                $("#winnamemodal_btn").trigger("click");
-            }      
-
-
-
-
-
-
+ 
             // 거래처검색   
             document.getElementById("retrieveBtn").addEventListener("click",function(){  
                 let ls_searchtxt = document.getElementById('searchtxt').value;  

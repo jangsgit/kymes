@@ -399,7 +399,7 @@
                { binding: 'spcodnm', header: '원부자재명', align: "center", width: 200, isReadOnly: true  }, 
                { binding: 'jgugek', header: '규격', align: "center", width: 150, isReadOnly: true  },   
                { binding: 'qty', header: '소요량', align: "center", width: 80 }, 
-               { binding: 'weight', header: '중량', align: "center", width: 80 }, 
+            //    { binding: 'weight', header: '중량', align: "center", width: 80 }, 
             //    { binding: 'wpernm', header: '외주', align: "center", width: 80, dataType:3,allowSorting: false }, 
             //    { binding: 'wpernm', header: '스크랩', align: "center", width: 80, dataType:3,allowSorting: false }, 
             //    { binding: 'wpernm', header: '원재료', align: "center", width: 80, dataType:3,allowSorting: false }, 
@@ -673,12 +673,12 @@
        cols.align = "center";
        cols.width = 80;  
        wtab02Grid.columns.push(cols);   
-       cols = new wijmo.grid.Column(); 
-       cols.binding = 'weight';
-       cols.header = '중량';
-       cols.align = "center";
-       cols.width = 80;  
-       wtab02Grid.columns.push(cols); 
+    //    cols = new wijmo.grid.Column(); 
+    //    cols.binding = 'weight';
+    //    cols.header = '중량';
+    //    cols.align = "center";
+    //    cols.width = 80;  
+    //    wtab02Grid.columns.push(cols); 
        view_p01tab02page.removeAt(1); 
         let e = new wijmo.grid.CellEditEndingEventArgs(wtab02Grid.cells, wtab02Grid.selection); //cellEditEndingEventArgs 생성 
         wtab02Grid.onDeletingRow(e)  
@@ -978,12 +978,12 @@
         cols.align = "center";
         cols.width = 80;  
         wtab02Grid.columns.push(cols); 
-        cols = new wijmo.grid.Column();  
-        cols.binding = 'weight';
-        cols.header = '중량';
-        cols.align = "center";
-        cols.width = 80;  
-        wtab02Grid.columns.push(cols); 
+        // cols = new wijmo.grid.Column();  
+        // cols.binding = 'weight';
+        // cols.header = '중량';
+        // cols.align = "center";
+        // cols.width = 80;  
+        // wtab02Grid.columns.push(cols); 
  
     }  
      

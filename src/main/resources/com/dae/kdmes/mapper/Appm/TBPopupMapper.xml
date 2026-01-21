@@ -41,7 +41,7 @@
              A.com_code as wperid,  A.com_rem1 AS  wpernm
         FROM TB_CA510 A WITH (NOLOCK)
         WHERE A.com_code != '00' AND A.com_cls = '002'
-         AND  isnull(A.com_rem1, '')  Like #{wpernm} + '%'
+         AND  (isnull(A.com_rem1, '')  Like #{wpernm} + '%' or A.com_code  Like #{wpernm} + '%')
          AND  isnull(A.com_work, '001') != '002'
         ORDER BY  A.com_rem1
     </select>

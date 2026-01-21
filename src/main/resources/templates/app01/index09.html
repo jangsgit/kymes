@@ -1789,7 +1789,7 @@
                     document.getElementById("inpartnm").focus(); 
                     return ;               
                 }  
-                //생산작업시작  생산작업완료 가동중단 가동재시작 저장 삭제 불량  작업자 원재료
+                     //생산작업시작  생산작업완료 가동중단 가동재시작 저장 삭제 불량  작업자 원재료
                 btn_progress(true, false, false, true, false, false, false, false, false) 
                 document.getElementById("intimebtn").click();  //작업시간선택
         }) 
@@ -2112,7 +2112,7 @@
                             // alert("작업시작 처리 되었습니다.");
                             document.getElementById('inlotno').value = data;  
                             //생산작업시작  생산작업완료 가동중단 가동재시작 저장 삭제 불량  작업자 원재료
-                            btn_progress(true, false, true, false, false, false, false, false, false) 
+                            btn_progress(true, false, false, true, false, false, false, false, false)  
                             // var ls_text = "<div style='color:red'><span class='badge badge-soft-info'>공정 진행중</span></div>";     
                         }else if(arg1 == "4"){
                             // alert("재시작 처리 되었습니다.");
@@ -3635,7 +3635,77 @@
         
         //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
    
-     
+     // Enter로 작업자코드 즉시 조회
+        $(document).on('keydown', '#inwrpsnm', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+
+                const perid = ($('#inwrpsnm').val() || '').trim();
+                if (!perid) return;
+
+                fetchWorkerByCode(perid);
+            }
+        });
+        
+        // 작업자코드로 단건 조회 후 세팅
+        function fetchWorkerByCode(perid) {
+            console.log(perid)
+            $.ajax({
+                url: '/app01m/wsaworkerlist',   // ★ 아래 2)에서 서버에 추가할 API
+                type: 'GET',
+                data: { searchtxt: perid },
+                success: function (list) {
+                    console.log(list)
+ 
+                    if (!Array.isArray(list) || list.length === 0) {
+                        alert('해당 작업자가 없습니다.');
+                        // 기존 세팅값 초기화
+                        $('#inwrps').val('');
+                        $('#inwrpsnm').val('');
+                        return;
+                    }
+
+                    // ✅ 1건이면 바로 세팅
+                    if (list.length === 1) {
+                        applyWorker(list[0]);
+                        return;
+                    }
+
+                    // ✅ 여러 건이면: 기존 팝업/선택 UI로 연결
+                    // 1) 이미 작업자 선택 팝업을 쓰고 있다면 그 팝업을 띄우면서 list로 그려주면 됨
+                    // 2) 간단히는 confirm/프롬프트로 선택하게도 가능 (추천X)
+                    openWorkerSelectPopup(list);
+
+                    // 기존 구조와 동일하게 hidden/명 세팅
+                    //document.getElementById('inwrps').value = data.perid;
+                    //document.getElementById('inwrpsnm').value = data.pernm;
+
+                // 입력칸 정리(선택)
+                $('#inwrpscd').val(data.perid);
+                },
+                error: function () {
+                alert('작업자 조회 중 오류가 발생했습니다.');
+                }
+            });
+        }
+        function applyWorker(row) {
+            // TBPopupVO에서 "코드/이름" 필드명 맞춰주기
+            const code = row.wperid ?? row.perid ?? row.userid ?? row.id ?? '';
+            const name = row.wpernm ?? row.pernm ?? row.username ?? row.name ?? '';
+
+            if (!code) {
+                alert('작업자 데이터에서 코드 필드를 찾지 못했습니다. (row=' + JSON.stringify(row) + ')');
+                return;
+            }
+
+            // ✅ 기존 구조 유지: 작업자코드/명 세팅
+            $('#inwrps').val(code);     // 작업자코드(입력칸 or hidden)
+            $('#inwrpsnm').val(name);   // 작업자명 표시칸
+
+            // 포커스 이동(선택)
+            // $('#nextInputId').focus();
+        }
+
         //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         //불량수량 조회  
         // document.getElementById("popsearch03").addEventListener("click",function(){

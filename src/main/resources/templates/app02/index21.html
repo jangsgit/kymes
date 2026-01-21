@@ -398,6 +398,7 @@
                                   <input id="bacorp2" type="hidden"  />
                                   <input id="bacorp3" type="hidden"  />
                                   <input id="bacode" type="hidden"  />  
+                                  <input id="ostore" type="hidden"  />
 
                                   <tbody>
                                   <tr>
@@ -497,21 +498,16 @@
                                   </tr>
                                   <tr> 
                                     <th>
-                                        <label for="punit" id="punit_txt">출하창고</label>
-                                        </th>
-                                        <td> 
-                                            <div class="input_wrap" >
-                                                <select th:field="*{wstoreDto}" name="ostore" id="ostore" style="width: 70%;" >
-                                                    <option value="">선택</option>
-                                                    <option th:each="val : ${wstoreDto}" th:value="${val.wcode}" th:text="${val.wcdnm}">
-                                                </select>
-                                            </div> 
-                                        </td> 
+                                    <label for="qty" id="qty_txt">출하완료</label>
+                                    </th>
+                                    <td>
+                                        <input class="form-check-input"  type="checkbox" id="demflag" value="demflag"  />   
+                                    </td>
                                         <th>
-                                        <label for="qty" id="qty_txt">출하완료</label>
+                                         &nbsp;
                                         </th>
                                         <td>
-                                            <input class="form-check-input"  type="checkbox" id="demflag" value="demflag"  />   
+                                            &nbsp;
                                         </td>
                                   </tr>
                                   <tr>

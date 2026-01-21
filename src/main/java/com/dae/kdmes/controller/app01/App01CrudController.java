@@ -964,103 +964,107 @@ public class App01CrudController {
             , Model model
             , HttpServletRequest request){
 
+
+        Index02Dto _index02Dto = new Index02Dto();
         try {
             param.forEach((key, values) -> {
                 switch (key) {
                     case "acorp1":
-                        index07Dto.setAcorp1(values.toString());
+                        _index02Dto.setAcorp1(values.toString());
                         break;
                     case "acorp2":
-                        index07Dto.setAcorp2(values.toString());
+                        _index02Dto.setAcorp2(values.toString());
                         break;
                     case "acorp3":
-                        index07Dto.setAcorp3(values.toString());
+                        _index02Dto.setAcorp3(values.toString());
                         break;
                     case "acode":
-                        index07Dto.setAcode(values.toString());
-                        log.info("setAcode");
-                        log.info(values.toString());
+                        _index02Dto.setAcode(values.toString());
                         break;
                     case "acorp":
-                        index07Dto.setAcorp(values.toString());
+                        _index02Dto.setAcorp(values.toString());
                         break;
                     case "asano1":
-                        index07Dto.setAsano1(values.toString());
+                        _index02Dto.setAsano1(values.toString());
                         break;
                     case "asano2":
-                        index07Dto.setAsano2(values.toString());
+                        _index02Dto.setAsano2(values.toString());
                         break;
                     case "asano3":
-                        index07Dto.setAsano3(values.toString());
+                        _index02Dto.setAsano3(values.toString());
                         break;
                     case "aname":
-                        index07Dto.setAname(values.toString());
+                        _index02Dto.setAname(values.toString());
                         break;
                     case "aupte":
-                        index07Dto.setAupte(values.toString());
+                        _index02Dto.setAupte(values.toString());
                         break;
                     case "ajong":
-                        index07Dto.setAjong(values.toString());
+                        _index02Dto.setAjong(values.toString());
                         break;
                     case "apost1":
-                        index07Dto.setApost1(values.toString());
+                        _index02Dto.setApost1(values.toString());
                         break;
                     case "ajuso1":
-                        index07Dto.setAjuso1(values.toString());
+                        _index02Dto.setAjuso1(values.toString());
                         break;
                     case "ajuso2":
-                        index07Dto.setAjuso2(values.toString());
+                        _index02Dto.setAjuso2(values.toString());
                         break;
                     case "abigo":
-                        index07Dto.setAbigo(values.toString());
+                        _index02Dto.setAbigo(values.toString());
                         break;
                     case "agita":
-                        index07Dto.setAgita(values.toString());
+                        _index02Dto.setAgita(values.toString());
                         break;
                     case "ajumi1":
-                        index07Dto.setAjumi1(values.toString());
+                        _index02Dto.setAjumi1(values.toString());
                         break;
                     case "ajumi2":
-                        index07Dto.setAjumi2(values.toString());
+                        _index02Dto.setAjumi2(values.toString());
                         break;
                     case "aascode1":
-                        index07Dto.setAascode1(values.toString());
+                        _index02Dto.setAascode1(values.toString());
                         break;
                     case "aascode2":
-                        index07Dto.setAascode2(values.toString());
+                        _index02Dto.setAascode2(values.toString());
                         break;
                     case "atelno":
-                        index07Dto.setAtelno(values.toString());
+                        _index02Dto.setAtelno(values.toString());
                         break;
                     case "atelno2":
-                        index07Dto.setAtelno2(values.toString());
+                        _index02Dto.setAtelno2(values.toString());
                         break;
                     case "aemail":
-                        index07Dto.setAemail(values.toString());
+                        _index02Dto.setAemail(values.toString());
                         break;
                     case "ahand":
-                        index07Dto.setAhand(values.toString());
+                        _index02Dto.setAhand(values.toString());
                         break;
-                    case "abonsadam1":
-                        index07Dto.setAbonsadam1(values.toString());
-                        break;
-                    case "abonsadam2":
-                        index07Dto.setAbonsadam2(values.toString());
-                        break;
-                    case "abonsadam3":
-                        index07Dto.setAbonsadam3(values.toString());
-                        break;
+//                    case "abonsadam1":
+//                        index07Dto.setAbonsadam1(values.toString());
+//                        break;
+//                    case "abonsadam2":
+//                        index07Dto.setAbonsadam2(values.toString());
+//                        break;
+//                    case "abonsadam3":
+//                        index07Dto.setAbonsadam3(values.toString());
+//                        break;
                     case "adomain":
-                        index07Dto.setAdomain(values.toString());
+                        log.info("adomain");
+                        log.info(values.toString());
+                        _index02Dto.setAdomain(values.toString());
                         break;
                     case "afax":
-                        index07Dto.setAfax(values.toString());
+                        log.info("afax");
+                        log.info(values.toString());
+                        _index02Dto.setAfax(values.toString());
                         break;
                     case "abuse1":
-                        index07Dto.setAbuse1(values.toString());
+                        _index02Dto.setAbuse1(values.toString());
                         break;
                     case "adam1":
-                        index07Dto.setAdam1(values.toString());
+                        _index02Dto.setAdam1(values.toString());
                         break;
                     default:
                         break;
@@ -1070,19 +1074,21 @@ public class App01CrudController {
             UserFormDto userformDto = (UserFormDto) session.getAttribute("userformDto");
             model.addAttribute("userformDto",userformDto);
 
-            String ls_acode = index07Dto.getAcode();
+            String ls_acode = _index02Dto.getAcode();
             String ls_acorp2 = "";
             Boolean result = false;
+            log.info("ls_acode =====>" + ls_acode);
+            log.info("cltnm =====>" + _index02Dto.getAcorp());
             if (ls_acode == null || ls_acode.equals("")) {
-                Integer ll_acorp2 = Integer.parseInt(service02.getIndex02MaxSeq(index07Dto.getAcorp1())) + 1;
+                Integer ll_acorp2 = Integer.parseInt(service02.getIndex02MaxSeq(_index02Dto.getAcorp1())) + 1;
                 ls_acorp2 = ll_acorp2.toString();
-                index07Dto.setAcorp2(ls_acorp2);
-                result = service02.InsertCif(index07Dto);
+                _index02Dto.setAcorp2(ls_acorp2);
+                result = service02.InsertCif(_index02Dto);
                 if (!result) {
                     return "error";
                 }
             } else {
-                result = service02.UpdateCif(index07Dto);
+                result = service02.UpdateCif(_index02Dto);
                 if (!result) {
                     return "error";
                 }

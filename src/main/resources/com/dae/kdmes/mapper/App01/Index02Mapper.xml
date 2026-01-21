@@ -129,7 +129,7 @@
         ahand , aemail,abonsadam1, abonsadam2, abonsadam3, adomain, afax, delflag, adam1, abuse1) values
         (#{acorp1}, #{acorp2}, 0, #{acorp}, #{asano1}, #{asano2}, #{asano3}, #{aname},#{aupte},#{ajong},#{apost1},
         #{ajuso1}, #{ajuso2}, #{abigo}, #{agita}, #{ajumi1}, #{ajumi2}, #{aascode1}, #{aascode2},#{atelno},#{atelno2},
-        #{ahand}, #{aemail}, #{abonsadam1}, #{abonsadam2}, #{abonsadam3}, #{adomain}, #{afax}, '0' #{adam1}, #{abuse1},)
+        #{ahand}, #{aemail}, #{abonsadam1}, #{abonsadam2}, #{abonsadam3}, #{adomain}, #{afax}, '0' ,#{adam1}, #{abuse1})
     </insert>
 
 

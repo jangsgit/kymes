@@ -40,7 +40,7 @@
 
     <!--        <![CDATA[  select  max(lotno) as lotnomax  from TB_FPLAN_W010 where Left(lotno,8) = #{lotno}      ]]>-->
     <select id="SelectMaxLotno" parameterType="com.dae.kdmes.DTO.App02.Index10Dto" resultType="String">
-        <![CDATA[  select  top 1 lotno as lotnomax    from TB_FPLAN_W010 where plan_no = #{plan_no} and SUBSTRING(lotno, 9,1) = #{rwflag}  order by lotno desc    ]]>
+        <![CDATA[  select  top 1 lotno as lotnomax    from TB_FPLAN_W010 where SUBSTRING(plan_no, 1,8) = SUBSTRING(#{plan_no}, 1,8) and SUBSTRING(lotno, 9,1) = #{rwflag}  order by lotno desc    ]]>
     </select>
 
 

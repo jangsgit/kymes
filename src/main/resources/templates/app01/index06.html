@@ -698,7 +698,7 @@
                 pnameArr.pop();
                 psizeArr.pop(); 
                 pqtyArr.pop(); 
-                pweightArr.pop(); 
+                //pweightArr.pop();
         }   
         var cnt = 0;
         for (var i = 0; i < wtab02Grid.rows.length; i++) { 
@@ -708,8 +708,8 @@
             pqtyArr.push(wtab02Grid.getCellData(cnt, 3));   
             
             // 👉 값이 없으면 0으로 치환
-            var weight = wtab02Grid.getCellData(cnt, 4);
-            pweightArr.push(weight == null || weight === '' ? 0 : Number(weight));
+            //var weight = 0; //wtab02Grid.getCellData(cnt, 4);
+            //pweightArr.push(weight == null || weight === '' ? 0 : Number(weight));
  
             if(pqtyArr[cnt]  == null || pqtyArr[cnt] == 0){ 
                 alert("소요량을 확인하세요")
@@ -746,7 +746,6 @@
                 "pnameArr"        : pnameArr, 
                 "psizeArr"        : psizeArr, 
                 "pqtyArr"        : pqtyArr,    
-                "pweightArr"        : pweightArr,    
             }, 
             async:false,
             success:function(data){   

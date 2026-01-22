@@ -777,7 +777,6 @@ public class App03ListController {
                                          @RequestParam("pnameArr[]") List<String> pnameArr,
                                          @RequestParam("psizeArr[]") List<String> psizeArr,
                                          @RequestParam("pqtyArr[]") List<Integer> pqtyArr,
-                                         @RequestParam("pweightArr[]") List<Integer> pweightArr,
                                          Model model, HttpServletRequest request) throws Exception{
 
         try {
@@ -789,7 +788,8 @@ public class App03ListController {
 
             result = service35.DeleteBom501(_indexCa613Dto);
             if (!result) {
-                return "error";
+                //log.info("DeleteBom501 =====>" );
+                //return "error";
             }
 
             for(int i = 0; i < pcodeArr.size(); i++){
@@ -797,7 +797,7 @@ public class App03ListController {
                 _indexCa613Dto.setPname(pnameArr.get(i));
                 _indexCa613Dto.setPsize(psizeArr.get(i));
                 _indexCa613Dto.setQty(pqtyArr.get(i));
-                _indexCa613Dto.setWeight(pweightArr.get(i));
+                //_indexCa613Dto.setWeight(pweightArr.get(i));
                 ls_wflag = service35.SelectBomCheck(_indexCa613Dto);
                 if (ls_wflag == null || ls_wflag.equals("") ){
                     result = service35.InsertBom501(_indexCa613Dto);
@@ -806,6 +806,7 @@ public class App03ListController {
                     result = service35.UpdateBom501(_indexCa613Dto);
                 }
                 if (!result) {
+                    log.info("for(int i = 0; i < pcodeArr.size() =====>" );
                     return "error";
                 }
             }

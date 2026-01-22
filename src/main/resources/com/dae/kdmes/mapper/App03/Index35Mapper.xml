@@ -159,12 +159,12 @@
     </select>
 
     <insert id="InsertBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto" >
-        insert into TB_CA501_BOM (custcd, opcod, spcod, lvsn, wflag, qty, weight) values
-        ('KDMES', #{opcod}, #{spcod}, 1, 'Y' , #{qty}, #{weight} )
+        insert into TB_CA501_BOM (custcd, opcod, spcod, lvsn, wflag, qty) values
+        ('KDMES', #{opcod}, #{spcod}, 1, 'Y' , #{qty}  )
     </insert>
 
     <update id="UpdateBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto">
-        UPDATE  TB_CA501_BOM SET qty = #{qty}, weight = #{weight} where opcod  = #{opcod} and spcod  = #{spcod}
+        UPDATE  TB_CA501_BOM SET qty = #{qty}  where opcod  = #{opcod} and spcod  = #{spcod}
     </update>
 
     <delete id="DeleteBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto">

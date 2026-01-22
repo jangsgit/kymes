@@ -182,6 +182,54 @@
         min-width: 170px;           /* 상황에 맞게 90~120px 조절 */
         }
 
+        @media print {
+            @page {
+                size: 11cm 6cm; /* 라벨 크기에 맞추기 */
+                margin: 10;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .print-area {
+                width: 10cm;
+                height: 2cm;
+                border: none;
+                padding: 0;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .barcode-image {
+                width: 100%;
+                height: 3.5cm;
+            }
+            .details {
+                font-size: 14px;
+                text-align: left;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                line-height: 2; /* 줄 간격 최소화 */
+            }
+            .details p {
+                margin: 0; /* 간격을 줄이기 위해 여백을 조정 */
+            }
+            .details .item-barcode {
+                font-weight: bold; /* 품명 굵게 표시 */
+            }
+            .details .item-name {
+                font-weight: bold; /* 품명 굵게 표시 */
+            }
+            .details .item-cltnm {
+                font-weight: bold; /* 품명 굵게 표시 */
+            }
+            .details .item-qty {
+                font-weight: bold; /* 품명 굵게 표시 */
+            }
+        } 
     </style>
 </head>
 <th:block layout:fragment="content"> 

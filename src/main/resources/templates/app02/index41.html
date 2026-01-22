@@ -2149,6 +2149,12 @@ console.log('ls_inplan_no==' + ls_inplan_no)
        cols.header = '검사일';
        cols.align = "center";
        cols.width = 120; 
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.qcdate}</b>',
+           click: (e, ctx) => {
+               selectChk( "A", ctx.item.custcd, ctx.item.spjangcd, ctx.item.wono, ctx.item.cltnm, ctx.item.pname, ctx.item.ostore, ctx.item.plan_no, ctx.item.cltcd, ctx.item.pcode, ctx.item.wseq, ctx.item.wflag, ctx.item.lotno, ctx.item.prod_qty, ctx.item.otqty, ctx.item.otqty , ctx.item.qcdate, ctx.item.winps , ctx.item.wrpsnm, ctx.item.wremark, ctx.item.psize, ctx.item.wboxsu, ctx.item.wsumqt, ctx.item.demflag, ctx.item.wbdqt, ctx.item.wcode, ctx.item.wcodenm, ctx.item.wqcqt, ctx.item.jchajong , ctx.item.jpumcode, ctx.item.jpumname, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.psize  );
+           }
+       });
        wtab01Grid.columns.push(cols);   
        // cols = new wijmo.grid.Column(); 
        // cols.binding = 'prod_sdate';
@@ -2173,7 +2179,13 @@ console.log('ls_inplan_no==' + ls_inplan_no)
        cols.binding = 'pname';
        cols.header = '품목명';
        cols.align = "center";
-       cols.width = 150;   
+       cols.width = 150;  
+       cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+           text: '<b>${item.pname}</b>',
+           click: (e, ctx) => {
+               selectChk( "A", ctx.item.custcd, ctx.item.spjangcd, ctx.item.wono, ctx.item.cltnm, ctx.item.pname, ctx.item.ostore, ctx.item.plan_no, ctx.item.cltcd, ctx.item.pcode, ctx.item.wseq, ctx.item.wflag, ctx.item.lotno, ctx.item.prod_qty, ctx.item.otqty, ctx.item.otqty , ctx.item.qcdate, ctx.item.winps , ctx.item.wrpsnm, ctx.item.wremark, ctx.item.psize, ctx.item.wboxsu, ctx.item.wsumqt, ctx.item.demflag, ctx.item.wbdqt, ctx.item.wcode, ctx.item.wcodenm, ctx.item.wqcqt, ctx.item.jchajong , ctx.item.jpumcode, ctx.item.jpumname, ctx.item.jdoor1, ctx.item.jdoor2, ctx.item.psize  );
+           }
+       }); 
        wtab01Grid.columns.push(cols);  
        cols = new wijmo.grid.Column(); 
        cols.binding = 'psize';

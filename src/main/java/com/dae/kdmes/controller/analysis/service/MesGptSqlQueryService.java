@@ -388,8 +388,21 @@ public class MesGptSqlQueryService {
                    GPT는 SQL 출력 전 JOIN–WHERE–GROUP BY 순서를 자체 검증해야 한다.                  
                    [OUTPUT FORMAT - 반드시 JSON으로만 출력]
                   너의 응답은 반드시 아래 JSON 중 하나의 형태여야 한다. 다른 텍스트(“🧠 GPT 분석 결과” 같은 접두어) 절대 금지.
-                         
-                                
+                      
+                  [집계 쿼리 정렬/날짜조건 오류 방지 규칙]   
+                   -GROUP BY(집계) 쿼리에서 ORDER BY는 ‘그룹키’ 또는 ‘집계값’만 사용한다..
+                       금지:                   
+                       GROUP BY plan_no
+                       ORDER BY indate
+                       허용:                   
+                       ORDER BY plan_no
+                       또는                   
+                       SELECT MAX(indate) AS indate ...
+                       ORDER BY MAX(indate)
+                   -TB_FPLAN(생산계획)에서 날짜 필터는 계획 일자 컬럼을 사용한다.
+                   -indate는 ‘입력일자’이며, 업무 기준 일자가 아니다.
+                   -월 기간 조건은 항상 ‘시작일 포함, 종료일 미만(<)’ 방식으로 생성한다. 
+                                                   
                 (1) SQL 생성 성공
                 {
                   "type": "sql",

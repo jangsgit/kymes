@@ -2,6 +2,7 @@ package com.dae.kdmes.DTO.App01;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.poi.hpsf.Decimal;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class IndexCa613Dto {
     private String psize;
     private String punit;
     private Integer qty;
+    private Decimal deqty;
     private Integer weight;
     private Integer cqty;
     private Integer uamt;

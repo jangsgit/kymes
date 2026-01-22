@@ -9,6 +9,7 @@ import com.dae.kdmes.Service.App03.Index35Service;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hpsf.Decimal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -776,7 +777,7 @@ public class App03ListController {
                                          @RequestParam("pcodeArr[]") List<String> pcodeArr,
                                          @RequestParam("pnameArr[]") List<String> pnameArr,
                                          @RequestParam("psizeArr[]") List<String> psizeArr,
-                                         @RequestParam("pqtyArr[]") List<Integer> pqtyArr,
+                                         @RequestParam("pqtyArr[]") List<Decimal> pqtyArr,
                                          Model model, HttpServletRequest request) throws Exception{
 
         try {
@@ -796,7 +797,7 @@ public class App03ListController {
                 _indexCa613Dto.setSpcod(pcodeArr.get(i));
                 _indexCa613Dto.setPname(pnameArr.get(i));
                 _indexCa613Dto.setPsize(psizeArr.get(i));
-                _indexCa613Dto.setQty(pqtyArr.get(i));
+                _indexCa613Dto.setDeqty(pqtyArr.get(i));
                 //_indexCa613Dto.setWeight(pweightArr.get(i));
                 ls_wflag = service35.SelectBomCheck(_indexCa613Dto);
                 if (ls_wflag == null || ls_wflag.equals("") ){

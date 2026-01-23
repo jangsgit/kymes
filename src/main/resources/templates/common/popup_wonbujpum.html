@@ -96,7 +96,7 @@
 
             let content = tmpl('popup_wonbujpumSearchTemplate', {});
             let $content = $(content);
-            this.modalContainer.open({ width: 800, height: 500, $content });
+            this.modalContainer.open({ width: 1000, height: 500, $content });
 
             this.grid = new wijmo.grid.FlexGrid('#theGrid2', {
                 selectionMode: wijmo.grid.SelectionMode.Row,
@@ -107,6 +107,7 @@
                     { binding: 'jkey', header: '제품코드', width: 180, align: 'center' }, 
                     { binding: 'jpum', header: '제품명', width: 250, align: 'left' }, 
                     { binding: 'jgugek', header: '규격', width: 180, align: 'center' }, 
+                    { binding: 'lotno', header: '로트번호', width: 180, align: 'center' }, 
                 ],
                 itemsSource: this.viewData,
             });

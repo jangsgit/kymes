@@ -3,6 +3,7 @@ package com.dae.kdmes.Service.App03;
 import com.dae.kdmes.DTO.App01.IndexCa613Dto;
 import com.dae.kdmes.DTO.app03.Index35Dto;
 import com.dae.kdmes.DTO.app03.Index59Dto;
+import com.dae.kdmes.DTO.app03.IndexJaegotemp;
 import com.dae.kdmes.Mapper.App03.Index35Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class Index35Service {
 
     public List<Index59Dto> SelectJegoList(Index59Dto parm){
         return  indexMapper.SelectJegoList(parm);
+    }
+    public List<IndexJaegotemp> SelectJegoList_temp01(IndexJaegotemp parm){
+        return  indexMapper.SelectJegoList_temp01(parm);
     }
 
     public List<Index59Dto> GetJpumFromJaegoList(Index59Dto parm){

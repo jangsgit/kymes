@@ -4,6 +4,7 @@ import com.dae.kdmes.DTO.App01.IndexCa613Dto;
 import com.dae.kdmes.DTO.App02.Index11Dto;
 import com.dae.kdmes.DTO.Appm.FPLAN_VO;
 import com.dae.kdmes.DTO.app03.Index59Dto;
+import com.dae.kdmes.DTO.app03.IndexJaegotemp;
 import com.dae.kdmes.Service.App02.Index11Service;
 import com.dae.kdmes.Service.App03.Index35Service;
 import lombok.RequiredArgsConstructor;
@@ -702,8 +703,7 @@ public class App03ListController {
     }
 
 
-
-    //기간별수불현황
+    //TEMP재고현황
     @GetMapping(value="/index63/subul01")
     public Object App63SubulList_index(@RequestParam("frdate") String frdate,
                                        @RequestParam("todate") String todate,
@@ -738,6 +738,31 @@ public class App03ListController {
         }
 
         return _index03List;
+    }
+
+    //기간별수불현황
+    @GetMapping(value="/index60/jtemp01")
+    public Object App60JtempList_index(@RequestParam("searchtxt") String searchtxt,
+                                       @RequestParam("flag") String flag,
+                                       Model model, HttpServletRequest request) throws Exception{
+        IndexJaegotemp _IndexJaegotemp = new IndexJaegotemp();
+        List<IndexJaegotemp> _IndexJaegoList = new ArrayList<>();
+
+        try {
+
+            if(searchtxt == null || searchtxt.equals("")){
+                searchtxt = "%";
+            }
+            _IndexJaegotemp.setJ1_name(searchtxt);
+            _IndexJaegotemp.setJ1_hang(flag);
+            _IndexJaegoList = service35.SelectJegoList_temp01(_IndexJaegotemp);
+            model.addAttribute("JtempList",_IndexJaegoList);
+
+        } catch (Exception ex) {
+            log.info("App60JtempList_index Exception =====>" + ex.toString());
+        }
+
+        return _IndexJaegoList;
     }
 
     //기간별수불현황

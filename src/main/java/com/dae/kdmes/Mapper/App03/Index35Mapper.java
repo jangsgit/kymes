@@ -3,6 +3,7 @@ package com.dae.kdmes.Mapper.App03;
 import com.dae.kdmes.DTO.App01.IndexCa613Dto;
 import com.dae.kdmes.DTO.app03.Index35Dto;
 import com.dae.kdmes.DTO.app03.Index59Dto;
+import com.dae.kdmes.DTO.app03.IndexJaegotemp;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,8 @@ public interface Index35Mapper {
     public Boolean DeleteJaegoIpgoAcorp(Index59Dto parm) ;
 
     public List<Index59Dto> SelectJegoList(Index59Dto parm) ;
+    public List<IndexJaegotemp> SelectJegoList_temp01(IndexJaegotemp parm) ;
+
     public List<Index59Dto> GetJpumFromJaegoList(Index59Dto parm) ;
     public List<Index59Dto> GetJpumSubul01(Index59Dto parm) ;
     public List<Index59Dto> GetJpumSubul02(Index59Dto parm) ;

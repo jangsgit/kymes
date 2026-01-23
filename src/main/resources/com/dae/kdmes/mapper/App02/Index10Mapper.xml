@@ -749,10 +749,10 @@
     <select id="SelectCa613JaegoList"  parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto" resultType="com.dae.kdmes.DTO.App01.IndexCa613Dto">
 
         <![CDATA[
-                SELECT Z.pcode, Z.pname, Z.psize, Z.punit, Z.janqty, Z.wonflag
+                SELECT Z.pcode, Z.pname, Z.psize, Z.punit, Z.janqty, Z.wonflag, Z.lotno
                 FROM (
                         select sum(isnull(B.qty,0))  - sum(isnull(B.cqty,0)) as janqty,
-                               B.pcode, B.pname, B.psize, B.punit , B.wonflag
+                               B.pcode, B.pname, B.psize, B.punit , B.wonflag, max(B.lotno) as lotno
                         from  TB_CA613 B WITH (NOLOCK)
                         Group BY  B.pcode, B.pname, B.psize, B.punit, B.wonflag
                 ) Z where Z.janqty > 0

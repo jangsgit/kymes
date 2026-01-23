@@ -96,7 +96,7 @@
 
             let content = tmpl('popup_wbujpumSearchTemplate', {});
             let $content = $(content);
-            this.modalContainer.open({ width: 800, height: 500, $content });
+            this.modalContainer.open({ width: 1000, height: 500, $content });
 
             this.grid = new wijmo.grid.FlexGrid('#theGrid2', {
                 selectionMode: wijmo.grid.SelectionMode.Row,
@@ -106,7 +106,9 @@
                 columns: [ 
                     { binding: 'pname', header: '품목', width: 200, align: 'center' }, 
                     { binding: 'psize', header: '규격', width: 150, align: 'left' }, 
-                    { binding: 'janqty', header: '재고수량', width: 90, align: 'right' },  
+                    { binding: 'janqty', header: '재고수량', width: 90, align: 'right' }, 
+                    { binding: 'lotno', header: 'LOTNO', width: 180, align: 'center' }, 
+                    
                 ],
                 itemsSource: this.viewData,
             });

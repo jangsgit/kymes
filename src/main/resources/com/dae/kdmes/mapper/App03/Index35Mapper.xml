@@ -76,6 +76,18 @@
         ]]>
     </select>
 
+    <select id="SelectJegoList_temp01"  parameterType="com.dae.kdmes.DTO.app03.IndexJaegotemp" resultType="com.dae.kdmes.DTO.app03.IndexJaegotemp">
+        <![CDATA[ select j1_key,  j1_name , j1_gesan , j1_color,
+                         j1_gugi, j1_jukgi, j1_gab,
+                         j1_hang
+                  from  jego_jcode1 B WITH (NOLOCK)
+                  where  isnull(j1_name,'') Like #{j1_name} + '%'
+                  AND   isnull(j1_hang,'') Like  #{j1_hang} + '%'
+                  ORDER BY j1_name
+        ]]>
+    </select>
+
+
     <insert id="InsertJegoIpgo" parameterType="com.dae.kdmes.DTO.app03.Index59Dto" >
         insert into JEGO_JEPMJANAK (jepm, acorp, key1, jepm_size, ijaego_su1) values
         (#{jepm}, #{acorp}, #{key1}, #{jepm_size}, #{ijaego_su1})

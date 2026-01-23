@@ -315,6 +315,7 @@
                                     <input type="hidden" id="lotno"  >      
                                     <input type="hidden"  id="qcdate"    >    
                                     <input  id="plan_no" type="hidden"  />   
+                                     <input type="hidden"  id="pcode" name="pcode" >
                                     <input type="hidden" id="tabvalue" value="A">                      
                                     <tbody>
                                     <tr>
@@ -393,10 +394,10 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                          <label for="pcode" id="pcode_txt"><span class="eq">*</span>품목코드</label>
+                                          <label for="jpum" id="jpum_txt"><span class="eq">*</span>품목명</label>
                                         </th>
                                         <td>
-                                          <input id="pcode" name="pcode"   style="width: 50%;">
+                                          <input id="jpum" name="jpum"   style="width: 70%;">
                                           &nbsp;
                                           <a class="btn btn-delete" title="품명검색" id="btnJpuminfoSearch"
                                               style="display: inline-block; width: 32px; height: 32px; vertical-align: middle;">
@@ -405,10 +406,10 @@
                                           </a>      
                                         </td>
                                         <th>
-                                          <label for="jpum" id="jpum_txt">품목명</label>
+                                          <label for="jchajong" id="jchajong_txt">차종</label>
                                         </th>
                                         <td>
-                                          <input type="text" id="jpum" name="jpum" style="width: 80%;" disabled > 
+                                          <input type="text" id="jchajong" name="jchajong" style="width: 80%;" disabled > 
                                         </td> 
                                     </tr>
                                     <tr>
@@ -609,6 +610,8 @@
                 console.log('items : ', items);  
                 document.getElementById('pcode').value = items.jkey; 
                 document.getElementById('jpum').value = items.jpum;  
+                document.getElementById('jchajong').value = items.jchajong;  
+                
                 // AjaxUtil.getAsyncData('/api/definition/company/detail', { company_id: items.id }, function (result) {
                 //   if (result.success) {
                 //     const data = result.data;
@@ -1452,6 +1455,8 @@
             document.getElementById('wrmc').value = arg30;
             document.getElementById('wrmc').value = arg30;
             document.getElementById('sachultxt').value = arg32;
+            document.getElementById('jchajong').value = arg14;
+            
             const j_sachulflag = document.getElementById('sachulflag'); 
             if(arg31 == "1"){
                 j_sachulflag.checked = true; 

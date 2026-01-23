@@ -13,7 +13,7 @@
                             품목명<span class="eq"></span>
                         </label>
                     </dt>
-                    <dd>
+                    <dd> 
                         <div class="srch-box">
                             <input type="text" id='jpname' name="jpname" style="width:160px;"/>
                         </div>
@@ -96,7 +96,7 @@
 
             let content = tmpl('popup_mojpumSearchTemplate', {});
             let $content = $(content);
-            this.modalContainer.open({ width: 800, height: 500, $content });
+            this.modalContainer.open({ width: 1000, height: 500, $content });
 
             this.grid = new wijmo.grid.FlexGrid('#theGrid2', {
                 selectionMode: wijmo.grid.SelectionMode.Row,
@@ -107,6 +107,10 @@
                     { binding: 'jkey', header: '제품코드', width: 180, align: 'center' }, 
                     { binding: 'jpum', header: '제품명', width: 250, align: 'left' }, 
                     { binding: 'jgugek', header: '규격', width: 180, align: 'center' }, 
+                    { binding: 'jchajong', header: '차종', width: 120, align: 'center' }, 
+                    { binding: 'jdoor1', header: 'Door1', width: 120, align: 'center' }, 
+                    { binding: 'jdoor2', header: 'Door2', width: 120, align: 'center' }, 
+                    
                 ],
                 itemsSource: this.viewData,
             });

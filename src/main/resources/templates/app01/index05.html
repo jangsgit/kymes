@@ -1236,7 +1236,7 @@
             
             var ls_jpumname =  document.getElementById('jpumname').value; 
             if (jpumname_sel.tagName === 'SELECT') { 
-                var ls_jpumname =  jpumname_sel.options[jpumname_sel.selectedIndex].text; 
+                var ls_jpumname =  jpumname_sel?.selectedOptions?.[0]?.text || '';// jpumname_sel.options[jpumname_sel.selectedIndex].text; 
             }                
             var ls_jchgoga0 =  0; 
             var ls_j_misayong =  document.getElementById('j_misayong').value;

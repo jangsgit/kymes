@@ -36,6 +36,17 @@ public class CmsIndex01Service {
     }
 
 
+    public List<CmsIndex01Dto> getSHOTDATA_realtime_eq(CmsIndex01Dto parm){
+        return cmsindexMapper.getSHOTDATA_realtime_eq(parm);
+    }
+
+    public List<CmsIndex01Dto> getSHOTDATA_realtime_chart_eq(CmsIndex01Dto parm){
+        return cmsindexMapper.getSHOTDATA_realtime_chart_eq(parm);
+    }
+    public List<CmsIndex01Dto> getSHOTDATA_machine_eq(CmsIndex01Dto parm){
+        return cmsindexMapper.getSHOTDATA_machine_eq(parm);
+    }
+
     public List<CmsIndex01Dto> GetADD_INFO(CmsIndex01Dto parm){
         return cmsindexMapper.GetADD_INFO(parm);
     }

@@ -3645,8 +3645,7 @@
     
         // tab01검색 데이터 수집
         function getData_tab(arg1, arg2, arg3, arg4, arg5, arg6){  
-                var ls_machnm = String(Number(arg1));
-                console.log("ls_machnm=>" + ls_machnm)
+                var ls_machnm = String(Number(arg1)); 
                 var ls_addinfo = arg2;
                 var ls_frdate = arg3;
                 var ls_todate = arg4;   
@@ -3661,7 +3660,7 @@
                             "machnm" : ls_machnm , 
                             "addinfo" : ls_addinfo,
                             "listflag" : arg5,
-                            "wrmcflag" : arg6
+                            "flag" : "eq"
                         },
                         async:false,
                         success:function(data){   

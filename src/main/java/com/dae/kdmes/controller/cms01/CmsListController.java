@@ -40,7 +40,7 @@ public class CmsListController {
                                  @RequestParam("machnm") String machnm,
                                  @RequestParam("addinfo") String addinfo,
                                  @RequestParam("listflag") String listflag,
-                                 @RequestParam("wrmcflag") String wrmcflag,
+                                 @RequestParam("flag") String flag,
                                Model model, HttpServletRequest request) throws Exception{
         List<CmsIndex01Dto> cms01List = new ArrayList<>();
         List<CmsIndex01Dto> cms02List = new ArrayList<>();
@@ -60,13 +60,22 @@ public class CmsListController {
             cmsdto.setTodate(todate);
             cmsdto.setMachine_name(machnm);
             cmsdto.setAdditional_Info_1(addinfo);
-            if(listflag.equals("list")){
-                cms01List = cmsservice01.getSHOTDATA_realtime(cmsdto);
+            log.info("flag =====>" +flag);
+            if (flag.equals("eq")){
+                if(listflag.equals("list")){
+                    cms01List = cmsservice01.getSHOTDATA_realtime_eq(cmsdto);
+                }else{
+                    cms01List = cmsservice01.getSHOTDATA_realtime_chart_eq(cmsdto);
+                }
+                cms02List = cmsservice01.getSHOTDATA_machine(cmsdto);
             }else{
-                cms01List = cmsservice01.getSHOTDATA_realtime_chart(cmsdto);
+                if(listflag.equals("list")){
+                    cms01List = cmsservice01.getSHOTDATA_realtime(cmsdto);
+                }else{
+                    cms01List = cmsservice01.getSHOTDATA_realtime_chart(cmsdto);
+                }
+                cms02List = cmsservice01.getSHOTDATA_machine(cmsdto);
             }
-            cms02List = cmsservice01.getSHOTDATA_machine(cmsdto);
-
 //            System.out.println("리스트 데이터:");
 //            for (CmsIndex01Dto item : cms01List) {
 //                System.out.println("- " + item.getAdditional_Info_1());

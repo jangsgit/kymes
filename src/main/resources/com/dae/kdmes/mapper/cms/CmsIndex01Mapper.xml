@@ -66,6 +66,55 @@
         ]]>
     </select>
 
+
+    <select id="getSHOTDATA_realtime_eq"  parameterType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto" resultType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto">
+        <![CDATA[
+        SELECT  Machine_Name as machine_name
+             ,trim(Additional_Info_1) as Additional_Info_1
+             ,Shot_Number
+             ,Injection_Time
+             ,Filling_Time
+             ,Plasticizing_Time
+             ,Cycle_Time
+             ,Barrel_Temperature_1
+             ,Barrel_Temperature_2
+             ,Mold_Temperature_1
+             ,Mold_Temperature_2
+             ,Mold_Temperature_3
+             ,Mold_Temperature_4
+             ,Mold_Temperature_5
+             ,Mold_Temperature_6
+             ,Cavity
+             ,TimeStamp
+             ,FORMAT(TimeStamp, 'HH:mm:ss') as shottime
+             ,FORMAT(TimeStamp, 'yyyyMMdd') as shotdate
+        FROM [ado_kd].[dbo].[shot_data]
+        where    TimeStamp between #{frdate} and #{todate}
+          and    isnull(Machine_Name,'') = #{machine_name}
+        ORDER BY TimeStamp
+        ]]>
+    </select>
+
+
+    <select id="getSHOTDATA_realtime_chart_eq"  parameterType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto" resultType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto">
+        <![CDATA[
+        SELECT
+            Machine_Name,
+            trim(Additional_Info_1) as Additional_Info_1,
+            Mold_Temperature_1 as MT01
+             ,Mold_Temperature_2 as MT02
+             ,Mold_Temperature_3 as MT03
+             ,Mold_Temperature_4 as MT04
+             ,Mold_Temperature_5 as MT05
+             ,Mold_Temperature_6 as MT06
+             ,FORMAT(TimeStamp, 'HH:mm:ss') as shottime
+        FROM [ado_kd].[dbo].[shot_data]
+        where   TimeStamp between #{frdate} and #{todate}
+          and    isnull(Machine_Name,'')  =  #{machine_name}
+        ORDER BY TimeStamp
+        ]]>
+    </select>
+
     <select id="getSHOTDATA_machine"  parameterType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto" resultType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto">
         <![CDATA[
         select  machine_name
@@ -73,6 +122,15 @@
             where  isnull(machine_name,'') Like concat(#{machine_name},'%')
             group by machine_name
             order by machine_name
+        ]]>
+    </select>
+    <select id="getSHOTDATA_machine_eq"  parameterType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto" resultType="com.dae.kdmes.DTO.Cms.CmsIndex01Dto">
+        <![CDATA[
+        select  machine_name
+        from shot_data
+        where  isnull(machine_name,'') = #{machine_name}
+        group by machine_name
+        order by machine_name
         ]]>
     </select>
 <!-- order by cast(machine_name as int)-->

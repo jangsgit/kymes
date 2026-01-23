@@ -397,7 +397,7 @@
  
                                     <div class="col-12" style="margin-bottom: 10px;">
                                         <div id="wtab11Grid_div" style="width: 100%; height: 100px; "></div>
-                                        <canvas id="temperatureChart" style="width: 100%; height: 100px;"></canvas>
+                                        <canvas id="temperatureChart" style="width: 100%; height: 400px;"></canvas>
                                     </div> 
                             </div>
                             <div id="wscntdis01"></div>
@@ -590,6 +590,7 @@
                     // alert("계획량과 생산량을 확인하세요");
                     // return 
                 } 
+            var ls_wrmc = items.wrmc
             var button_workstBtn = document.getElementById('workstBtn');
             var button_workedBtn = document.getElementById('workedBtn'); 
             var button_wfrdt = document.getElementById('wfrdt');
@@ -658,12 +659,13 @@
                 $('#popwkotDate').val(CommonUtil.formatYYYYMMDD(now));   
                 //생산량 초기화     
                 //searchotqty_fnc();
+                search_chart(ls_wrmc)
                 
 
 
             };
             poppage.show(searchcallback);
-        });     
+        });  
         $('#btnJpuminfoSearch').click(function () {
             let poppage = new PopMojpumComponent();
             let $poppage = $(poppage);
@@ -682,7 +684,6 @@
         });     
 
 
-          
     </script>
     
 
@@ -1255,90 +1256,90 @@
     
 
 
-        const ctx = document.getElementById('temperatureChart').getContext('2d');
-        //실시간현황
-        view_p01tab11page = new wijmo.collections.CollectionView(getData_tab01('%', '%', '%', '%', "list"), { 
-            }); 
-        wtab11Grid = new wijmo.grid.FlexGrid('#wtab11Grid_div', {  
-            autoGenerateColumns: false,
-            showMarquee: true,
-            isReadOnly: true,  
-            allowSorting: 'MultiColumn',
-            alternatingRowStep: 0,
-            columns: [     
-                { binding: 'shottime', header: '시간', align: "center" ,  width: 120 },   
-                { binding: 'machine_name', 
-                            header: '기계', 
-                            align: "center", 
-                            width: 50,
-                            cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                                text: '<b>${item.machine_name}</b>',
-                                click: (e, ctx) => {
-                                    chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);                    
-                                }
-                            }) 
-                },     
-                { binding: 'Additional_Info_1', 
-                            header: '금형', 
-                            align: "left", 
-                            width: 200,
-                            cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
-                                text: '<b>${item.Additional_Info_1}</b>',
-                                click: (e, ctx) => {
-                                    chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);                    
-                                }
-                            }) 
-                },     
-                { binding: 'Shot_Number', header: '공정횟수', align: "right",  width: 80  },  
-                { binding: 'Injection_Time', header: '사출시간', align: "right", format: 'n1',  width: 80  },   
-                { binding: 'Filling_Time', header: '충진시간', align: "center", width: 80 },
-                { binding: 'Plasticizing_Time', header: '계량시간', align: "right", format: 'n1',  width: 80  },  
-                { binding: 'Cycle_Time', header: '공정시간', align: "center", width: 80 },
-                { binding: 'Barrel_Temperature_1', header: '연장노즐', align: "right", format: 'n1',  width: 80  },  
-                { binding: 'Barrel_Temperature_2', header: '노즐', align: "right", format: 'n1',  width: 80  },  
-                { binding: 'Mold_Temperature_1', header: '이동측금형1', align: "right", format: 'n1',  width: 110  },   
-                { binding: 'Mold_Temperature_2', header: '이동측금형2', align: "right", format: 'n1',  width: 110  }, 
-                { binding: 'Mold_Temperature_3', header: '고정측금형1', align: "right", format: 'n1',  width: 110  }, 
-                { binding: 'Mold_Temperature_4', header: '고정측금형2', align: "right", format: 'n1' ,  width: 110 }, 
-                { binding: 'Mold_Temperature_5', header: '건조기', align: "right", format: 'n1',  width: 110  }, 
-                { binding: 'Mold_Temperature_6', header: '온수기', align: "right", format: 'n1',  width: 110  },   
-            ], 
-            itemsSource: view_p01tab11page
-        });   
-        
-        // new FlexGridContextMenu(wtab11Grid);  
-        setHeaderColumn11(false);
-        function setHeaderColumn11(headerOn) {
-            wtab11Grid.headersVisibility = headerOn
-            ? wijmo.grid.HeadersVisibility.All
-            : wijmo.grid.HeadersVisibility.Column; 
-        } 
-        machnmChart = "샘플";
-        addinfoChart = "Sample";
-        dataC = [
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:23:54', MT01: 28.2, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 62.8, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:23:16', MT01: 28.1, MT02: 28, MT03: 30.2, MT04: 30.4, MT05: 62.6, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:22:38', MT01: 28, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 62.6, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:22:01', MT01: 28.1, MT02: 28.1, MT03: 30.4, MT04: 30.5, MT05: 62.6, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:20:45', MT01: 28.1, MT02: 28.1, MT03: 30.5, MT04: 30.5, MT05: 62.2, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:20:08', MT01: 28.1, MT02: 28.1, MT03: 30.5, MT04: 30.6, MT05: 62.2, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:19:30', MT01: 28, MT02: 28.1, MT03: 30.4, MT04: 30.6, MT05: 62.7, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:18:52', MT01: 21.2, MT02: 28.1, MT03: 30.4, MT04: 30.6, MT05: 63, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:18:15', MT01: 28.1, MT02: 28.1, MT03: 30.3, MT04: 30.5, MT05: 63.1, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:17:37', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 63.4, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:17:00', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.4, MT05: 63.1, MT06: 0 },
-                { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:16:22', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.4, MT05: 62.2, MT06: 0 }
-        ];
+            const ctx = document.getElementById('temperatureChart').getContext('2d');
+            //실시간현황
+            view_p01tab11page = new wijmo.collections.CollectionView(getData_tab_blank('%', '%', '%', '%', "list", "%"), { 
+                }); 
+            wtab11Grid = new wijmo.grid.FlexGrid('#wtab11Grid_div', {  
+                autoGenerateColumns: false,
+                showMarquee: true,
+                isReadOnly: true,  
+                allowSorting: 'MultiColumn',
+                alternatingRowStep: 0,
+                columns: [     
+                    { binding: 'shottime', header: '시간', align: "center" ,  width: 120 },   
+                    { binding: 'machine_name', 
+                                header: '기계', 
+                                align: "center", 
+                                width: 50,
+                                cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                                    text: '<b>${item.machine_name}</b>',
+                                    click: (e, ctx) => {
+                                        chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);                    
+                                    }
+                                }) 
+                    },     
+                    { binding: 'Additional_Info_1', 
+                                header: '금형', 
+                                align: "left", 
+                                width: 200,
+                                cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                                    text: '<b>${item.Additional_Info_1}</b>',
+                                    click: (e, ctx) => {
+                                        chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);                    
+                                    }
+                                }) 
+                    },     
+                    { binding: 'Shot_Number', header: '공정횟수', align: "right",  width: 80  },  
+                    { binding: 'Injection_Time', header: '사출시간', align: "right", format: 'n1',  width: 80  },   
+                    { binding: 'Filling_Time', header: '충진시간', align: "center", width: 80 },
+                    { binding: 'Plasticizing_Time', header: '계량시간', align: "right", format: 'n1',  width: 80  },  
+                    { binding: 'Cycle_Time', header: '공정시간', align: "center", width: 80 },
+                    { binding: 'Barrel_Temperature_1', header: '연장노즐', align: "right", format: 'n1',  width: 80  },  
+                    { binding: 'Barrel_Temperature_2', header: '노즐', align: "right", format: 'n1',  width: 80  },  
+                    { binding: 'Mold_Temperature_1', header: '이동측금형1', align: "right", format: 'n1',  width: 110  },   
+                    { binding: 'Mold_Temperature_2', header: '이동측금형2', align: "right", format: 'n1',  width: 110  }, 
+                    { binding: 'Mold_Temperature_3', header: '고정측금형1', align: "right", format: 'n1',  width: 110  }, 
+                    { binding: 'Mold_Temperature_4', header: '고정측금형2', align: "right", format: 'n1' ,  width: 110 }, 
+                    { binding: 'Mold_Temperature_5', header: '건조기', align: "right", format: 'n1',  width: 110  }, 
+                    { binding: 'Mold_Temperature_6', header: '온수기', align: "right", format: 'n1',  width: 110  },   
+                ], 
+                itemsSource: view_p01tab11page
+            });   
+            
+            // new FlexGridContextMenu(wtab11Grid);  
+            setHeaderColumn11(false);
+            function setHeaderColumn11(headerOn) {
+                wtab11Grid.headersVisibility = headerOn
+                ? wijmo.grid.HeadersVisibility.All
+                : wijmo.grid.HeadersVisibility.Column; 
+            } 
+            machnmChart = "샘플";
+            addinfoChart = "Sample";
+            dataC = [
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:23:54', MT01: 28.2, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 62.8, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:23:16', MT01: 28.1, MT02: 28, MT03: 30.2, MT04: 30.4, MT05: 62.6, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:22:38', MT01: 28, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 62.6, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:22:01', MT01: 28.1, MT02: 28.1, MT03: 30.4, MT04: 30.5, MT05: 62.6, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:20:45', MT01: 28.1, MT02: 28.1, MT03: 30.5, MT04: 30.5, MT05: 62.2, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:20:08', MT01: 28.1, MT02: 28.1, MT03: 30.5, MT04: 30.6, MT05: 62.2, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:19:30', MT01: 28, MT02: 28.1, MT03: 30.4, MT04: 30.6, MT05: 62.7, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:18:52', MT01: 21.2, MT02: 28.1, MT03: 30.4, MT04: 30.6, MT05: 63, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:18:15', MT01: 28.1, MT02: 28.1, MT03: 30.3, MT04: 30.5, MT05: 63.1, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:17:37', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.5, MT05: 63.4, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:17:00', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.4, MT05: 63.1, MT06: 0 },
+                    { machine_name : "1", Additional_Info_1: 'DM_RD', shottime: '21:16:22', MT01: 28.1, MT02: 28, MT03: 30.3, MT04: 30.4, MT05: 62.2, MT06: 0 }
+            ];
 
-        labels = dataC.map(entry => entry.shottime);
-        dataset = [
-            { label: '이동측금형1', data: dataC.map(entry => entry.MT01) },
-            { label: '이동측금형2', data: dataC.map(entry => entry.MT02) },
-            { label: '고정측금형1', data: dataC.map(entry => entry.MT03) },
-            { label: '고정측금형2', data: dataC.map(entry => entry.MT04) },
-            { label: '건조기', data: dataC.map(entry => entry.MT05) },
-            { label: '온수기', data: dataC.map(entry => entry.MT06) }
-        ]; 
+            labels = dataC.map(entry => entry.shottime);
+            dataset = [
+                { label: '이동측금형1', data: dataC.map(entry => entry.MT01) },
+                { label: '이동측금형2', data: dataC.map(entry => entry.MT02) },
+                { label: '고정측금형1', data: dataC.map(entry => entry.MT03) },
+                { label: '고정측금형2', data: dataC.map(entry => entry.MT04) },
+                { label: '건조기', data: dataC.map(entry => entry.MT05) },
+                { label: '온수기', data: dataC.map(entry => entry.MT06) }
+            ]; 
         //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         //기계구분 popup list
         // view_machnmpage = new wijmo.collections.CollectionView(getData_machnm(), {
@@ -1403,88 +1404,22 @@
                 }
             });
                             
-                    
+        function  getData_tab_blank(){
+            
+        }                   
         // 데이터 수집
         function getData_machnm(){  
             var data05 = []; 
             return data05                                          
         } 
 
-        // tab01검색 데이터 수집
-        function getData_tab01(arg1, arg2, arg3, arg4, arg5){  
-                var ls_machnm = arg1;
-                var ls_addinfo = arg2;
-                var ls_frdate = arg3;
-                var ls_todate = arg4;   
-                var wactnm_data = [];          
-                var cnt = 1;      
-                $.ajax({
-                        url: '/appcms/reallist',   
-                        type:"POST", 
-                        data: {
-                            "frdate" : ls_frdate , 
-                            "todate" : ls_todate , 
-                            "machnm" : ls_machnm , 
-                            "addinfo" : ls_addinfo,
-                            "listflag" : arg5
-                        },
-                        async:false,
-                        success:function(data){   
-                                var wtab01Dto = data; 
-                                rowCount = data.length;   
-                                console.log(rowCount)
-                                for (var i = 0; i < rowCount; i++) {
-                                        if(arg5 == "list"){
-                                            wactnm_data.push({ 
-                                                index: cnt,
-                                                machine_name: wtab01Dto[i]["machine_name"], 
-                                                Additional_Info_1: wtab01Dto[i]["additional_Info_1"], 
-                                                Shot_Number: wtab01Dto[i]["shot_Number"], 
-                                                Injection_Time: wtab01Dto[i]["injection_Time"], 
-                                                Filling_Time: wtab01Dto[i]["filling_Time"], 
-                                                Plasticizing_Time: wtab01Dto[i]["plasticizing_Time"], 
-                                                Cycle_Time: wtab01Dto[i]["cycle_Time"], 
-                                                Barrel_Temperature_1: wtab01Dto[i]["barrel_Temperature_1"], 
-                                                Barrel_Temperature_2: wtab01Dto[i]["barrel_Temperature_2"], 
-                                                Mold_Temperature_1: wtab01Dto[i]["mold_Temperature_1"], 
-                                                Mold_Temperature_2: wtab01Dto[i]["mold_Temperature_2"], 
-                                                Mold_Temperature_3: wtab01Dto[i]["mold_Temperature_3"], 
-                                                Mold_Temperature_4: wtab01Dto[i]["mold_Temperature_4"], 
-                                                Mold_Temperature_5: wtab01Dto[i]["mold_Temperature_5"], 
-                                                Mold_Temperature_6: wtab01Dto[i]["mold_Temperature_6"],
-                                                Cavity: wtab01Dto[i]["cavity"],  
-                                                TimeStamp: wtab01Dto[i]["timeStamp"], 
-                                                shottime: wtab01Dto[i]["shottime"], 
-                                                shotdate: wtab01Dto[i]["shotdate"],      
-                                                
-                                            });
-
-                                        }else{
-                                            wactnm_data.push({ 
-                                                index: cnt, 
-                                                machine_name: wtab01Dto[i]["machine_name"], 
-                                                Additional_Info_1: wtab01Dto[i]["additional_Info_1"], 
-                                                MT01: wtab01Dto[i]["mt01"],  
-                                                MT02: wtab01Dto[i]["mt02"], 
-                                                MT03: wtab01Dto[i]["mt03"], 
-                                                MT04: wtab01Dto[i]["mt04"], 
-                                                MT05: wtab01Dto[i]["mt05"], 
-                                                MT06: wtab01Dto[i]["mt06"], 
-                                                shottime: wtab01Dto[i]["shottime"],       
-                                                
-                                            }); 
-                                        }
-                                        cnt++;
-                                }  
-                        },error:function(e){
-                            console.log('error',e);
-                        }
-                    }).done(function(fragment){           
-                    })   
-                        return wactnm_data;  
+        function search_chart(arg_wrmc){ 
+            const now = new Date(); 
+            var  ls_frdate     =  CommonUtil.formatYYYYMMDD(now);                  
+            var  ls_todate     =  CommonUtil.formatYYYYMMDD(now); 
+            var cmsData = getData_tab(arg_wrmc, '%', ls_frdate, ls_todate, "list",arg_wrmc ); 
+            tabA_grid(cmsData);
         }  
-                   
-
 
         //불량수량 조회  
         // document.getElementById("wbadqtyBtn").addEventListener("click",function(){
@@ -3031,6 +2966,7 @@
             // button_worksaveBtn.disabled = false;  //저장
             // //button_partbtn.disabled = false; 
             // // const wqtydis_div = document.getElementById('wqtydis01');  
+
             const wono_div    = document.getElementById('inwonobdg');  
             const wrmc_div       = document.getElementById('inwrmcbdg');
             const wscntdis02_div = document.getElementById('wscntdis02');   
@@ -3157,12 +3093,41 @@
     
             })  
             switchTab('#tab1');
+            console.log(arg21)
+            search_chart(arg21)
             tabchk_rtn('A')
             //생산량 조회
             //searchotqty_fnc()
     
         }  
     
+        const now = new Date();  
+        function formatYYYY_MM_DD_HHMMSS(date) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return (
+                date.getFullYear() + '-' +
+                pad(date.getMonth() + 1) + '-' +
+                pad(date.getDate()) + ' ' +
+                pad(date.getHours()) + ':' +
+                pad(date.getMinutes()) + ':' +
+                pad(date.getSeconds())
+            );
+        }    
+        
+        // 오늘 00:00:00
+        const startOfToday = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            0, 0, 0
+        );    
+        function search_chart(arg_wrmc){ 
+            const now = new Date(); 
+            var  ls_frdate     =  formatYYYY_MM_DD_HHMMSS(startOfToday);            
+            var  ls_todate     =  formatYYYY_MM_DD_HHMMSS(now);
+            var cmsData = getData_tab(arg_wrmc, '%', ls_frdate, ls_todate, "list",arg_wrmc ); 
+            tabA_grid(cmsData);
+        }  
         function wrmcChk(arg1, arg2  ){   
             document.getElementById('inwrmc').value= arg1; 
             document.getElementById('inmachname').value= arg2; 
@@ -3678,7 +3643,264 @@
             }        
     
     
+        // tab01검색 데이터 수집
+        function getData_tab(arg1, arg2, arg3, arg4, arg5, arg6){  
+                var ls_machnm = String(Number(arg1));
+                console.log("ls_machnm=>" + ls_machnm)
+                var ls_addinfo = arg2;
+                var ls_frdate = arg3;
+                var ls_todate = arg4;   
+                var wactnm_data = [];          
+                var cnt = 1;      
+                $.ajax({
+                        url: '/appcms/reallist',   
+                        type:"POST", 
+                        data: {
+                            "frdate" : ls_frdate , 
+                            "todate" : ls_todate , 
+                            "machnm" : ls_machnm , 
+                            "addinfo" : ls_addinfo,
+                            "listflag" : arg5,
+                            "wrmcflag" : arg6
+                        },
+                        async:false,
+                        success:function(data){   
+                                var wtab01Dto = data; 
+                                rowCount = data.length;   
+                                console.log(rowCount)
+                                for (var i = 0; i < rowCount; i++) {
+                                        if(arg5 == "list"){
+                                            wactnm_data.push({ 
+                                                index: cnt,
+                                                machine_name: wtab01Dto[i]["machine_name"], 
+                                                Additional_Info_1: wtab01Dto[i]["additional_Info_1"], 
+                                                Shot_Number: wtab01Dto[i]["shot_Number"], 
+                                                Injection_Time: wtab01Dto[i]["injection_Time"], 
+                                                Filling_Time: wtab01Dto[i]["filling_Time"], 
+                                                Plasticizing_Time: wtab01Dto[i]["plasticizing_Time"], 
+                                                Cycle_Time: wtab01Dto[i]["cycle_Time"], 
+                                                Barrel_Temperature_1: wtab01Dto[i]["barrel_Temperature_1"], 
+                                                Barrel_Temperature_2: wtab01Dto[i]["barrel_Temperature_2"], 
+                                                Mold_Temperature_1: wtab01Dto[i]["mold_Temperature_1"], 
+                                                Mold_Temperature_2: wtab01Dto[i]["mold_Temperature_2"], 
+                                                Mold_Temperature_3: wtab01Dto[i]["mold_Temperature_3"], 
+                                                Mold_Temperature_4: wtab01Dto[i]["mold_Temperature_4"], 
+                                                Mold_Temperature_5: wtab01Dto[i]["mold_Temperature_5"], 
+                                                Mold_Temperature_6: wtab01Dto[i]["mold_Temperature_6"],
+                                                Cavity: wtab01Dto[i]["cavity"],  
+                                                TimeStamp: wtab01Dto[i]["timeStamp"], 
+                                                shottime: wtab01Dto[i]["shottime"], 
+                                                shotdate: wtab01Dto[i]["shotdate"],      
+                                                
+                                            });
+
+                                        }else{
+                                            wactnm_data.push({ 
+                                                index: cnt, 
+                                                machine_name: wtab01Dto[i]["machine_name"], 
+                                                Additional_Info_1: wtab01Dto[i]["additional_Info_1"], 
+                                                MT01: wtab01Dto[i]["mt01"],  
+                                                MT02: wtab01Dto[i]["mt02"], 
+                                                MT03: wtab01Dto[i]["mt03"], 
+                                                MT04: wtab01Dto[i]["mt04"], 
+                                                MT05: wtab01Dto[i]["mt05"], 
+                                                MT06: wtab01Dto[i]["mt06"], 
+                                                shottime: wtab01Dto[i]["shottime"],       
+                                                
+                                            }); 
+                                        }
+                                        cnt++;
+                                }  
+                        },error:function(e){
+                            console.log('error',e);
+                        }
+                    }).done(function(fragment){           
+                    })   
+                        return wactnm_data;  
+        }  
+                   
+
+        function tabA_grid(arg_data){
+
+            wtab11Grid.columns.clear();  
+            wtab11Grid.autoGenerateColumns = false; 
+            view_p01tab11page.sourceCollection  = arg_data;
+            
+            var cols = new wijmo.grid.Column(); 
+            cols.binding = 'shottime';
+            cols.header = '시간';
+            cols.align = "center";
+            cols.width = 120;  
+            wtab11Grid.columns.push(cols);    
+
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'machine_name';
+            cols.header = '기계';
+            cols.align = "center";
+            cols.width = 50; 
+            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                text: '<b>${item.machine_name}</b>',
+                click: (e, ctx) => {
+                    chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);  
+                }
+            });
+            wtab11Grid.columns.push(cols);  
+
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Additional_Info_1';
+            cols.header = '금형';
+            cols.align = "left";
+            cols.width = 200;  
+            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                text: '<b>${item.Additional_Info_1}</b>',
+                click: (e, ctx) => {
+                    chart_list(ctx.item.machine_name, ctx.item.Additional_Info_1);  
+                }
+            });
+            wtab11Grid.columns.push(cols);   
+
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Shot_Number';
+            cols.header = '공정횟수';
+            cols.align = "right";
+            cols.width = 80;  
+            wtab11Grid.columns.push(cols);    
+
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Injection_Time';
+            cols.header = '사출시간';
+            cols.align = "right";
+            cols.width = 80;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);   
+
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Filling_Time';
+            cols.header = '충진시간';
+            cols.align = "right";
+            cols.width = 80;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);   
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Plasticizing_Time';
+            cols.header = '계량시간';
+            cols.align = "right";
+            cols.width = 80;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);   
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Cycle_Time';
+            cols.header = '공정시간';
+            cols.align = "center";
+            cols.width = 80;   
+            wtab11Grid.columns.push(cols); 
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Barrel_Temperature_1';
+            cols.header = '연장노즐';
+            cols.align = "right";
+            cols.width = 80;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);   
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Barrel_Temperature_2';
+            cols.header = '노즐';
+            cols.align = "right";
+            cols.width = 80;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);   
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_1';
+            cols.header = '이동측금형1';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_2';
+            cols.header = '이동측금형2';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_3';
+            cols.header = '고정측금형1';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_4';
+            cols.header = '고정측금형2';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_5';
+            cols.header = '건조기';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+            
+            cols = new wijmo.grid.Column(); 
+            cols.binding = 'Mold_Temperature_6';
+            cols.header = '온수기';
+            cols.align = "right";
+            cols.width = 110;  
+            cols.format = 'n1';  
+            wtab11Grid.columns.push(cols);     
+        }
+
+      
     
+        function chart_list(arg1, arg2){ 
+            var  ls_frdate     =   formatYYYY_MM_DD_HHMMSS(startOfToday);                  
+            var  ls_todate     =  formatYYYY_MM_DD_HHMMSS(now);
+            arg1 = arg1.trim()
+            arg2 = arg2.trim()  
+            const newdataChart = getData_tab(arg1, arg2, ls_frdate, ls_todate, "chart", "%")   
+            dataChart = [...newdataChart] 
+            machnmChart  = arg1
+            addinfoChart = arg2
+            labels = dataChart.map(entry => entry.shottime);
+            dataset = [
+                { label: '이동측금형1', data: dataChart.map(entry => entry.MT01) },
+                { label: '이동측금형2', data: dataChart.map(entry => entry.MT02) },
+                { label: '고정측금형1', data: dataChart.map(entry => entry.MT03) },
+                { label: '고정측금형2', data: dataChart.map(entry => entry.MT04) },
+                { label: '건조기', data: dataChart.map(entry => entry.MT05) },
+                { label: '온수기', data: dataChart.map(entry => entry.MT06) }
+            ];
+
+            const canvasElement = document.getElementById('temperatureChart'); 
+            
+            //차트 업데이트
+            if (chartInstance) {
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets = dataset.map((set, index) => ({
+                    label: set.label,
+                    data: set.data,
+                    borderColor: `hsl(${index * 60}, 70%, 50%)`,
+                    backgroundColor: `hsl(${index * 60}, 70%, 70%, 0.4)`,
+                    fill: false,
+                    tension: 0.1
+                }));
+                chartInstance.options.plugins.title.text = `기계: ${arg1} (금형: ${arg2}) 온도변화`;
+                chartInstance.update(); // 차트 업데이트
+            } 
+        }
+      
         //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         
         //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -3861,7 +4083,7 @@
             }) 
         } 
      
-
+           
         $(document).ready(function() {   
             const now = new Date();
  

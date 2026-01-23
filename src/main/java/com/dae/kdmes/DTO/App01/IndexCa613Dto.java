@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.hpsf.Decimal;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -23,7 +24,7 @@ public class IndexCa613Dto {
     private String psize;
     private String punit;
     private Integer qty;
-    private Decimal deqty;
+    private BigDecimal deqty;
     private Integer weight;
     private Integer cqty;
     private Integer uamt;

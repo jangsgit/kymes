@@ -40,6 +40,7 @@ public class CmsListController {
                                  @RequestParam("machnm") String machnm,
                                  @RequestParam("addinfo") String addinfo,
                                  @RequestParam("listflag") String listflag,
+                                 @RequestParam("wrmcflag") String wrmcflag,
                                Model model, HttpServletRequest request) throws Exception{
         List<CmsIndex01Dto> cms01List = new ArrayList<>();
         List<CmsIndex01Dto> cms02List = new ArrayList<>();

@@ -184,7 +184,7 @@
     window.onload = function() { 
         const ctx = document.getElementById('temperatureChart').getContext('2d');
         //실시간현황
-        view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01('%', '%', '%', '%', "list"), { 
+        view_p01tab01page = new wijmo.collections.CollectionView(getData_tab01('%', '%', '%', '%', "list", "%"), { 
             }); 
         wtab01Grid = new wijmo.grid.FlexGrid('#wtab01Grid_div', {  
             autoGenerateColumns: false,
@@ -431,7 +431,7 @@
         }
 
         // tab01검색 데이터 수집
-        function getData_tab01(arg1, arg2, arg3, arg4, arg5){  
+        function getData_tab01(arg1, arg2, arg3, arg4, arg5, arg6){  
                 var ls_machnm = arg1;
                 var ls_addinfo = arg2;
                 var ls_frdate = arg3;
@@ -446,7 +446,8 @@
                             "todate" : ls_todate , 
                             "machnm" : ls_machnm , 
                             "addinfo" : ls_addinfo,
-                            "listflag" : arg5
+                            "listflag" : arg5,
+                            "wrmcflag" : arg6
                         },
                         async:false,
                         success:function(data){   
@@ -516,7 +517,7 @@
                 if(ls_inaddinfo == null || ls_inaddinfo.length == 0 || ls_inaddinfo == ""){ 
                     ls_inaddinfo    = "%"
                 }    
-                var cmsData = getData_tab01(ls_inmachnm, ls_inaddinfo, ls_frdate, ls_todate, "list" ); 
+                var cmsData = getData_tab01(ls_inmachnm, ls_inaddinfo, ls_frdate, ls_todate, "list" , "%"); 
                 tabA_grid(cmsData);
 
             }
@@ -525,7 +526,7 @@
             wtab01Grid.columns.clear();  
             wtab01Grid.autoGenerateColumns = false; 
             view_p01tab01page.sourceCollection  = arg_data;
-            
+            console.log(arg_data)
             var cols = new wijmo.grid.Column(); 
             cols.binding = 'shottime';
             cols.header = '시간';
@@ -811,7 +812,7 @@
             var  ls_todate     =  convert_date(wtodate.value);  
             arg1 = arg1.trim()
             arg2 = arg2.trim()  
-            const newdataChart = getData_tab01(arg1, arg2, ls_frdate, ls_todate, "chart")   
+            const newdataChart = getData_tab01(arg1, arg2, ls_frdate, ls_todate, "chart", "%")   
             dataChart = [...newdataChart] 
             machnmChart  = arg1
             addinfoChart = arg2

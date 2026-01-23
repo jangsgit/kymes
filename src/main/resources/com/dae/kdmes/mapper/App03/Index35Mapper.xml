@@ -160,11 +160,11 @@
 
     <insert id="InsertBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto" >
         insert into TB_CA501_BOM (custcd, opcod, spcod, lvsn, wflag, qty) values
-        ('KDMES', #{opcod}, #{spcod}, 1, 'Y' , #{qty}  )
+        ('KDMES', #{opcod}, #{spcod}, 1, 'Y' , #{deqty}  )
     </insert>
 
     <update id="UpdateBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto">
-        UPDATE  TB_CA501_BOM SET qty = #{qty}  where opcod  = #{opcod} and spcod  = #{spcod}
+        UPDATE  TB_CA501_BOM SET qty = #{deqty}  where opcod  = #{opcod} and spcod  = #{spcod}
     </update>
 
     <delete id="DeleteBom501" parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto">
@@ -174,7 +174,7 @@
     <select id="SelectBomListOpcod"  parameterType="com.dae.kdmes.DTO.App01.IndexCa613Dto" resultType="com.dae.kdmes.DTO.App01.IndexCa613Dto">
         <![CDATA[ select  A.opcod as opcod, B.jpum as opcodnm, B.jgugek as opgugek,
                           A.spcod as spcod, C.jpum as spcodnm, C.jgugek as spgugek,
-                          A.qty as qty, A.weight as weight
+                          A.qty as deqty, A.weight as weight
                   from  TB_CA501_BOM A WITH (NOLOCK)
                   join JCODE B on B.jkey = A.opcod
                   join JCODE C on C.jkey = A.spcod

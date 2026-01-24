@@ -380,8 +380,41 @@ public class MesGptSqlQueryService {
                   자품목명은 jcode.jkey = TB_CA501_BOM.spcod로 조회한다. 
                   4) 소비량 산출 공식 
                   자품목 소비량 = Σ(완료수량 × BOM.qty) 
-                  집계는 자품목(spcod) 기준으로 합산한다    
-                      
+                  집계는 자품목(spcod) 기준으로 합산한다 
+                    
+                  [품목코드 명칭/조인 규칙]
+                      0) 용어 통일 (중요)                      
+                      시스템 전체에서 품목코드의 실체(primary key)는 jcode.jkey 이다.                      
+                      다른 테이블에서 품목코드 컬럼명이 pcode, opcod, spcod 등으로 달라도, 값은 모두 jcode.jkey를 참조하는 코드이다.                      
+                      따라서 SQL 생성 시, “품목코드”를 의미하는 컬럼은 항상 jcode.jkey와 조인하여 해석한다.                      
+                      1) jcode 테이블 규칙                      
+                      품목코드 컬럼 = jcode.jkey (절대 다른 컬럼명 사용 금지)                      
+                      품목명 = jcode.jpum                      
+                      차종 = jcode.jchajong                      
+                      금지: jcode.pcode 같은 컬럼을 품목코드로 가정하지 않는다. (명세에 없으면 절대 사용하지 않는다.)                      
+                      2) BOM 테이블 규칙 (TB_CA501_BOM)                      
+                      TB_CA501_BOM.opcod = 모품목코드 (jcode.jkey 참조)                      
+                      TB_CA501_BOM.spcod = 자품목코드 (jcode.jkey 참조)                      
+                      TB_CA501_BOM.qty = 모품목 1개 생산 시 자품목 소요량                      
+                      조인 규칙                      
+                      모품목명 조회: jcode.jkey = TB_CA501_BOM.opcod                      
+                      자품목명 조회: jcode.jkey = TB_CA501_BOM.spcod                      
+                      3) “n개 만들면 원자재 얼마나 필요?” 질문 규칙                      
+                      질문에 생산수량(n) 과 제품명(모품목명) 이 주어지고 생산일자/실적이 없으면,                      
+                      BOM 기준 소요량 계산만 수행한다. (W010/FPLAN 사용 금지)                      
+                      계산식                      
+                      자품목별 필요수량 = n * TB_CA501_BOM.qty                      
+                      동일 자품목은 합산                      
+                      모품목 선택 규칙                      
+                      jcode.jpum LIKE '%제품명%'로 모품목 후보를 찾되,                      
+                      가능하면 1개로 확정(예: TOP 1 + 정렬 기준, 또는 차종 조건 포함)                      
+                      확정된 모품목코드는 반드시 jcode.jkey로 사용한다.                      
+                      4) pcode 사용 규칙 (혼동 방지)                      
+                      pcode는 TB_FPLAN에 존재하는 생산계획 품목코드 컬럼명일 뿐이며,                      
+                      그 값은 jcode.jkey를 참조한다.                      
+                      즉, pcode는 “별도의 품목 마스터 키”가 아니라 jkey를 담는 다른 테이블의 컬럼명이다.                      
+                      따라서 jcode에서 품목코드를 구할 때는 항상 jkey만 사용한다.                      
+                      금지 예: SELECT pcode FROM jcode ...
                   [품목코드 매핑 규칙 추가]
                    -생산계획 테이블(TB_FPLAN)의 품목코드 컬럼은 PCODE이다.                  
                      TB_FPLAN에서 품목을 식별하는 기준 컬럼은 반드시 PCODE를 사용한다.                  

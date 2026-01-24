@@ -41,7 +41,7 @@
           where    TimeStamp between #{frdate} and #{todate}
           and    isnull(Machine_Name,'') Like concat(#{machine_name},'%')
           and    isnull(trim(Additional_Info_1),'') Like concat(#{Additional_Info_1},'%')
-          ORDER BY TimeStamp
+          ORDER BY TimeStamp desc
         ]]>
     </select>
 
@@ -62,7 +62,7 @@
           where   TimeStamp between #{frdate} and #{todate}
           and    isnull(Machine_Name,'') Like #{machine_name} + '%'
           and    isnull(trim(Additional_Info_1),'') Like concat(#{Additional_Info_1},'%')
-          ORDER BY TimeStamp
+          ORDER BY TimeStamp desc
         ]]>
     </select>
 
@@ -91,7 +91,7 @@
         FROM [ado_kd].[dbo].[shot_data]
         where    TimeStamp between #{frdate} and #{todate}
           and    isnull(Machine_Name,'') = #{machine_name}
-        ORDER BY TimeStamp
+        ORDER BY TimeStamp desc
         ]]>
     </select>
 
@@ -111,7 +111,7 @@
         FROM [ado_kd].[dbo].[shot_data]
         where   TimeStamp between #{frdate} and #{todate}
           and    isnull(Machine_Name,'')  =  #{machine_name}
-        ORDER BY TimeStamp
+        ORDER BY TimeStamp desc
         ]]>
     </select>
 

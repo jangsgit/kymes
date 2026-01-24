@@ -311,7 +311,77 @@ public class MesGptSqlQueryService {
                    - 불량 수량 집계의 기준은 공정 테이블이며, 불량 사유 분해(상세)는 TB_FPLAN_WBAD 기준이다.
                    - GPT는 공정 테이블의 불량수량을 “불량코드별”로 해석하거나 임의 분해하지 않는다.
                    - 불량사유별 수량/코드/명은 TB_FPLAN_WBAD에서 lotno로 조인해 조회한다.
+                  [BOM 기반 원자재 소비량 자동계산 규칙]
+                  1) BOM 정의                  
+                    TB_CA501_BOM은 BOM 테이블이다. 
+                    opcod = 모품목(생산품) 코드 (사출 실적(W010)의 품목코드와 동일한 의미) 
+                    spcod = 자품목(원자재/부품) 코드 
+                    qty = 모품목 1개 생산 시 필요한 자품목 소요량 (단위는 BOM에 등록된 단위 그대로) 
+                  2) 품목/차종 마스터 
+                      품목명, 차종은 jcode에서 조회한다. 
+                      jcode.jkey = 품목코드 
+                      jcode.jpum(또는 품목명 컬럼) = 품목명 
+                      jcode.jchajong = 차종 
+                      opcod, spcod는 각각 jcode.jkey와 조인하여 모품목명/자품목명을 구한다. 
+                  3) 사용자가 입력하는 조건(질문 파싱) 
+                      사용자는 다음과 같이 질문할 수 있다.
+                      예: "1월1일 생산제품 차종 : NE : 제품명 : grip holde 완료량에 소비된 원자재 수량을 품목별로 알려줘" 
+                      이 질문에서 추출해야 하는 조건: 
+                      생산일자: “1월1일” → 해당 연도 기준 YYYY-01-01 (연도 미기재 시 “현재연도”로 간주) 
+                      차종: “NE” → jcode.jchajong = 'NE' (모품목 기준) 
+                      제품명: “grip holde” → jcode(모품목).품목명 like '%grip holde%' 또는 정확히 일치(시스템 정책에 따름) 
+                  4) 계산 로직 (핵심 규칙) 
+                      조건(일자/차종/제품명)에 해당하는 모품목(opcod) 의 사출 완료량(완료수량) 을 TB_FPLAN_WBAD 에서 집계한다. 
+                      집계된 모품목별 완료량을 BOM과 조인하여 자품목별 소비량을 계산한다. 
+                      자품목 소비량 = (모품목 완료량 합계) × (TB_CA501_BOM.qty) 
+                      동일 자품목이 여러 모품목에서 소비될 수 있으므로 자품목(spcod) 기준으로 합산하여 품목별 소비량을 출력한다. 
+                  5) 결과 출력 형식(요구사항) 
+                      출력은 자품목 기준으로 한다. 
+                      최소 출력 컬럼: 
+                      spcod (자품목코드) 
+                      자품목명 (jcode 조인) 
+                      소비수량 (Σ(완료량 × BOM.qty)) 
+                      필요 시 참고용으로 모품목 정보도 함께 보여줄 수 있다(옵션): 
+                      opcod, 모품목명, 모품목완료량
+                  6) 예외/주의 규칙
+                      BOM에 없는 모품목이면 “BOM 미등록”으로 안내하거나 0으로 처리한다(정책 선택). 
+                      qty가 NULL이면 0으로 간주한다. 
+                      반품/스크랩/불량을 차감할지 여부는 별도 규칙이 없으면 완료량 기준 그대로 계산한다. 
+                      단위(kg/EA 등)는 BOM의 단위를 그대로 따르며, 단위 변환 규칙이 없다면 변환하지 않는다.
+                      SQL 실행기는 SELECT 단독 쿼리만 허용한다. 
+                      WITH(CTE), DECLARE, SET, 임시테이블, 다중 statement, JSON/주석 혼합을 사용하지 않는다. 
+                      필요 시 서브쿼리(인라인뷰)로만 구성하여 단일 SELECT로 작성한다.
+                      
+                  [TB_FPLAN_W010(사출실적) ↔ FPLAN(생산계획) 품목코드 매핑 규칙]
+                  1) W010 테이블의 품목코드 규칙 
+                    TB_FPLAN_W010에는 모품목코드(opcod/pcode)가 없다. 
+                    TB_FPLAN_W010에서 생산품(모품목)을 식별할 때는 반드시 plan_no로 TB_FPLAN을 조인한다. 
+                    생산품 품목코드(모품목코드)는 TB_FPLAN.pcode이다. 
+                    따라서 “TB_FPLAN_W010 기반으로 소비량 계산” 시 모품목코드는 아래처럼 정의한다: 
+                      모품목코드 = TB_FPLAN.pcode
+                      완료수량 = TB_FPLAN_W010.wotqt (또는 완료수량 컬럼)
+                      생산일자 = TB_FPLAN_W010.wtrdt (또는 생산일자 컬럼) 
+                  2) BOM 조인 규칙 
+                  BOM은 TB_CA501_BOM을 사용하며, 
+                  TB_CA501_BOM.opcod = 모품목코드 
+                  TB_CA501_BOM.spcod = 자품목코드 
+                  TB_CA501_BOM.qty = 모품목 1개 생산 시 자품목 소요량 
+                  따라서 BOM 조인은 반드시 아래 조건으로 수행한다: 
+                  TB_CA501_BOM.opcod = TB_FPLAN.pcode 
+                  절대 금지 규칙: 
+                  TB_FPLAN_W010.opcod 같은 컬럼은 존재하지 않으므로 사용 금지 
+                  BOM을 W010에 직접 조인하지 말고, FPLAN을 거쳐 pcode로 조인한다.
                   
+                  3) 품목명/차종 필터 규칙 
+                  사용자가 “제품명 Grip Holder” 또는 “차종 NE”를 주면 모품목(jcode)은 TB_FPLAN.pcode 기준으로 조인해서 필터링한다. 
+                  jcode.jkey = TB_FPLAN.pcode
+                  jcode.jpum LIKE '%Grip Holder%'
+                  jcode.jchajong = 'NE' 
+                  자품목명은 jcode.jkey = TB_CA501_BOM.spcod로 조회한다. 
+                  4) 소비량 산출 공식 
+                  자품목 소비량 = Σ(완료수량 × BOM.qty) 
+                  집계는 자품목(spcod) 기준으로 합산한다    
+                      
                   [품목코드 매핑 규칙 추가]
                    -생산계획 테이블(TB_FPLAN)의 품목코드 컬럼은 PCODE이다.                  
                      TB_FPLAN에서 품목을 식별하는 기준 컬럼은 반드시 PCODE를 사용한다.                  

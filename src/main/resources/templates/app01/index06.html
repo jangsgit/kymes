@@ -319,7 +319,7 @@
             wtab02Grid.setCellData(wtab02Grid.rows.length-1, 3, 0);  
             // qty(소요량) 컬럼
             // var colQty = wtab02Grid.columns[3];   // 인덱스 3이 소요량 컬럼이라면
-            // colQty.format = 'n5';                // 소수점 5자리 표시
+            // colQty.format = 'n6';                // 소수점 5자리 표시
             // colQty.dataType = wijmo.DataType.Number; // 숫자 타입 권장
             // colQty.align = 'right';              // 숫자는 오른쪽 정렬 권장
 
@@ -426,7 +426,7 @@
                { binding: 'spcod', header: '품목코드',     align:"center",  width: 130, isReadOnly: true  },   
                { binding: 'spcodnm', header: '원부자재명', align: "center", width: 200, isReadOnly: true  }, 
                { binding: 'jgugek', header: '규격', align: "center", width: 150, isReadOnly: true  },   
-               { binding: 'qty', header: '소요량', align: "center", width: 130, format:'n5' }, 
+               { binding: 'qty', header: '소요량', align: "center", width: 130, format:'n6' }, 
             //    { binding: 'weight', header: '중량', align: "center", width: 80 }, 
             //    { binding: 'wpernm', header: '외주', align: "center", width: 80, dataType:3,allowSorting: false }, 
             //    { binding: 'wpernm', header: '스크랩', align: "center", width: 80, dataType:3,allowSorting: false }, 
@@ -700,7 +700,7 @@
        cols.header = '소요량';
        cols.align = "center";
        cols.width = 120;  
-       cols.format = 'n*,,';
+       cols.format = 'n6';
        wtab02Grid.columns.push(cols);   
     //    cols = new wijmo.grid.Column(); 
     //    cols.binding = 'weight';
@@ -1005,7 +1005,7 @@
         cols.binding = 'qty';
         cols.header = '소요량';
         cols.align = "center";
-        cols.format = "n5";        
+        cols.format = "n6";        
         cols.width = 130;  
         wtab02Grid.columns.push(cols); 
         // cols = new wijmo.grid.Column();  

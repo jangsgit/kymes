@@ -92,7 +92,7 @@
                                     <dt><span class="eq"></span></dt>
                                     <dd>
                                     <li>
-                                        <a class="btn btn-delete" title="검색" id="retrieveBtn"  >
+                                        <a class="btn btn-delete" title="검색" id="retrieveBtn"  > 
                                         <img src="/images/icon/btn-srch.svg" alt="검색 아이콘"  >
                                         검색
                                         </a> 
@@ -246,7 +246,7 @@
             ], 
             itemsSource: view_p01tab01page
         });   
-         
+        new FlexGridContextMenu(wtab01Grid);  
         setHeaderColumn(false);
         function setHeaderColumn(headerOn) {
             wtab01Grid.headersVisibility = headerOn
@@ -290,7 +290,7 @@
             ], 
             itemsSource: view_p01tab02page
         });   
-         
+        new FlexGridContextMenu(wtab02Grid);  
         setHeaderColumn02(false);
         function setHeaderColumn02(headerOn) {
             wtab02Grid.headersVisibility = headerOn

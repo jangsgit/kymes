@@ -700,7 +700,18 @@
                             wcifChk3_a(ctx.item.indate, ctx.item.prod_sdate, ctx.item.prod_edate, ctx.item.lotno, ctx.item.ecltnm ,ctx.item.qcdate, ctx.item.perid, ctx.item.workdv, ctx.item.pcode,  ctx.item.jpum, ctx.item.jgugek,ctx.item.dem_flag, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy, ctx.item.prod_qty, ctx.item.cls_flag,  ctx.item.istore, ctx.item.ostore, ctx.item.rwflag, ctx.item.remark, ctx.item.cltcd, ctx.item.plan_no, ctx.item.pernm, ctx.item.inmonth, ctx.item.inweeks, ctx.item.wrmc, ctx.item.sachulflag, ctx.item.sachultxt);                    
                         }
                     }) 
-                },    
+                },         
+                { binding: 'jchajong', 
+                    header: '차종', 
+                    align: "left", 
+                    width: 150,
+                    cellTemplate: wijmo.grid.cellmaker.CellMaker.makeLink({ 
+                        text: '<b>${item.jchajong}</b>',
+                        click: (e, ctx) => {
+                            wcifChk3_a(ctx.item.indate, ctx.item.prod_sdate, ctx.item.prod_edate, ctx.item.lotno, ctx.item.ecltnm ,ctx.item.qcdate, ctx.item.perid, ctx.item.workdv, ctx.item.pcode,  ctx.item.jpum, ctx.item.jgugek,ctx.item.dem_flag, ctx.item.jchajong, ctx.item.jsayang, ctx.item.jgugek2, ctx.item.j_sr, ctx.item.jpumcode, ctx.item.jdanwy, ctx.item.prod_qty, ctx.item.cls_flag,  ctx.item.istore, ctx.item.ostore, ctx.item.rwflag, ctx.item.remark, ctx.item.cltcd, ctx.item.plan_no, ctx.item.pernm, ctx.item.inmonth, ctx.item.inweeks, ctx.item.wrmc, ctx.item.sachulflag, ctx.item.sachultxt);                    
+                        }
+                    }) 
+                }, 
                 { binding: 'prod_qty', header: '계획수량', align: "right", width: 90 }, 
                 { binding: 'inmonthtxt', header: '주차', align: "center", width: 100 }, 
                 { binding: 'ecltnm', header: '거래처', align: "left", width: 180 }, 
@@ -745,7 +756,7 @@
                     } else {
                         var ls_monthtxt = ls_inmonth + ' ' + ls_inweeks + '주차'
                     } 
-                } 
+                }  
                 wactnm_data.push({
                     id: i, 
                     index: cnt,
@@ -1440,7 +1451,7 @@
                         //istore,ostore,rwflag,remark,cltcd
                         //plan_no , pernm inmonth, inweeks , wrmc, sachulflag, sachultxt
         function wcifChk3_a(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30, arg31, arg32){
-         
+        console.log(arg13)
             document.getElementById('indate').value = arg1;  
             document.getElementById('prod_sdate').value = arg2;   
             document.getElementById('prod_edate').value = arg3; 
@@ -1455,7 +1466,7 @@
             document.getElementById('wrmc').value = arg30;
             document.getElementById('wrmc').value = arg30;
             document.getElementById('sachultxt').value = arg32;
-            document.getElementById('jchajong').value = arg14;
+            document.getElementById('jchajong').value = arg13;
             
             const j_sachulflag = document.getElementById('sachulflag'); 
             if(arg31 == "1"){

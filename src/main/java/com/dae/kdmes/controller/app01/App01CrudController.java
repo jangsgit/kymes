@@ -1205,6 +1205,9 @@ public class App01CrudController {
                 case "inmachgumnm":
                     _index08Dto.setMachgumnm(values.toString());
                     break;
+                case "remark":
+                    _index08Dto.setRemark(values.toString());
+                    break;
                 default:
                     break;
             }

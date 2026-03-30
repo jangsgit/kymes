@@ -214,6 +214,7 @@
                             </div> <!--//section-top end -->
                             <section class="sec-bottom">
                                 <div id="gridWrap">  
+                                     <div id="theGroupPanel"></div>
                                     <div id="wtab02Grid_div" style="overflow:scroll;   height:500px;   margin:0 auto; "></div> 
                                 </div>
                             </section>
@@ -444,8 +445,8 @@
             // selectionMode: 'RowRange',
             allowSorting: 'MultiColumn',
             alternatingRowStep: 0,
-            columns: [     
-                { binding: 'cltnm', header: '거래처', align: "left", width: 130 },
+            columns: [      
+                { binding: 'ischnm', header: '납품장소', align: "center", width: 280 },    
                 { binding: 'balno', header: '발주번호', align: "center", width: 120 },  
                 { binding: 'baldate', header: '발주일자', align: "center",  width: 120 },  
                 // { binding: 'moncls', header: '통화', align: "left", width: 120 },
@@ -453,20 +454,20 @@
                 { binding: 'pname', header: '품명', align: "left", width: 150 },   
                 // { binding: 'psize', header: '규격', align: "left", width: 120 },   
                 // { binding: 'punit', header: '단위', align: "center", width: 80 },   
-                { binding: 'qty', header: '수량', align: "right", format: 'n0', width: 80 },  
+                { binding: 'qty', header: '수량', align: "right", format: 'n0', width: 80, aggregate:'Sum' },  
                 { binding: 'stockqty', header: '재고수량', align: "right", format: 'n0', width: 80 }, 
                 { binding: 'uamt', header: '단가', align: "right", format: 'n0', width: 80 }, 
-                { binding: 'samt', header: '금액', align: "right", format: 'n0', width: 80 },  
-                { binding: 'ischnm', header: '납품장소', align: "center", width: 280 },           
+                { binding: 'samt', header: '금액', align: "right", format: 'n0', width: 80 , aggregate:'Sum'},     
+                { binding: 'cltnm', header: '거래처', align: "left", width: 130 },   
                 { binding: 'ischdate', header: '납기일', align: "center", width: 100 },              
                 { binding: 'ischdate', header: 'BOX단위', align: "center", width: 100 },           
                 { binding: 'ischdate', header: 'BOX수량', align: "center", width: 100 },           
                 { binding: 'ischdate', header: 'BOX잔량', align: "center", width: 100 },      
-                { binding: 'ischdate', header: '납품가능수량', align: "center", width: 100 },      
+                { binding: 'ischdate', header: '납품가능수량', align: "center", width: 100 , aggregate:'Sum'},      
             ], 
             itemsSource: view_p01tab02page
         });   
-        
+         
        new FlexGridContextMenu(wtab02Grid); 
         // 선택기 생성
         let selector = new wijmo.grid.selector.Selector(wtab02Grid, {
@@ -492,6 +493,12 @@
             ? wtab02Grid.rowHeaders.columns[0]
             : wtab02Grid.columns[0];
        } 
+        
+        // 그룹 패널 생성
+        var thePanel = new wijmo.grid.grouppanel.GroupPanel('#theGroupPanel', {
+            placeholder: '그룹화할 항목을 드래그하여 이곳에 놓으세요',
+            grid: wtab02Grid
+        });
         // 체크된 항목 표시 
         function showCheckedCount() {
             let cnt = document.getElementById('checked-count02'), sel = wtab02Grid.rows.filter(r => r.isSelected);
@@ -1225,8 +1232,8 @@
     view_p01tab02page.sourceCollection  = wtab01_data;
     
     var cols = new wijmo.grid.Column(); 
-    cols.binding = 'cltnm';
-    cols.header = '거래처';
+    cols.binding = 'ischnm';
+    cols.header = '납품장소';
     cols.align = "left";
     cols.width = 200;  
     wtab02Grid.columns.push(cols);    
@@ -1293,6 +1300,7 @@
     cols.align = "right";
     cols.width = 80;  
     cols.format = 'n0';  
+    cols.aggregate = 'Sum';
     wtab02Grid.columns.push(cols);       
     
     cols = new wijmo.grid.Column(); 
@@ -1301,6 +1309,7 @@
     cols.align = "right";
     cols.width = 80;  
     cols.format = 'n0';  
+    cols.aggregate = 'Sum';
     wtab02Grid.columns.push(cols);   
     
     cols = new wijmo.grid.Column(); 
@@ -1333,11 +1342,12 @@
     cols.align = "right";
     cols.width = 120;  
     cols.format = 'n0'
+    cols.aggregate = 'Sum';
     wtab02Grid.columns.push(cols);     
     
     cols = new wijmo.grid.Column(); 
-    cols.binding = 'ischnm';
-    cols.header = '납품장소';
+    cols.binding = 'cltnm';
+    cols.header = '거래처';
     cols.align = "left";
     cols.width = 150;   
     wtab02Grid.columns.push(cols);   
@@ -1379,6 +1389,7 @@
     cols.align = "right";
     cols.width = 120;  
     cols.format = 'n0';  
+    cols.aggregate = 'Sum';
     wtab02Grid.columns.push(cols);      
     
     cols = new wijmo.grid.Column(); 

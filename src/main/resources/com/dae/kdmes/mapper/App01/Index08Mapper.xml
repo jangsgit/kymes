@@ -33,6 +33,7 @@
                   ,inpcode
                   ,injpum
                   ,machgumnm
+                  ,remark
               FROM TB_PC110 WITH(NOLOCK)
              WHERE ( isnull(machcd,'') Like concat('%',#{machcd},'%')
                or isnull(machname,'') Like concat('%',#{machcd},'%') )
@@ -147,6 +148,7 @@
                             ,inpcode
                             ,injpum
                             ,machgumnm
+                            ,remark
         ) values  (
                              #{machcd}
                             ,#{machno}
@@ -173,6 +175,7 @@
                             ,#{inpcode}
                             ,#{injpum}
                             ,#{machgumnm}
+                            ,#{remark}
         )
     </insert>
 
@@ -313,6 +316,8 @@
         <if test="injpum != null">injpum=#{injpum}</if>
         <if test="machgumnm != null ">,</if>
         <if test="machgumnm != null">machgumnm=#{machgumnm}</if>
+        <if test="remark != null ">,</if>
+        <if test="remark != null">remark=#{remark}</if>
         where machcd = #{machcd}
     </update>
 

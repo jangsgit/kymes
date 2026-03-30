@@ -294,6 +294,15 @@
                                             <input type="text" id="inmachgrade" name="inmachgrade" style="width: 100%;" >  
                                         </td> 
                                     </tr>
+                                    <tr>
+                                        <th>
+                                        <label for="remark" id="remark_txt">비고</label>
+                                        </th>
+                                        <td colspan="3">
+                                            <input type="text" id="remark" name="remark" style="width: 80%;" >          
+                                        </td> 
+                                    </tr>
+                        
                         
                                     </tbody>
                                     </table>
@@ -604,7 +613,7 @@
                                        ctx.item.machwon, ctx.item.machgrade, 
                                        ctx.item.machgram, ctx.item.machncha, 
                                        ctx.item.machjaejak, ctx.item.inpcode, ctx.item.injpum,
-                                       ctx.item.machgugek02, ctx.item.machgugek03, ctx.item.machgumnm );                    
+                                       ctx.item.machgugek02, ctx.item.machgugek03, ctx.item.machgumnm, ctx.item.remark );                    
                         }
                     }) 
                 },      
@@ -674,7 +683,7 @@
                             indate: wtab01Dto[i]["indate"], 
                             inperid: wtab01Dto[i]["inperid"],   
                             inpcode: wtab01Dto[i]["inpcode"],  
-                            injpum: wtab01Dto[i]["injpum"],  
+                            injpum: wtab01Dto[i]["injpum"],   
                             view: '이력보기',   
                             
                         });
@@ -1002,7 +1011,8 @@
                     var ls_inmachgram = document.getElementById('inmachgram').value;
                     var ls_inmachncha = document.getElementById('inmachncha').value; 
                     var ls_inmachgumnm = document.getElementById('inmachgumnm').value; 
-     
+                    var ls_remark = document.getElementById('remark').value;
+                    
                    if(ls_inmachcd == null || ls_inmachcd.length == 0 || ls_inmachcd == ""){ 
                        alert("품번을 등록하세요") 
                        document.getElementById("machcd").focus(); 
@@ -1083,7 +1093,11 @@
                    }     
                    if(ls_injpum == null || ls_injpum.length == 0  ){
                     ls_injpum = "";
+                   }   
+                   if(ls_remark == null || ls_remark.length == 0  ){
+                    ls_remark = "";
                    } 
+                   
                    
                 //    for (h = 0; h <= fileIdx; h++ ){
                 //         ls_fileid = 'file_' + h;
@@ -1123,6 +1137,7 @@
                         "inmachgram"        : ls_inmachgram,  
                         "inmachncha"        : ls_inmachncha, 
                         "inmachgumnm"        : ls_inmachgumnm, 
+                        "remark"        : ls_remark, 
                         
                     } 
                     //직전 데이타가 메모리에 남아 폼데이타 키를 삭제후 다시 데이타를 전송해야함. 
@@ -2230,7 +2245,7 @@
                     inpcode: wtab03Dto[i]["inpcode"],  
                     injpum: wtab03Dto[i]["injpum"],  
                     machgugek02: wtab03Dto[i]["machgugek02"],  
-                    machgugek03: wtab03Dto[i]["machgugek03"],                   
+                    machgugek03: wtab03Dto[i]["machgugek03"],               
                });
                cnt++;
            }   
@@ -2255,7 +2270,7 @@
            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
                text: '<b>${item.machname}</b>',
                 click: (e, ctx) => {                
-                    wcifChk_a(ctx.item.machcd,  ctx.item.machno, ctx.item.machname,ctx.item.machdate, ctx.item.machstdate,ctx.item.macheddate ,ctx.item.machshot,ctx.item.machgugek, ctx.item.machcavity,ctx.item.machuse,  ctx.item.machcha,ctx.item.machcltnm,ctx.item.machplace,ctx.item.machwon, ctx.item.machgrade,ctx.item.machgram, ctx.item.machncha,ctx.item.machjaejak,ctx.item.inpcode,ctx.item.injpum,ctx.item.machgugek02,ctx.item.machgugek03, ctx.item.machgumnm );  
+                    wcifChk_a(ctx.item.machcd,  ctx.item.machno, ctx.item.machname,ctx.item.machdate, ctx.item.machstdate,ctx.item.macheddate ,ctx.item.machshot,ctx.item.machgugek, ctx.item.machcavity,ctx.item.machuse,  ctx.item.machcha,ctx.item.machcltnm,ctx.item.machplace,ctx.item.machwon, ctx.item.machgrade,ctx.item.machgram, ctx.item.machncha,ctx.item.machjaejak,ctx.item.inpcode,ctx.item.injpum,ctx.item.machgugek02,ctx.item.machgugek03, ctx.item.machgumnm , ctx.item.remark);  
                 }
             }); 
            wtab04Grid.columns.push(cols);
@@ -2268,7 +2283,7 @@
            cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
                text: '<b>${item.machno}</b>',
                 click: (e, ctx) => {                
-                    wcifChk_a(ctx.item.machcd,  ctx.item.machno, ctx.item.machname,ctx.item.machdate, ctx.item.machstdate,ctx.item.macheddate ,ctx.item.machshot,ctx.item.machgugek, ctx.item.machcavity,ctx.item.machuse,  ctx.item.machcha,ctx.item.machcltnm,ctx.item.machplace,ctx.item.machwon, ctx.item.machgrade,ctx.item.machgram, ctx.item.machncha,ctx.item.machjaejak,ctx.item.inpcode,ctx.item.injpum,ctx.item.machgugek02,ctx.item.machgugek03, ctx.item.machgumnm );  
+                    wcifChk_a(ctx.item.machcd,  ctx.item.machno, ctx.item.machname,ctx.item.machdate, ctx.item.machstdate,ctx.item.macheddate ,ctx.item.machshot,ctx.item.machgugek, ctx.item.machcavity,ctx.item.machuse,  ctx.item.machcha,ctx.item.machcltnm,ctx.item.machplace,ctx.item.machwon, ctx.item.machgrade,ctx.item.machgram, ctx.item.machncha,ctx.item.machjaejak,ctx.item.inpcode,ctx.item.injpum,ctx.item.machgugek02,ctx.item.machgugek03, ctx.item.machgumnm, ctx.item.remark );  
                 }
             }); 
            wtab04Grid.columns.push(cols);  
@@ -2550,7 +2565,7 @@
        }
      
        
-       function wcifChk_a(arg0, arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22){  
+       function wcifChk_a(arg0, arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23){  
             // machcd,      machno, machname, machdate, machstdate, 0 - 4 
             // macheddate ,machshot, machgugek01, machcavity,machuse, 5 - 9
             // machcha,    machcltnm,machplace, machwon, machgrade, 10  - 14
@@ -2593,6 +2608,7 @@
            document.getElementById('inmachgugek02').value = arg20;
            document.getElementById('inmachgugek03').value = arg21;
            document.getElementById('inmachgumnm').value = arg22;
+           document.getElementById('remark').value = arg23;
     
     
            var ls_image01 = "" ;

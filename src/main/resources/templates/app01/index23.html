@@ -154,6 +154,7 @@
                                         <input  id="acode" type="hidden"  /> 
                                         <input  id="delnum" type="hidden"  /> 
                                         <input  id="pcode" type="hidden"  />   
+                                        <input  id="inplannobtn" type="hidden"  />   
                                         <input type="hidden" id="tabvalue" value="A">  
                                     </div>
                                     </dd>
@@ -307,6 +308,7 @@
     <th:block th:replace="/common/columns_setting :: columns_setting"></th:block>   
     <th:block th:replace="/common/popup_mojpum :: popup_mojpum"></th:block>  
     <th:block th:replace="/common/popup_cifinfo :: popup_cifinfo"></th:block>
+    <th:block th:replace="/common/popup_planinfo :: popup_planinfo"></th:block>
   
     <script> 
         
@@ -344,7 +346,20 @@
             // });
           };
           poppage.show(searchcallback);
-        });      
+        });     
+        $('#inplannobtn').click(function () {
+          let poppage = new PopPlaninfoComponent();
+          let $poppage = $(poppage);
+          let searchcallback = function (items) {
+            console.log('items : ', items); 
+            document.getElementById('acorp1').value = items.acorp1;  
+          };
+          poppage.show(searchcallback);
+        }); 
+        
+        
+
+        
     </script>
 
  
@@ -528,7 +543,7 @@
         wtab03Grid = new wijmo.grid.FlexGrid('#wtab03Grid_div', {  
             autoGenerateColumns: false,
             showMarquee: true,
-            isReadOnly: false, 
+            isReadOnly: true, 
             // selectionMode: 'RowRange',
             allowSorting: 'MultiColumn',
             alternatingRowStep: 0,
@@ -832,13 +847,13 @@
            
             
             case 'B': 
-                var ls_indate     =  convert_date(windate.value); // (document.getElementById('indate').value).replaceAll("-","");                   
-                var ls_prod_sdate =  convert_date(wprod_sdate.value); //(document.getElementById('prod_sdate').value).replaceAll("-","");   
-                var ls_prod_edate =  convert_date(wprod_edate.value); //(document.getElementById('prod_edate')).value.replaceAll("-","");                   
-                var ls_qcdate     =  convert_date(wqcdate.value);  //(document.getElementById('qcdate').value).replaceAll("-","");   
+                var ls_indate     =  (document.getElementById('indate').value).replaceAll("-","");                   
+                var ls_prod_sdate =  (document.getElementById('prod_sdate').value).replaceAll("-","");   
+                var ls_prod_edate =  (document.getElementById('prod_edate')).value.replaceAll("-","");                   
+                var ls_qcdate     =  (document.getElementById('qcdate').value).replaceAll("-","");   
                 var ls_cltcd   =  "" //document.getElementById('acode').value;
                 var ls_ecltnm  =  document.getElementById('ecltnm').value;
-                var ls_pcode   =  document.getElementById('pcode').value;   
+                var ls_pcode   =  document.getElementById('popjcode').value;   
                 var ls_jchajong  = ""  //document.getElementById('jchajong').value; 
                 var ls_jsayang  = ""  //document.getElementById('jsayang').value; 
                 var ls_jgugek2  = ""  //document.getElementById('jgugek2').value; 
@@ -862,9 +877,11 @@
                 var ls_jpumcode  =  ""; // document.getElementById('jpumcode').value;      
                 var ls_sachulflag  =   "";     
                 if(!ls_pcode){
-                    alert("품목을 선택하세요")
+                    alert("품목을 선택하세요. 품목코드가 없습니다.")
                     return ; 
-                } 
+                } else{
+                    console.log("ls_pcode-->" + ls_pcode)
+                }
                 if(!ls_wrmc){
                     alert("호기를 선택하세요")
                     return ; 
@@ -1271,12 +1288,6 @@
     cols.header = '품명';
     cols.align = "left";
     cols.width = 150;  
-    cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
-        text: '<b>${item.pname}</b>',
-        click: (e, ctx) => {
-            wf_planno(ctx.item.balno,ctx.item.baldate, ctx.item.pcode, ctx.item.pname, ctx.item.stockqty, ctx.item.qty, ctx.item.balflag, ctx.item.cltcd, ctx.item.cltnm, ctx.item.balno);           
-        }
-    });
     wtab02Grid.columns.push(cols);   
 
     // cols = new wijmo.grid.Column(); 
@@ -1435,31 +1446,16 @@
     // cols.width = 50;   
     // wtab02Grid.columns.push(cols);    
    }
-//balno,baldate, pcode, pname, stockqty, qty   , balflag, cltcd, cltnm, balno
-function wf_planno(arg1, arg2,arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){  
-    if(arg7 == "출하") {
-        alert("출하되었습니다.")
-        return    
-    }
-    if(arg7 == "생산") {
-        alert("주간생산계획이 등록되었습니다.")
-        return    
-    }
-    if(arg5 == 0 || arg6 > arg5 ){
-        document.getElementById('pbalno').value = arg1
-        document.getElementById('pbaldate').value = arg2
-        document.getElementById('pcode').value = arg3 
-        document.getElementById('jpum').value = arg4  
-        document.getElementById('cltcd').value = arg8 
-        document.getElementById('prod_qty').value = arg6
-        document.getElementById('ecltnm').value = arg9
-        document.getElementById('balno').value = arg10
-        
-        
-        document.getElementById("inplannobtn").click();
-    }else{                            
-        document.getElementById("inchulhabtn").click();
-    }
+//pcode,pname, psize
+function wf_planno(arg1, arg2,arg3){   
+    console.log("arg0 = " + arg1)
+    document.getElementById("inplannobtn").click();
+    console.log("arg1 = " + arg1)
+    console.log("arg2 = " + arg2)
+    document.getElementById('popjcode').value = arg1 
+    document.getElementById('popjpum').value = arg2  
+     
+
 }  
 
 
@@ -1469,12 +1465,13 @@ function tabC_grid(data){
         var wtab01Dto = data;   
         var wtab01_data = [];       
         var cnt = 1;   
+        var ls_pcode;
+         
         for (var i = 0; i < wtab01Dto.length; i++) {  
-
             wtab01_data.push({
                 id: i, 
                 index: cnt,   
-                pcode: wtab01Dto[i]["pcode"], 
+                pcode: wtab01Dto[i]["pcode"],  
                 pname: wtab01Dto[i]["pname"], 
                 psize: wtab01Dto[i]["psize"],  
                 qty: wtab01Dto[i]["qty"],  
@@ -1487,17 +1484,39 @@ function tabC_grid(data){
             });
             cnt++;
         }        
-
+ 
     wtab03Grid.columns.clear();  
     wtab03Grid.autoGenerateColumns = false; 
+    wtab03Grid.isReadOnly = true;  
     view_p01tab03page.sourceCollection  = wtab01_data;
     
     var cols = new wijmo.grid.Column(); 
     cols.binding = 'pname';
     cols.header = '품명';
     cols.align = "left";
-    cols.width = 200;  
+    cols.width = 200;      
+    cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+        text: '<b>${item.pname}</b>',
+        click: (e, ctx) => {
+            wf_planno(ctx.item.pcode, ctx.item.pname, ctx.item.psize);           
+        }
+    });
     wtab03Grid.columns.push(cols);    
+
+       
+    
+    cols = new wijmo.grid.Column(); 
+    cols.binding = 'pcode';
+    cols.header = '제품코드';
+    cols.align = "left";
+    cols.width = 150;     
+    cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
+        text: '<b>${item.pcode}</b>',
+        click: (e, ctx) => {
+            wf_planno(ctx.item.pcode, ctx.item.pname, ctx.item.psize);           
+        }
+    });
+    wtab03Grid.columns.push(cols);     
     
     cols = new wijmo.grid.Column(); 
     cols.binding = 'psize';
@@ -1582,7 +1601,7 @@ function tabC_grid(data){
    }
 
 
-
+                 
 function CifSearchList_rtn(arg){  
 
     var searchCode = "";   
@@ -1669,6 +1688,25 @@ function wcifChk_a(arg1, arg2, arg3, arg4, arg5){
     
 }
 
+
+function convert_date(arg_date){  
+    var ls_arg_date = String(arg_date); 
+    if(ls_arg_date == null || ls_arg_date.length == 0 || ls_arg_date == ""|| ls_arg_date == "null"){  
+        return "";
+    }  
+    // Date 객체로 변환
+    const dateObj = new Date(arg_date);
+
+    // 년, 월, 일 추출 (월은 0부터 시작하므로 +1 필요)
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+
+    // "YYYY-MM-DD" 형식으로 변환
+    const formattedDate = `${year}${month}${day}`;
+    arg_date = formattedDate; 
+    return arg_date; 
+}
 
 function searchListTot_rtn(arg){  
     if(arg == "M"){

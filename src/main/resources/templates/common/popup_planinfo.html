@@ -1,0 +1,279 @@
+<th:block th:fragment="popup_planinfo">
+<script type="text/x-tmpl" id="popup_planinfoSearchTemplate">
+
+    <div class="content_wrap popup">
+
+        <section class="section" style="padding-top: 10px;">
+
+            <!-- hidden fields -->
+            <input type="hidden" id="pbaldate" autocomplete="off">
+            <input type="hidden" id="pbalno"   autocomplete="off">
+            <input type="hidden" id="pcode"    autocomplete="off">
+            <input type="hidden" id="cltcd"    autocomplete="off">
+            <input type="hidden" id="ecltnm"   autocomplete="off">
+            <input type="hidden" id="balno"    autocomplete="off">
+
+            <div class="section-top">
+
+                <form class="p-2">
+
+                    <!-- ✅ Row 1: 날짜 4개 -->
+                    <div class="row g-3 mb-2">
+                        <div class="col-md-3">
+                            <dt>등록일자<span class="eq">*</span></dt>
+                            <dd><input type="date" id="indate" name="indate"></dd>
+                        </div>
+                        <div class="col-md-3">
+                            <dt>생산시작일자<span class="eq">*</span></dt>
+                            <dd><input type="date" id="prod_sdate" name="prod_sdate"></dd>
+                        </div>
+                        <div class="col-md-3">
+                            <dt>생산종료일자<span class="eq">*</span></dt>
+                            <dd><input type="date" id="prod_edate" name="prod_edate"></dd>
+                        </div>
+                        <div class="col-md-3">
+                            <dt>출고예정일<span class="eq">*</span></dt>
+                            <dd><input type="date" id="qcdate" name="qcdate"></dd>
+                        </div>
+                    </div>
+                    <!-- ✅ Row 2: 제품명 + 생산계획수량 -->
+                    <div class="row g-3 mb-2">
+                        <div class="col-md-6">
+                            <dt>제품명<span class="eq">*</span></dt>
+                            <dd>
+                                <!-- <select th:field="*{jpumList}" name="jpum" id="jpum">
+                                    <option value="">선택</option>
+                                    <option th:each="val : ${jpumList}"
+                                            th:value="${#strings.trim(val.pname)}"
+                                            th:text="${val.pname}">
+                                    </option>
+                                </select> -->
+                                <input type="text" id="popjpum" name="popjpum">
+                                <input type="hidden" id="popjcode" name="popjcode">
+                            </dd>
+                        </div>
+                        <div class="col-md-6">
+                            <dt>생산계획수량<span class="eq">*</span></dt>
+                            <dd>
+                                <input type="number" id="prod_qty" name="prod_qty">
+                            </dd>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Row 3: 호기 + 월 + 주차 (라벨 추가) -->
+                    <div class="row g-3 mb-2">
+                        <div class="col-md-4">
+                            <dt>호기</dt>
+                            <dd>
+                                <select class="form-select" th:field="*{wrmcist}" name="wrmccon" id="wrmccon">
+                                    <option value="">호기</option>
+                                    <option th:each="val : ${wrmcist}"
+                                            th:value="${val.wrmc}"
+                                            th:text="${val.wrmcnm}">
+                                    </option>
+                                </select>                                
+                            </dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>월</dt>
+                            <dd>  
+                                <select class="form-select" id="inmonth" name="inmonth">
+                                    <option value="" selected>월</option>
+                                    <option value="1월">1월</option>
+                                    <option value="2월">2월</option>
+                                    <option value="3월">3월</option>
+                                    <option value="4월">4월</option>
+                                    <option value="5월">5월</option>
+                                    <option value="6월">6월</option>
+                                    <option value="7월">7월</option>
+                                    <option value="8월">8월</option>
+                                    <option value="9월">9월</option>
+                                    <option value="10월">10월</option>
+                                    <option value="11월">11월</option>
+                                    <option value="12월">12월</option>
+                                </select>                                
+                            </dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>주차</dt>
+                            <dd> 
+                                <select class="form-select" id="inweeks" name="inweeks">
+                                    <option value="" selected>주차</option>
+                                    <option value="1">1주차</option>
+                                    <option value="2">2주차</option>
+                                    <option value="3">3주차</option>
+                                    <option value="4">4주차</option>
+                                    <option value="5">5주차</option>
+                                    <option value="6">6주차</option>
+                                </select>                                
+                            </dd>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </section>
+
+        <!-- 하단 버튼 -->
+        <div class="popup-button">
+            <button type="button" class="btn-popup" id="savePlanBtn2" onclick="save_btn('B')">
+                <span>저장</span>
+            </button>
+            <button type="button" class="btn-popup" id="winplannomodal_btn">
+                <span>닫기</span>
+            </button>
+        </div>
+
+    </div>
+
+</script>
+
+<script type="text/javascript">
+
+    class PopPlaninfoComponent {
+        constructor() {
+            this.grid = null;
+            this.viewData = new wijmo.collections.CollectionView();
+            this.selectedItem = null;
+            this.callback = null;
+            this.modalContainer = new PopupDraggable('생산계획');
+            this.$btnCompSearch = null;
+            this.$btnCompSelect = null;
+            this.$infoName = null;
+        }
+
+        // ✅ 날짜 초기화 함수
+        initDates($content) {
+            // YYYY-MM-DD 포맷 변환
+            function toDateStr(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            }
+
+            // 오늘 + n일
+            function addDays(d, n) {
+                const result = new Date(d);
+                result.setDate(result.getDate() + n);
+                return result;
+            }
+
+            // 해당 월 말일 (다음 달 0일 = 이번 달 마지막 날)
+            function lastDayOfMonth(d) {
+                return new Date(d.getFullYear(), d.getMonth() + 1, 0);
+            }
+
+            const today = new Date();
+
+            // 등록일자 = 오늘
+            $content.find('#indate').val(toDateStr(today));
+            // 생산시작일자 = 오늘
+            $content.find('#prod_sdate').val(toDateStr(today));
+            // 생산종료일자 = 오늘 + 5일
+            $content.find('#prod_edate').val(toDateStr(addDays(today, 5)));
+            // 출고예정일 = 이번 달 말일
+            $content.find('#qcdate').val(toDateStr(lastDayOfMonth(today)));
+
+            
+            var result = new Date();
+            result.setHours(result.getHours() + 9);
+            var ls_date = result.toISOString().substring(0,10); 
+            showCurrentDate(ls_date, 5); 
+        }
+
+        searchDataBind() {
+            let _this = this;
+            let url = '/app02m/index10/listot';
+            let data = {
+                'conacorp': _this.$infoName.val(),
+            };
+
+            let result = AjaxUtil.getSyncData(url, data);
+            if (result) {
+                _this.viewData.sourceCollection = result;
+            }
+
+            this.selectedItem = null;
+        }
+
+        selectData(item) {
+            console.log(item);
+            if (typeof this.callback !== 'undefined' && this.callback != null) {
+                this.callback(item);
+            }
+            this.close();
+        } 
+        show(callback, keyword = '') {
+            let _this = this;
+
+            this.callback = callback;
+
+            let content = tmpl('popup_planinfoSearchTemplate', {});
+            let $content = $(content);
+            this.modalContainer.open({ width: 800, height: 500, $content });
+
+            this.$btnCompSearch = $content.find('#btnCompSearch');
+            this.$infoName      = $content.find('#infoName');
+            this.$btnCompSelect = $content.find('#btnCompSelect');
+
+            // ✅ 팝업 열릴 때 날짜 자동 설정
+            this.initDates($content);
+
+            if (keyword) {
+                this.$infoName.val(keyword);
+            }
+            this.searchDataBind();
+
+            this.$btnCompSearch.click(function (e) {
+                _this.searchDataBind();
+            });
+
+            $('#btnCompSearch').click();
+
+            this.$btnCompSelect.click(function (e) {
+                let items = _this.grid.selectedItems;
+                if (items.length === 0) {
+                    return false;
+                }
+                _this.selectData(items[0]);
+            });
+
+            $content.find('#btn-search-close').on('click', function () {
+                _this.close();
+            });
+
+            $content.find('#winplannomodal_btn').on('click', function () {
+                _this.close();
+            });
+        }
+
+        close() {
+            this.modalContainer.close();
+        }
+    }
+
+function showCurrentDate(ctrl, days) {
+    var ls_sdate = ctrl;  
+    
+    if(ls_sdate == null || ls_sdate.length == 0 || ls_sdate == ""){ 
+        return;         
+    }       
+    var result = new Date(ls_sdate); 
+    
+    const weekOfMonth = getWeekOfMonth(result); 
+    //const month = ls_sdate.toLocaleString('default', { month: 'long' });
+    const month = (result.getMonth() + 1) + '월';  // 0~11 이라 +1
+    document.getElementById('inmonth').value = month;
+    document.getElementById('inweeks').value = weekOfMonth; 
+
+}  
+function getWeekOfMonth(date) { 
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    const dayOfWeek = startDate.getDay(); 
+    const dayOfMonth = date.getDate();
+    return Math.ceil((dayOfMonth + dayOfWeek) / 7);
+}  
+</script>
+</th:block>

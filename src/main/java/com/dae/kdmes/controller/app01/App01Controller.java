@@ -597,6 +597,8 @@ public class App01Controller {
             wrmcDto.setMachname("%");
             model.addAttribute("wrmcist", appPopupService.GetWrmcList01(wrmcDto));
 
+//            index03Dto.setKey1("%");
+//            index03List = service03.SelectJegoIpgo(index03Dto);
 
             _indexJpumList = service03.GetJpumComboList(_indexpopDto);
             model.addAttribute("jpumList",_indexJpumList);

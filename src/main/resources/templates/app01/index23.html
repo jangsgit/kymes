@@ -1447,11 +1447,8 @@
     // wtab02Grid.columns.push(cols);    
    }
 //pcode,pname, psize
-function wf_planno(arg1, arg2,arg3){   
-    console.log("arg0 = " + arg1)
-    document.getElementById("inplannobtn").click();
-    console.log("arg1 = " + arg1)
-    console.log("arg2 = " + arg2)
+function wf_planno(arg1, arg2,arg3){  
+    document.getElementById("inplannobtn").click(); 
     document.getElementById('popjcode').value = arg1 
     document.getElementById('popjpum').value = arg2  
      
@@ -1503,20 +1500,19 @@ function tabC_grid(data){
     });
     wtab03Grid.columns.push(cols);    
 
-       
-    
+         
     cols = new wijmo.grid.Column(); 
     cols.binding = 'pcode';
     cols.header = '제품코드';
-    cols.align = "left";
-    cols.width = 150;     
+    cols.align = "center";
+    cols.width = 120;        
     cols.cellTemplate = wijmo.grid.cellmaker.CellMaker.makeLink({ 
         text: '<b>${item.pcode}</b>',
         click: (e, ctx) => {
             wf_planno(ctx.item.pcode, ctx.item.pname, ctx.item.psize);           
         }
-    });
-    wtab03Grid.columns.push(cols);     
+    }); 
+    wtab03Grid.columns.push(cols);   
     
     cols = new wijmo.grid.Column(); 
     cols.binding = 'psize';
@@ -1584,12 +1580,6 @@ function tabC_grid(data){
     cols.format = 'n0';  
     wtab03Grid.columns.push(cols);      
     
-    cols = new wijmo.grid.Column(); 
-    cols.binding = 'pcode';
-    cols.header = '제품코드';
-    cols.align = "center";
-    cols.width = 120;    
-    wtab03Grid.columns.push(cols);   
     
     // cols = new wijmo.grid.Column(); 
     // cols.binding = 'idxkey';

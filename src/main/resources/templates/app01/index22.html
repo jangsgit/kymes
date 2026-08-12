@@ -138,7 +138,7 @@
                                         <img src="/images/icon/ico-plus.svg" alt="등록 아이콘">
                                         신규등록
                                     </a>-->
-                                    <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="clear_rtn()"
+                                    <button type="button" class="btn-default" id="btnNew" name="btnNew"   onclick="clear_rtn('N')"
                                             style="height: 36px; width:115px;"><i
                                             class="fas fa-plus"></i>신규등록
                                     </button>
@@ -167,8 +167,8 @@
                                 </li>
                                 <li> 
                                     <button type="button" class="btn-excellt btn-default" id="deleteRow"
-                                            style="float:none; height: 36px; width:115px;" onclick="prtprocess_rtn()">
-                                            설비카드
+                                            style="float:none; height: 36px; width:180px;" onclick="prtprocess_rtn()">
+                                            설비카드 pdf 다운로드
                                     </button>
                                 </li>
                                 </ul>
@@ -718,12 +718,46 @@
            document.getElementById('infixcltnm').value = "";
            document.getElementById('inremark').value = "";
        }
-       function save_btn(arg){
+
+       function save_btn() {
+            var ls_infaccd = document.getElementById('infaccd').value;              //설비코드
+            if (ls_infaccd.trim()) {
+                Swal.fire({
+                    icon: 'question',
+                    title: '수정 확인',
+                    text: '수정한 내용으로 변경하시겠습니까?',
+                    showCancelButton: true,
+                    confirmButtonText: '변경',
+                    cancelButtonText: '취소',
+                    confirmButtonColor: '#3b5bdb',
+                    cancelButtonColor: '#adb5bd'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doSave();  // 실제 저장 함수 호출
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'question',
+                    title: '신규 등록',
+                    text: '설비카드를 새로 추가하시겠습니까?',
+                    showCancelButton: true,
+                    confirmButtonText: '등록',
+                    cancelButtonText: '취소',
+                    confirmButtonColor: '#3b5bdb',
+                    cancelButtonColor: '#adb5bd'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doSave();
+                    }
+                });
+            }
+        }
+
+
+       function doSave(arg){
            var ls_tab = document.getElementById('tabvalue').value;  
        
-           if (!confirm("저장하시겠습니까?")) {
-                   return ; 
-           }   
            
            switch(ls_tab){
                case 'A': 
@@ -738,7 +772,7 @@
                     //    var ls_infacdate = document.getElementById('infacdate').value;
                     //    var ls_infacstdate = document.getElementById('infacstdate').value;
                     //    var ls_infaceddate = document.getElementById('infaceddate').value;
-                    console.log(ls_infacdate)
+                    // console.log(ls_infacdate)
                     var ls_infacmodel = document.getElementById('infacmodel').value;        //모델명
     
                     var ls_infacjaejo = document.getElementById('infacjaejo').value;        //제조사
@@ -762,7 +796,8 @@
                     var ls_infacvolumn = "";
                     var ls_infacgunondo = "";
                     var ls_infacgunpung = "";
-    
+     
+
                     switch(ls_infacflag){
                         case '01': 
                             ls_infacsize  = document.getElementById('infacsize').value;         //SIZE
@@ -931,7 +966,7 @@
                         data: formData,                   
                         async:false,
                         success:function(data){
-                            if(data == "success"){
+                            if(data == "success"){ 
                                 alert("저장되었습니다.")
                                 // console.log(formData);
                                 // searchList_rtn(ls_tab);
@@ -953,17 +988,17 @@
                case 'B': 
                
                     var ls_infixid = document.getElementById('infixid').value;
-                    var ls_infixmachcd = document.getElementById('infixmachcd').value;
+                    var ls_infixmachcd =  ""; //document.getElementById('infixmachcd').value;
                     var ls_infixtext   = document.getElementById('infixtext').value;
                     var ls_infixcltnm = document.getElementById('infixcltnm').value;
                     var ls_inremark   = document.getElementById('inremark').value; 
                     var ls_inreqdate   =  $('#inreqdate').val(); //convert_date(wreqdate.value);                 
                     var ls_inrespdate =  $('#inrespdate').val(); //convert_date(wrespdate.value);     
     
-                   if(ls_infixmachcd == null || ls_infixmachcd.length == 0 || ls_infixmachcd == ""){ 
-                       alert("품번을 선택하세요")  
-                       return ;               
-                   }  
+                //    if(ls_infixmachcd == null || ls_infixmachcd.length == 0 || ls_infixmachcd == ""){ 
+                //        alert("품번을 선택하세요")  
+                //        return ;               
+                //    }  
                    if(ls_infixtext == null || ls_infixtext.length == 0 || ls_infixtext == ""){ 
                        alert("수리내용을 등록하세요") 
                        document.getElementById("infixtext").focus(); 
@@ -1058,7 +1093,7 @@
                            if(data == "success"){
                                alert("삭제되었습니다.")  
                                searchList_rtn(ls_tab);  
-                               clear_rtn(ls_tab);             
+                               clear_rtn('D');             
                            }else{                       
                                alert("삭제중 오류가 발생했습니다. 관리자에게 문의하세요.")  
                            }
@@ -1087,7 +1122,7 @@
                            if(data == "success"){
                                alert("삭제되었습니다.") 
                                searchList_rtn(ls_tab);  
-                               clear_rtn();             
+                               clear_rtn('D');             
                            }else{                       
                                alert("삭제중 오류가 발생했습니다. 관리자에게 문의하세요.")  
                            }
@@ -1106,16 +1141,23 @@
            } 
     
        }         
-       function clear_rtn(){ 
+       function clear_rtn(arg){ 
             var ls_tab = document.getElementById('tabvalue').value;  
            switch(ls_tab){
-               case 'A':  
-               
+               case 'A':   
+               if(arg == 'N') {
+                Swal.fire({
+                        icon: 'info',
+                        title: '안내',
+                        text: '상세내용 입력 후 저장버튼을 누르면 설비카드가 새로 추가등록됩니다.',
+                        confirmButtonText: '확인',
+                        confirmButtonColor: '#3b5bdb'   // 화면의 파란색 버튼 톤에 맞춤
+                    });               
+                }
                     document.getElementById('infaccd').value = "";
                     document.getElementById('infacflag').value = "01";
                     document.getElementById('infacno').value = "";
-                    document.getElementById('infacname').value = "";
-                    document.getElementById('infixmachno').value = "";
+                    document.getElementById('infacname').value = ""; 
                     document.getElementById('infacmodel').value = "";
                     document.getElementById('infacjaejo').value = "";
                     document.getElementById('infacjaejono').value = "";
@@ -1133,6 +1175,17 @@
                     document.getElementById('infacweight').value = "";
                     document.getElementById('infachyung').value = "";
                     document.getElementById('infacscrew').value = ""; 
+
+                    
+                    const now = new Date();
+                    const oneMonthLater = new Date(now);
+                    oneMonthLater.setMonth(oneMonthLater.getMonth() - 1); 
+            
+                    $('#infacdate').val(CommonUtil.formatYYYYMMDD(now));
+                    $('#infacstdate').val(CommonUtil.formatYYYYMMDD(now)); 
+                    $('#infaceddate').val(CommonUtil.formatYYYYMMDD(now)); 
+                    $('#inreqdate').val(CommonUtil.formatYYYYMMDD(now)); 
+                    $('#inrespdate').val(CommonUtil.formatYYYYMMDD(now));  
                    break;
                case 'B':   
                    break;                
@@ -1843,8 +1896,7 @@
            searchList_rtn(ls_tab);
        })   
     
-       function searchList_rtn(arg1){ 
-            
+       function searchList_rtn(arg1){  
            switch(arg1){
                case 'A':
                 var ls_searchtxt = document.getElementById('searchtxt').value; 
@@ -1865,7 +1917,7 @@
                    })  
                    break;
                case 'B': 
-                   var ls_infixmachcd = document.getElementById('infixmachcd').value;
+                   var ls_infixmachcd = ""; //document.getElementById('infixmachcd').value;
                    $.ajax({
                        url: '/app01m/index08/listtotfix',  
                        type:"POST",

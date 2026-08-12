@@ -1460,18 +1460,19 @@ public class App01CrudController {
             log.info(_index08Dto.getYymm());
             ls_maxfaccd = service08.SelectMaxFac(_index08Dto);
             if (ls_maxfaccd != null && !ls_maxfaccd.equals("")) {
-                ls_seq = ls_maxfaccd.substring(6, 8);
+                // faccd = yymm(6) + seq(3) → seq는 인덱스 6~9 (3자리)
+                ls_seq = ls_maxfaccd.substring(6, 9);
                 int ll_seq = Integer.parseInt(ls_seq) + 1;
                 ls_seq = Integer.toString(ll_seq);
 
+                // 3자리로 패딩
                 if (ls_seq.length() == 1) {
-                    ls_seq = "000" + ls_seq;
-                } else if (ls_seq.length() == 2) {
                     ls_seq = "00" + ls_seq;
-                } else if (ls_seq.length() == 3) {
+                } else if (ls_seq.length() == 2) {
                     ls_seq = "0" + ls_seq;
                 }
-                ls_maxfaccd = getDate().substring(0,5) + ls_seq;
+                // length == 3 이면 그대로 사용 (999건까지)
+                ls_maxfaccd = getDate().substring(0,6) + ls_seq; // 6자리 + 3자리 = 9자리
             }else{
                 ls_maxfaccd = getDate().substring(0,6) + "001";
             }
